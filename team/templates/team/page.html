@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block navbar %}
+    {% include "team/includes/navbar.html" with pages=pages current=page.page %}
+{% endblock %}
+
+{% block content %}
+    {% if page.template == 'TEAM' %}
+        {% include "team/includes/page-team.html" with students=students coaches=coaches %}
+    {% endif %}
+
+    {% for post in posts %}
+        {% if page.template == 'HOME' %}
+            {% include "team/includes/page-home.html" %}
+        {% elif page.template == 'ABOUT' %}
+            {% include "team/includes/page-about.html" %}
+        {% else %}
+            {% include "team/includes/page-section.html" %}
+        {% endif %}
+    {% endfor %}
+
+    {% if page.text %}
+        <section class="page-section cta">
+          <div class="container">
+            <div class="row">
+              <div class="col-xl-9 mx-auto">
+                <div class="cta-inner text-center rounded">
+                  <h2 class="section-heading mb-4">
+                    <span class="section-heading-upper">{{ page.header1 }}</span>
+                    <span class="section-heading-lower">{{ page.header2 }}</span>
+                  </h2>
+                  <p class="mb-0">{{ page.text }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+    {% endif %}
+{% endblock %}
