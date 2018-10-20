@@ -6,8 +6,8 @@
       <div class="product-item-title d-flex">
         <div class="bg-faded p-5 d-flex ml-auto rounded">
           <h2 class="section-heading mb-0">
-            <span class="section-heading-upper">{{ coach.squad }}</span>
-            <span class="section-heading-lower">{{ coach.profile.full_name() }}</span>
+            <span class="section-heading-upper">{{ coach.squad }}'s {{ coach.title.title }}</span>
+            <span class="section-heading-lower">{{ coach.profile.first_name }} {{ coach.profile.last_name }}</span>
           </h2>
         </div>
       </div>
@@ -54,7 +54,7 @@
           <ul class="list-unstyled list-hours mb-5 text-left mx-auto">
           {% for student in students %}
             <li class="list-unstyled-item list-hours-item d-flex">
-              {{ student.profile.fullname() }}
+              {{ student.profile.first_name }} {{ student.profile.last_name }}
               <span class="ml-auto">{{ student.squad }}</span>
             </li>
           {% endfor %}

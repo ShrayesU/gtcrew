@@ -20,8 +20,12 @@ def PageView(request, pagename):
             'coaches': None,
             }
     if page.template == 'TEAM':
-        payload['students'] = Membership.objects.filter()[:5]
-        payload['coaches'] = Membership.objects.filter()[:5]
+        payload['students'] = Membership.objects.filter().exclude(
+                                                            title__held_by='coach'
+                                                            ).exclude(
+                                                                title__held_by='alumni'
+                                                                )
+        payload['coaches'] = Membership.objects.filter(title__held_by='coach')
     return render(request, 'team/page.html', payload)
     
 def HomeView(request):

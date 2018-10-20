@@ -49,7 +49,7 @@ class MembershipInline(admin.TabularInline):
 @admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):
     fieldsets = [
-        (None,               {'fields': ['first_name', 'last_name', 'email', 'bio', 'profile_photo', ]}),
+        (None,               {'fields': ['first_name', 'last_name', 'email', 'bio', 'photo', ]}),
         ('Personal',         {'fields': ['gtid', 'birthday', 'major', 'hometown'], 'classes': ['collapse']}),
         ('Date information', {'fields': ['date_created', 'date_updated'], 'classes': ['collapse']}),
     ]
