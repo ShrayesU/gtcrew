@@ -119,9 +119,9 @@ USE_L10N = True
 USE_TZ = True
 
 # Django-Antispam
-RECAPTCHA_SITEKEY = 'sitekey'
+RECAPTCHA_SITEKEY = config('RECAPTCHA_SITEKEY')
 
-RECAPTCHA_SECRETKEY = 'secretkey'
+RECAPTCHA_SECRETKEY = config('RECAPTCHA_SECRETKEY')
 
 RECAPTCHA_WIDGET = 'antispam.captcha.widgets.ReCAPTCHA'
 
