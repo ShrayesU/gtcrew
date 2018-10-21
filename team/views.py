@@ -20,7 +20,7 @@ def PageView(request, pagename):
             'coaches': None,
             }
     if page.template == 'TEAM':
-        payload['students'] = Membership.objects.filter().exclude(
+        payload['students'] = Membership.objects.filter(year=2018, semester='FALL').exclude(
                                                             title__held_by='coach'
                                                             ).exclude(
                                                                 title__held_by='alumni'
