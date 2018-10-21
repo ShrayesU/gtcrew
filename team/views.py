@@ -3,7 +3,7 @@ from django.http import HttpResponseRedirect
 from django.views import generic
 
 from django.contrib.auth import login, authenticate
-from .forms import SignUpForm, ProfileForm
+from .forms import SignUpForm, ProfileForm, InterestForm
 
 
 from .models import Profile, Page, Post, Membership
@@ -12,6 +12,7 @@ def PageView(request, pagename):
     page = get_object_or_404(Page, page=pagename)
     pages = Page.objects.all().order_by('sequence')
     posts = Post.objects.filter(page=page)
+    form = interest(request)
     payload = {
             'page': page,
             'pages': pages,
@@ -56,6 +57,26 @@ def signup(request):
         form = ProfileForm()
     return render(request, 'team/includes/signup.html', {'form':form})
 
+def interest(request):
+    pages = Page.objects.all().order_by('sequence')
+    if request.method == 'POST':
+        form = InterestForm(request.POST)
+        if form.is_valid():
+            first_name = form.cleaned_data.get('first_name')
+            last_name = form.cleaned_data.get('last_name')
+            email = form.cleaned_data.get('email')
+            gtid = form.cleaned_data.get('gtid')
+            p = Profile(
+                        first_name=first_name,
+                        last_name=last_name,
+                        email=email,
+                        gtid=gtid,
+                        )
+            p.save()
+            return redirect('')
+    else:
+        form = InterestForm()
+    return render(request, 'team/interest.html', {'form':form, 'pages':pages})
 
 """
 def signup(request):

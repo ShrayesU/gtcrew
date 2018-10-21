@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'storages',
+    'antispam.captcha',
 ]
 
 MIDDLEWARE = [
@@ -117,6 +118,16 @@ USE_L10N = True
 
 USE_TZ = True
 
+# Django-Antispam
+RECAPTCHA_SITEKEY = 'sitekey'
+
+RECAPTCHA_SECRETKEY = 'secretkey'
+
+RECAPTCHA_WIDGET = 'antispam.captcha.widgets.ReCAPTCHA'
+
+RECAPTCHA_TIMEOUT = 5
+
+RECAPTCHA_PASS_ON_ERROR = False
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/

@@ -7,5 +7,6 @@ urlpatterns = [
     path('', views.HomeView, name='index'),
     path('<str:pagename>/', views.PageView, name='page'),
     path('<int:pk>/', views.DetailView.as_view(), name='detail'),
-    path('signup/', views.signup, name='signup')
+    path('form/interest/', views.interest, name='interest'),
+    path('form/signup/', views.signup, name='signup'),
 ]
