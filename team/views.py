@@ -38,11 +38,11 @@ def HomeView(request):
 
 class IndexView(generic.ListView):
     model = Profile
-    template_name = 'team/profile_index.html'
-    context_object_name = 'profile_list'
+    template_name = 'team/membership_index.html'
+    context_object_name = 'membership_list'
     
     def get_queryset(self):
-        return Profile.objects.all()[:5]
+        return Membership.objects.all()[:5]
 
 class DetailView(generic.DetailView):
     model = Profile
