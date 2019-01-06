@@ -44,12 +44,9 @@ class IndexView(generic.ListView):
     def get_queryset(self):
         return Membership.objects.all()[:5]
 
-class DetailView(generic.DetailView, pk):
+class DetailView(generic.DetailView):
     model = Membership
     template_name = 'team/membership_detail.html'
-    
-    def get_queryset(self):
-        return Membership.objects.get(pk=pk)
 
 def signup(request):
     if request.method == 'POST':
