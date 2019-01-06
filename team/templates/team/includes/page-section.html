@@ -12,7 +12,7 @@
       <img class="product-item-img mx-auto d-flex rounded img-fluid mb-3 mb-lg-0" src="{{ post.photo.url }}" alt="">
       <div class="product-item-description d-flex mr-auto">
         <div class="bg-faded p-5 rounded">
-          <p class="mb-0">{{ post.text }}</p>
+          <p class="mb-0">{{ post.text|safe }}</p>
           {% if post.additional_link %}
             <div class="intro-button mx-auto">
               <center>

@@ -1,21 +1,34 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <h2>Sign up</h2>
-  <form method="post">
-    {% csrf_token %}
-    {% for field in form %}
-      <p>
-        {{ field.label_tag }}<br>
-        {{ field }}
-        {% if field.help_text %}
-          <small style="color: grey">{{ field.help_text }}</small>
-        {% endif %}
-        {% for error in field.errors %}
-          <p style="color: red">{{ error }}</p>
-        {% endfor %}
-      </p>
-    {% endfor %}
-    <button type="submit">Sign up</button>
-  </form>
+<section class="page-section cta">
+      <div class="container">
+        <div class="row">
+          <div class="col-xl-9 mx-auto">
+            <div class="cta-inner text-center rounded">
+              <h2 class="section-heading mb-4">
+                <span class="section-heading-upper">Start Strong</span>
+                <span class="section-heading-lower">Sign Up</span>
+              </h2>
+              <form action="" method="post">
+                {% csrf_token %}
+                {% for field in form %}
+                  <p>
+                    {{ field.label_tag }}<br>
+                    {{ field }}
+                    {% if field.help_text %}
+                      <small style="color: grey">{{ field.help_text }}</small>
+                    {% endif %}
+                    {% for error in field.errors %}
+                      <p style="color: red">{{ error }}</p>
+                    {% endfor %}
+                  </p>
+                {% endfor %}
+                <button type="submit">Sign up</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 {% endblock %}
