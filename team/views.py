@@ -37,19 +37,19 @@ def HomeView(request):
     return PageView(request, pagename)
 
 class IndexView(generic.ListView):
-    model = Profile
+    model = Membership
     template_name = 'team/membership_index.html'
     context_object_name = 'membership_list'
     
     def get_queryset(self):
         return Membership.objects.all()[:5]
 
-class DetailView(generic.DetailView):
-    model = Profile
-    template_name = 'team/profile_detail.html'
+class DetailView(generic.DetailView, pk):
+    model = Membership
+    template_name = 'team/membership_detail.html'
     
     def get_queryset(self):
-        return Profile.objects.all()[:5]
+        return Membership.objects.get(pk=pk)
 
 def signup(request):
     if request.method == 'POST':
