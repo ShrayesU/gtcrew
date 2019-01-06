@@ -1,5 +1,9 @@
 {% extends 'base.html' %}
 
+{% block navbar %}
+    {% include "team/includes/navbar.html" with pages=pages current=page.page %}
+{% endblock %}
+
 {% block content %}
 <section class="page-section cta">
   <div class="container">
@@ -23,7 +27,7 @@
         <ul class="list-unstyled list-hours mb-5 text-left mx-auto">
         {% for member in membership_list %}
             <li class="list-unstyled-item list-hours-item d-flex">
-            <a href="{% url 'team:member_detail' member.id %}">{{ member.first_name }} {{ member.last_name }}</a>
+            <a href="{% url 'team:member_detail' member.id %}">{{ member.profile.first_name }} {{ member.profile.last_name }}</a>
             <span class="ml-auto">{{ member.squad }}</span>
             </li>
         {% endfor %}

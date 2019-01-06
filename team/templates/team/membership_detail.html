@@ -1,5 +1,9 @@
 {% extends 'base.html' %}
 
+{% block navbar %}
+    {% include "team/includes/navbar.html" with pages=pages current=page.page %}
+{% endblock %}
+
 {% block content %}
     <h1>{{ membership }}</h1>
     <p>{{ membership.year }}</p>

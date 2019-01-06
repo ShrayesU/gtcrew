@@ -87,6 +87,7 @@
 {% endif %}
 
 {% if students %}
+<br><br>
 <section class="page-section about-heading">
   <div class="container">
     <div class="about-heading-content">
@@ -97,9 +98,12 @@
               <span class="section-heading-upper">Team</span>
               <span class="section-heading-lower">Roster</span>
             </h2>
-            <p class="mb-3">Rowers & Coxswains</p>
+            <p class="mb-3">We are one of the largest competitive sport clubs at Georgia Tech.
+            To view all the Rowers & Coxswains, please click below.</p>
             <div class="intro-button mx-auto">
+              <center>
               <a class="btn btn-primary btn-xl" href="{% url 'team:member_index' %}">View Roster</a>
+              </center>
             </div>
           </div>  
         </div>
