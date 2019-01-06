@@ -21,12 +21,15 @@ def PageView(request, pagename):
             'coaches': None,
             }
     if page.template == 'TEAM':
-        payload['students'] = Membership.objects.filter(year=2018, semester='FALL').exclude(
+        most_recent_member = Membership.objects.order_by('-year', 'semester').first()
+        year, semester = (most_recent_member.year, most_recent_member.semester)
+        payload['students'] = Membership.objects.filter(year=year, semester=semester).exclude(
                                                             title__held_by='coach'
                                                             ).exclude(
                                                                 title__held_by='alumni'
                                                                 )
-        payload['coaches'] = Membership.objects.filter(title__held_by='coach')
+        payload['coaches'] = Membership.objects.filter(year=year, semester=semester, title__held_by='coach')
+        payload['officers'] = Membership.objects.filter(year=year, semester=semester, title__held_by='student')
     return render(request, 'team/page.html', payload)
     
 def HomeView(request):

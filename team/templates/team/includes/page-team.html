@@ -52,10 +52,10 @@
             </em>
           </p>
           <ul class="list-unstyled list-hours mb-5 text-left mx-auto">
-          {% for student in students %}
+          {% for officer in officers %}
             <li class="list-unstyled-item list-hours-item d-flex">
-              {{ student.profile.first_name }} {{ student.profile.last_name }}
-              <span class="ml-auto">{{ student.squad }}</span>
+              {{ officer.profile.first_name }} {{ officer.profile.last_name }}
+              <span class="ml-auto">{{ officer.title.title }}</span>
             </li>
           {% endfor %}
           </ul>
