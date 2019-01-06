@@ -40,11 +40,16 @@ class IndexView(generic.ListView):
     model = Membership
     template_name = 'team/membership_index.html'
     context_object_name = 'membership_list'
-    
+
+    pages = Page.objects.all().order_by('sequence')
     def get_queryset(self):
         most_recent_member = Membership.objects.order_by('-year', 'semester').first()
         year, semester = (most_recent_member.year, most_recent_member.semester)
-        return Membership.objects.filter(year=year, semester=semester)
+        return Membership.objects.filter(year=year, semester=semester).exclude(
+                                                            title__held_by='coach'
+                                                            ).exclude(
+                                                                title__held_by='alumni'
+                                                                )
 
 class DetailView(generic.DetailView):
     model = Membership
