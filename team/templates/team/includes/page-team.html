@@ -32,7 +32,7 @@
 {% endfor %}
 {% endif %}
 
-{% if students %}
+{% if officers %}
 <section class="page-section cta">
   <div class="container">
     <div class="row">
@@ -46,9 +46,7 @@
           -->
           <p class="address mb-5">
             <em>
-              <strong>Team</strong>
-              <br>
-              Officer Board
+              <strong>Officer Board</strong>
             </em>
           </p>
           <ul class="list-unstyled list-hours mb-5 text-left mx-auto">
@@ -59,15 +57,13 @@
             </li>
           {% endfor %}
           </ul>
+          <!--
           <p class="address mb-5">
             <em>
               Rowers & Coxswains
             </em>
           </p>
-          <small>
-          <a href="{% url 'team:member_index' %}">View Roster</a>
-          </small>
-          <!--
+          
           <div class="intro-button mx-auto">
               <center>
               <a class="btn btn-primary btn-xl" href="{% url 'team:member_index' %}">View Roster</a>
@@ -83,6 +79,29 @@
             (555) 555-5555
           </p>
           -->
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endif %}
+
+{% if students %}
+<section class="page-section about-heading">
+  <div class="container">
+    <div class="about-heading-content">
+      <div class="row">
+        <div class="col-xl-9 col-lg-10 mx-auto">
+          <div class="bg-faded rounded p-5">
+            <h2 class="section-heading mb-4">
+              <span class="section-heading-upper">Team</span>
+              <span class="section-heading-lower">Roster</span>
+            </h2>
+            <p class="mb-3">Rowers & Coxswains</p>
+            <div class="intro-button mx-auto">
+              <a class="btn btn-primary btn-xl" href="{% url 'team:member_index' %}">View Roster</a>
+            </div>
+          </div>  
         </div>
       </div>
     </div>
