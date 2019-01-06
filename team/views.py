@@ -42,7 +42,9 @@ class IndexView(generic.ListView):
     context_object_name = 'membership_list'
     
     def get_queryset(self):
-        return Membership.objects.all()[:5]
+        most_recent_member = Membership.objects.order_by('-year', 'semester').first()
+        year, semester = (most_recent_member.year, most_recent_member.semester)
+        return Membership.objects.filter(year=year, semester=semester)
 
 class DetailView(generic.DetailView):
     model = Membership
