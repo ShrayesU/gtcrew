@@ -16,9 +16,9 @@ MembershipForm = modelform_factory(Membership, exclude=('',))
 class InterestForm(forms.Form):
     first_name = forms.CharField(max_length=64)
     last_name = forms.CharField(max_length=64)
-    email = forms.EmailField(max_length=254, help_text='Required. Enter a valid email address.')
+    email = forms.EmailField(max_length=254)
     gtid = forms.CharField(help_text='Optional. For current GT students.', max_length=9, required=False)
-    message = forms.CharField(widget=forms.Textarea, max_length=200, required=False)
+    message = forms.CharField(widget=forms.Textarea(attrs={'width': '100%'}), max_length=200, required=False)
     captcha = ReCAPTCHA()
 
 class CsvImportForm(forms.Form):
