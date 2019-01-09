@@ -133,6 +133,7 @@ p {
     width: 100%;
     left: 0;
     position: absolute;
+    z-index: 99;
     bottom: -2rem;
   }
 }
