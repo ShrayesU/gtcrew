@@ -207,6 +207,7 @@ p {
   padding-bottom: .25rem;
   margin-bottom: 1rem;
   font-style: italic;
+  z-index: 99;
 }
 
 .list-hours .list-hours-item.today {
