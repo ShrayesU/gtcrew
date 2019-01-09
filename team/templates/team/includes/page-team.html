@@ -53,7 +53,7 @@
           {% for officer in officers %}
             <li class="list-unstyled-item list-hours-item d-flex">
               {{ officer.profile.first_name }} {{ officer.profile.last_name }}
-              <span class="ml-auto">{{ officer.title.title }}</span>
+              <span class="ml-auto"><a href="mailto:{{ officer.title.title }}@gtcrew.com">{{ officer.title.title }}@gtcrew.com</a></span>
             </li>
           {% endfor %}
           </ul>
