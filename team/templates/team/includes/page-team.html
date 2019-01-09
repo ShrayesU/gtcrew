@@ -53,23 +53,16 @@
           {% for officer in officers %}
             <li class="list-unstyled-item list-hours-item d-flex">
               {{ officer.profile.first_name }} {{ officer.profile.last_name }}
-              <span class="ml-auto"><a href="mailto:{{ officer.title.title }}@gtcrew.com">{{ officer.title.title }}@gtcrew.com</a></span>
+              <span class="ml-auto" style="font-weight:bold; color:#EEB211;">{{ officer.title.title }}</span>
             </li>
           {% endfor %}
           </ul>
-          <!--
-          <p class="address mb-5">
-            <em>
-              Rowers & Coxswains
-            </em>
-          </p>
-          
+
           <div class="intro-button mx-auto">
               <center>
-              <a class="btn btn-primary btn-xl" href="{% url 'team:member_index' %}">View Roster</a>
+              <a class="btn btn-primary btn-xl" href="mailto:president@gtcrew.com">Contact</a>
               </center>
           </div>
-          -->
           <!--
           <p class="mb-0">
             <small>
