@@ -203,8 +203,6 @@ p {
 }
 
 .list-hours .list-hours-item {
-  position: relative;
-  z-index: 1;
   border-bottom: 1px solid rgba(238, 178, 17, 0.5);
   padding-bottom: .25rem;
   margin-bottom: 1rem;
