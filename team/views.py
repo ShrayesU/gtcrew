@@ -28,8 +28,8 @@ def PageView(request, pagename):
                                                             ).exclude(
                                                                 title__held_by='alumni'
                                                                 )
-        payload['coaches'] = Membership.objects.filter(year=year, semester=semester, title__held_by='coach')
-        payload['officers'] = Membership.objects.filter(year=year, semester=semester, title__held_by='student')
+        payload['coaches'] = Membership.objects.filter(year=year, semester=semester, title__held_by='coach').order_by('title__sequence')
+        payload['officers'] = Membership.objects.filter(year=year, semester=semester, title__held_by='student').order_by('title__sequence')
     return render(request, 'team/page.html', payload)
     
 def HomeView(request):
