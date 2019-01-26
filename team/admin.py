@@ -11,8 +11,8 @@ from .models import Profile, Membership, Squad, Title, Award, AwardGiven, Post, 
 
 @admin.register(Membership)
 class MembershipAdmin(admin.ModelAdmin):
-    list_display = ('profile__full_name', 'squad', 'year', 'semester')
-    list_filter = ('year','semester',)
+    list_display = ('profile', 'squad', 'year', 'semester')
+    list_filter = ('squad', 'year','semester',)
 
 class ProfileInline(admin.TabularInline):
     model = Membership
