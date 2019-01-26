@@ -37,6 +37,7 @@ class Profile(models.Model):
 
     def latest_year_active(self):
         return Membership.objects.filter(profile=self.id).latest('year').year
+    latest_year_active.short_description = 'Latest year active'
 """
     def save(self, *args, **kwargs):
         if not self.id:
