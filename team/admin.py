@@ -9,7 +9,7 @@ from .models import Profile, Membership, Squad, Title, Award, AwardGiven, Post, 
 
 #User = get_user_model()
 
-@admin.register(Membership
+@admin.register(Membership)
 class MembershipAdmin(admin.ModelAdmin):
     list_display = ('profile__full_name', 'squad', 'year', 'semester')
     list_filter = ('year','semester',)
