@@ -57,6 +57,7 @@ class ProfileAdmin(admin.ModelAdmin):
     list_display = ('full_name', 'latest_year_active', 'date_updated')
     readonly_fields = ('full_name', 'date_created', 'date_updated')
     search_fields = ['first_name', 'last_name', 'gtid']
+    list_filter = ('latest_year_active',)
     
     change_list_template = "team/profile_changelist.html"
 
