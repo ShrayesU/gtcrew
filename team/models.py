@@ -1,12 +1,10 @@
 from django.db import models
-#from django.contrib.auth import get_user_model
 from django.utils.timezone import now
-#from django.db.models.signals import post_save
-#from django.dispatch import receiver
 from django.core.validators import RegexValidator
 
-#User = get_user_model()
-# default to current year
+from .utils import HELD_BY_CHOICES, STUDENT, SEMESTER_CHOICES, FALL, TEMPLATE_CHOICES, DEFAULT
+
+
 def get_default_year():
   return now().year
 
@@ -38,34 +36,9 @@ class Profile(models.Model):
     def latest_year_active(self):
         return Membership.objects.filter(profile=self.id).latest('year').year
 
-"""
-    def save(self, *args, **kwargs):
-        if not self.id:
-            self.date_created = now()
-        self.date_updated = now()
-        super(Profile, self).save(*args, **kwargs)
-"""
-"""
-@receiver(post_save, sender=User)
-def create_user_profile(sender, instance, created, **kwargs):
-    if created:
-        Profile.objects.create(user=instance)
-
-@receiver(post_save, sender=User)
-def save_user_profile(sender, instance, **kwargs):
-    instance.profile.save()
-"""
 class Title(models.Model):
     title = models.CharField(max_length=64)
     sequence = models.PositiveSmallIntegerField(default=0)
-    STUDENT = 'student'
-    COACH = 'coach'
-    ALUMNI = 'alumni'
-    HELD_BY_CHOICES = (
-        (STUDENT, 'Student'),
-        (COACH, 'Coach'),
-        (ALUMNI, 'Alumni'),
-    )
     held_by = models.CharField(
         max_length=7,
         choices=HELD_BY_CHOICES,
@@ -117,12 +90,6 @@ class AwardGiven(models.Model):
         return '%s - %s' % (self.year, self.award)
 
 class Membership(models.Model):
-    FALL = 'FALL'
-    SPRING = 'SPRING'
-    SEMESTER_CHOICES = (
-        (FALL, 'Fall'),
-        (SPRING, 'Spring'),
-    )
     semester = models.CharField(
         max_length=6,
         choices=SEMESTER_CHOICES,
@@ -164,17 +131,6 @@ class TextGroup(models.Model):
 class Page(TextGroup):
     page = models.CharField(max_length=64, unique=True)
     sequence = models.PositiveIntegerField(unique=True)
-    test = models.TextField(max_length=500, blank=True)
-    DEFAULT = 'BASE'
-    HOME = 'HOME'
-    ABOUT = 'ABOUT'
-    TEAM = 'TEAM'
-    TEMPLATE_CHOICES = (
-        (DEFAULT, 'Regular'),
-        (HOME, 'Home'),
-        (ABOUT, 'About'),
-        (TEAM, 'Team'),
-    )
     template = models.CharField(
         max_length=5,
         choices=TEMPLATE_CHOICES,
