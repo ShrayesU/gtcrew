@@ -24,3 +24,5 @@ TEMPLATE_CHOICES = (
     (ABOUT, 'About'),
     (TEAM, 'Team'),
 )
+
+TEAM_FOUNDED = 1985
