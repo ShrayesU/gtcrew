@@ -2,7 +2,7 @@ from django.db import models
 from django.utils.timezone import now
 from django.core.validators import RegexValidator
 
-from .utils import HELD_BY_CHOICES, STUDENT, SEMESTER_CHOICES, FALL, TEMPLATE_CHOICES, DEFAULT
+from .utils import HELD_BY_CHOICES, STUDENT, SEMESTER_CHOICES, FALL, TEMPLATE_CHOICES, DEFAULT, TEAM_FOUNDED
 
 
 def get_default_year():
@@ -114,8 +114,7 @@ class Membership(models.Model):
         return '%s%s: %s' % (self.semester, self.year, self.profile)
 
     def season(self):
-        TEAM_FOUNDED = 1985
-        if self.semester == self.FALL:
+        if self.semester == FALL:
             return self.year - (TEAM_FOUNDED-1)
         else:
             return self.year - TEAM_FOUNDED
