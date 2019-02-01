@@ -21,7 +21,7 @@ class Profile(models.Model):
     date_created = models.DateTimeField('date created', auto_now_add=True)
     date_updated = models.DateTimeField('date updated', auto_now=True)
     photo = models.FileField(null=True, blank=True)
-    current_state = models.CharField(max_length=2, choices=STATE_CHOICES,
+    state_in = models.CharField(max_length=2, choices=STATE_CHOICES,
                                      blank=True, null=True,)
 
     class Meta:
