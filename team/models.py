@@ -2,7 +2,7 @@ from django.db import models
 from django.utils.timezone import now
 from django.core.validators import RegexValidator
 
-from .utils import HELD_BY_CHOICES, STUDENT, SEMESTER_CHOICES, FALL, TEMPLATE_CHOICES, DEFAULT, TEAM_FOUNDED, STATE_CHOICES
+from .utils import HELD_BY_CHOICES, STUDENT, SEMESTER_CHOICES, FALL, TEMPLATE_CHOICES, DEFAULT, TEAM_FOUNDED
 
 
 def get_default_year():
@@ -21,8 +21,6 @@ class Profile(models.Model):
     date_created = models.DateTimeField('date created', auto_now_add=True)
     date_updated = models.DateTimeField('date updated', auto_now=True)
     photo = models.FileField(null=True, blank=True)
-    state_in = models.CharField(max_length=2, choices=STATE_CHOICES,
-                                     blank=True, null=True,)
 
     class Meta:
         verbose_name = 'profile'
