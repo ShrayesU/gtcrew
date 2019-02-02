@@ -59,8 +59,8 @@ class ProfileAdmin(admin.ModelAdmin):
         ('Date information', {'fields': ['date_created', 'date_updated'], 'classes': ['collapse']}),
     ]
     inlines = [AwardGivenInline, MembershipInline,]
-    list_display = ('full_name', 'latest_year_active', 'date_updated')
-    readonly_fields = ('full_name', 'date_created', 'date_updated')
+    list_display = ('first_name', 'last_name', 'latest_year_active', 'date_updated')
+    readonly_fields = ('date_created', 'date_updated')
     search_fields = ['first_name', 'last_name', 'gtid']
     
     change_list_template = "team/profile_changelist.html"

@@ -11,7 +11,7 @@ from .models import Profile, Page, Post, Membership
 def PageView(request, pagename):
     page = get_object_or_404(Page, page=pagename)
     pages = Page.objects.all().order_by('sequence')
-    posts = Post.objects.filter(page=page)
+    posts = Post.objects.filter(page=page).order_by('date_created')
     form = interest(request)
     payload = {
             'page': page,
