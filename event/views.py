@@ -1,3 +1,14 @@
-from django.shortcuts import render
+from django.views.generic import ListView, DetailView
+from event.models import Event
 
-# Create your views here.
+
+class EventListView(ListView):
+    model = Event
+    context_object_name = "events"
+    template_name = "event_list.html"
+
+class EventDetailView(DetailView):
+    model = Event
+    context_object_name = "event_record"
+    template_name = "view_event.html"
+
