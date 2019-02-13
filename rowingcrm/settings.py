@@ -157,4 +157,5 @@ DEFAULT_FILE_STORAGE = 'rowingcrm.storage_backends.MediaStorage'
 AWS_DEFAULT_ACL = 'public-read'
 
 # Activate Django-Heroku.
-django_heroku.settings(locals())
+if not DEBUG:
+    django_heroku.settings(locals())
