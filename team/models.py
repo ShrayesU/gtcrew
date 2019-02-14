@@ -13,7 +13,7 @@ class Profile(models.Model):
     last_name = models.CharField(max_length=64, blank=False)
     email = models.EmailField(unique=True)
     gtid = models.CharField("GT ID", blank=True, null=True, unique=True, max_length=9,
-        validators=[RegexValidator(r'^\d{1,10}$')])
+                            validators=[RegexValidator(r'^(\d){9}$')])
     birthday = models.DateField(null=True, blank=True)
     major = models.CharField(max_length=64, blank=True)
     hometown = models.CharField(max_length=64, blank=True)
