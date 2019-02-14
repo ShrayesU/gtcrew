@@ -23,7 +23,7 @@ class Event(models.Model):
     def __str__(self):
         return '%s %s'%(self.name, self.start_datetime.year)
 
-"""
+
 class Result(models.Model):
     name = models.CharField(pgettext_lazy('Name of Racing Event', 'Name'), max_length=64)
     event = models.ForeignKey(Event, on_delete=models.CASCADE, null=False, blank=False,
@@ -37,4 +37,3 @@ class Result(models.Model):
 
     def __str__(self):
         return '%s (%s)'%(self.name, self.event)
-"""
