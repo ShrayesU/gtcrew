@@ -59,7 +59,7 @@ class ProfileAdmin(admin.ModelAdmin):
         ('Date information', {'fields': ['date_created', 'date_updated'], 'classes': ['collapse']}),
     ]
     inlines = [AwardGivenInline, MembershipInline,]
-    list_display = ('first_name', 'last_name', 'latest_year_active', 'date_updated')
+    list_display = ('first_name', 'last_name', 'gtid', 'latest_year_active', 'date_updated')
     readonly_fields = ('date_created', 'date_updated')
     search_fields = ['first_name', 'last_name', 'gtid']
     

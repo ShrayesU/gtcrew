@@ -1,0 +1,38 @@
+<table class="table">
+  <thead>
+    <tr>
+      <th width="50%">
+        <a href='#'>
+        Name
+        </a>
+        <span class="caret"></span>
+      </th>
+      <th>
+        <a href="#">
+        Start
+        </a>
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    {% ifequal events|length  0 %}
+    <tr>
+      <td class="cell">
+        No Events
+      </td>
+    </tr>
+    {% endifequal %}
+    {% for event in events %}
+    <tr>
+      <td class="cell">
+        <a class="cell parentname" id="{{ event.id }}">
+        {{ event.name }}
+        </a>
+      </td>
+      <td class="cell parentstage">
+        {{ event.start_datetime }}
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
