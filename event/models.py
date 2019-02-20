@@ -30,8 +30,8 @@ class Result(models.Model):
                               limit_choices_to={'event_type': 'Race'})
     squad = models.ForeignKey(Squad, on_delete=models.CASCADE, null=True, blank=True)
     time = models.CharField(pgettext_lazy('Official Time', 'Time'), blank=True, null=True,
-                                 max_length=9, help_text='MM:SS.mmm',
-                                 validators=[RegexValidator(r'^(\d){2}:(\d){2}.(\d){3}$')])
+                            max_length=9, help_text='MM:SS.mmm',
+                            validators=[RegexValidator(r'^(\d){2}:(\d){2}.(\d){3}$')])
     distance = models.IntegerField(blank=True, null=True, help_text='meters',
                                    validators=[MinValueValidator(0)])
 
