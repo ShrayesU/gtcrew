@@ -90,7 +90,7 @@ class ProfileAdmin(admin.ModelAdmin):
                     row['squad'] = row['squad'].title()
                     row['semester'] = row['semester'].upper()
                     p, p_created = Profile.objects.get_or_create(
-                        email=row['email'],
+                        gtid=row['gtid'],
                         )
                     pf = ProfileForm(row, instance=p)
                     if pf.is_valid():
