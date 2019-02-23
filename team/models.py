@@ -3,6 +3,7 @@ from django.utils.timezone import now
 from django.core.validators import RegexValidator
 
 from .utils import HELD_BY_CHOICES, STUDENT, SEMESTER_CHOICES, FALL, TEMPLATE_CHOICES, DEFAULT, TEAM_FOUNDED
+from .managers import StudentManager, CoachManager
 
 
 def get_default_year():
@@ -34,7 +35,14 @@ class Profile(models.Model):
         return '%s %s' % (self.first_name, self.last_name)
 
     def latest_year_active(self):
-        return Membership.objects.filter(profile=self.id).latest('year').year
+        return self.membership_set.latest('year').year
+
+class EmailAddress(models.Model):
+    email = models.EmailField(unique=True)
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return '%s' % (self.email)
 
 class Title(models.Model):
     title = models.CharField(max_length=64)
@@ -109,6 +117,8 @@ class Membership(models.Model):
         blank=True,
         null=True,
         )
+    students = StudentManager()
+    coaches = CoachManager()
 
     def __str__(self):
         return '%s%s: %s' % (self.semester, self.year, self.profile)
