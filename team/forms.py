@@ -9,7 +9,7 @@ from antispam.captcha.forms import ReCAPTCHA
 
 User = get_user_model()
 
-ProfileForm = modelform_factory(Profile, exclude=('birthday','bio',))
+ProfileForm = modelform_factory(Profile, exclude=('bio',))
 
 MembershipForm = modelform_factory(Membership, exclude=('',))
 
