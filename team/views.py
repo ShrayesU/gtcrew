@@ -21,11 +21,9 @@ def PageView(request, pagename):
             'coaches': None,
             }
     if page.template == 'TEAM':
-        most_recent_member = Membership.objects.order_by('-year', 'semester').first()
-        year, semester = (most_recent_member.year, most_recent_member.semester)
-        payload['students'] = Membership.students.filter(year=year, semester=semester)
-        payload['coaches'] = Membership.coaches.filter(year=year, semester=semester).order_by('title__sequence')
-        payload['officers'] = Membership.objects.filter(year=year, semester=semester, title__held_by='student').order_by('title__sequence')
+        payload['students'] = Membership.students.active()
+        payload['coaches'] = Membership.coaches.active().order_by('title__sequence')
+        payload['officers'] = Membership.students.active().filter(title__held_by='student').order_by('title__sequence')
     return render(request, 'team/page.html', payload)
     
 def HomeView(request):
@@ -38,9 +36,7 @@ class IndexView(generic.ListView):
     context_object_name = 'membership_list'
 
     def get_queryset(self):
-        most_recent_member = Membership.objects.order_by('-year', 'semester').first()
-        year, semester = (most_recent_member.year, most_recent_member.semester)
-        return Membership.students.filter(year=year, semester=semester).order_by('squad')
+        return Membership.students.active().order_by('squad')
 
 class DetailView(generic.DetailView):
     model = Membership

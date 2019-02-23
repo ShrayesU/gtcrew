@@ -17,11 +17,11 @@ class StudentManager(models.Manager):
         return MembershipQuerySet(self.model, using=self._db).student()
 
     def active(self):
-        return self.get_queryset().pdfs()
+        return self.get_queryset().active()
 
 class CoachManager(models.Manager):
     def get_queryset(self):
         return MembershipQuerySet(self.model, using=self._db).coach()
 
     def active(self):
-        return self.get_queryset().pdfs()
+        return self.get_queryset().active()

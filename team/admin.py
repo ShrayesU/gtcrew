@@ -80,15 +80,46 @@ class ProfileAdmin(admin.ModelAdmin):
             else:
                 reader = csv.DictReader(csv_file.read().decode("utf-8").splitlines())
                 for row in reader:
-                    row['email'] = row['email'].lower()
-                    row['first_name'] = row['first_name'].title()
-                    row['last_name'] = row['last_name'].title()
-                    row['hometown'] = row['hometown'].title()
-                    row['major'] = row['major'].title()
-                    row['title'] = row['title'].title()
-                    row['held_by'] = row['held_by'].lower()
-                    row['squad'] = row['squad'].title()
-                    row['semester'] = row['semester'].upper()
+                    try:
+                        row['email'] = row['email'].lower()                 #required
+                    except KeyError:
+                        pass
+                    try:
+                        row['first_name'] = row['first_name'].title()       #required
+                    except KeyError:
+                        pass
+                    try:
+                        row['last_name'] = row['last_name'].title()         #required
+                    except KeyError:
+                        pass
+                    try:
+                        row['hometown'] = row['hometown'].title()
+                    except KeyError:
+                        pass
+                    try:
+                        row['major'] = row['major'].title()
+                    except KeyError:
+                        pass
+                    try:
+                        row['title'] = row['title'].title()
+                    except KeyError:
+                        pass
+                    try:
+                        row['held_by'] = row['held_by'].lower()
+                    except KeyError:
+                        pass
+                    try:
+                        row['squad'] = row['squad'].title()
+                    except KeyError:
+                        pass
+                    try:
+                        row['semester'] = row['semester'].upper()           #required
+                    except KeyError:
+                        pass
+                    try:
+                        row['year'] = row['year']                           #required
+                    except KeyError:
+                        pass
                     p, p_created = Profile.objects.get_or_create(
                         gtid=row['gtid'],
                         )
