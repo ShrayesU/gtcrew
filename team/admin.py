@@ -9,29 +9,7 @@ from .models import Profile, Membership, Squad, Title, Award, AwardGiven, Post, 
 
 #User = get_user_model()
 
-@admin.register(Membership)
-class MembershipAdmin(admin.ModelAdmin):
-    list_display = ('profile', 'squad', 'year', 'semester')
-    list_filter = ('squad', 'year','semester',)
-
-class ProfileInline(admin.TabularInline):
-    model = Membership
-    classes = ['collapse']
-    fields = ('semester', 'year', 'profile',)
-    ordering = ['-year', 'semester',]
-    extra = 0
-
-@admin.register(Title)
-class TitleAdmin(admin.ModelAdmin):
-    list_display = ('title', 'held_by', 'sequence')
-    list_filter = ('held_by',)
-    list_editable = ('sequence',)
-    ordering = ['-held_by', 'sequence',]
-    inlines = [ProfileInline,]
-
-@admin.register(Squad)
-class SquadAdmin(admin.ModelAdmin):
-    inlines = [ProfileInline,]
+admin.site.register(Squad)
 
 class AwardGivenInline(admin.TabularInline):
     model = AwardGiven
@@ -41,15 +19,26 @@ class AwardGivenInline(admin.TabularInline):
 @admin.register(Award)
 class AwardAdmin(admin.ModelAdmin):
     inlines = [AwardGivenInline,]
-    
-#    def has_add_permission(self, request):
-#        return False
 
 class MembershipInline(admin.TabularInline):
     model = Membership
     classes = ['collapse']
     ordering = ['year', '-semester',]
     extra = 0
+
+class MembershipInlineTitle(MembershipInline):
+    ordering = ['-year', 'semester',]
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+@admin.register(Title)
+class TitleAdmin(admin.ModelAdmin):
+    list_display = ('title', 'held_by', 'sequence')
+    list_filter = ('held_by',)
+    list_editable = ('sequence',)
+    ordering = ['-held_by', 'sequence',]
+    inlines = [MembershipInlineTitle,]
 
 @admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):
@@ -60,6 +49,7 @@ class ProfileAdmin(admin.ModelAdmin):
     ]
     inlines = [AwardGivenInline, MembershipInline,]
     list_display = ('first_name', 'last_name', 'gtid', 'latest_year_active', 'date_updated')
+    list_filter = ('membership__squad', 'membership__year', 'membership__semester')
     readonly_fields = ('date_created', 'date_updated')
     search_fields = ['first_name', 'last_name', 'gtid']
     

@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'storages',
     'antispam.captcha',
+    'django_cleanup',
 ]
 
 MIDDLEWARE = [
