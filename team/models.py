@@ -40,6 +40,11 @@ class Profile(models.Model):
 class EmailAddress(models.Model):
     email = models.EmailField(unique=True)
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    date_added = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name_plural = 'email addresses'
+        ordering = ['-date_added']
 
     def __str__(self):
         return '%s' % (self.email)

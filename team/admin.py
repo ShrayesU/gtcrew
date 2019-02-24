@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect
 from .forms import CsvImportForm, ProfileForm
 #from django.contrib.auth import get_user_model
 from django.contrib import messages
-from .models import Profile, Membership, Squad, Title, Award, AwardGiven, Post, Page
+from .models import Profile, EmailAddress, Membership, Squad, Title, Award, AwardGiven, Post, Page
 
 #User = get_user_model()
 
@@ -40,6 +40,10 @@ class TitleAdmin(admin.ModelAdmin):
     ordering = ['-held_by', 'sequence',]
     inlines = [MembershipInlineTitle,]
 
+class EmailAddressInline(admin.TabularInline):
+    model = EmailAddress
+    extra = 0
+
 @admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):
     fieldsets = [
@@ -47,7 +51,7 @@ class ProfileAdmin(admin.ModelAdmin):
         ('Personal',         {'fields': ['gtid', 'birthday', 'major', 'hometown'], 'classes': ['collapse']}),
         ('Date information', {'fields': ['date_created', 'date_updated'], 'classes': ['collapse']}),
     ]
-    inlines = [AwardGivenInline, MembershipInline,]
+    inlines = [EmailAddressInline, AwardGivenInline, MembershipInline,]
     list_display = ('first_name', 'last_name', 'gtid', 'latest_year_active', 'date_updated')
     list_filter = ('membership__squad', 'membership__year', 'membership__semester')
     readonly_fields = ('date_created', 'date_updated')
