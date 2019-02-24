@@ -6,7 +6,7 @@ from django.contrib.auth import login, authenticate
 from .forms import SignUpForm, ProfileForm, InterestForm
 
 
-from .models import Profile, Page, Post, Membership
+from .models import Profile, EmailAddress, Page, Post, Membership
 
 def PageView(request, pagename):
     page = get_object_or_404(Page, page=pagename)
@@ -63,10 +63,13 @@ def interest(request):
             p = Profile(
                         first_name=first_name,
                         last_name=last_name,
-                        email=email,
                         gtid=gtid,
                         )
             p.save()
+            e, e_saved = EmailAddress.objects.get_or_create(
+                                                            email=email,
+                                                            profile=p,
+                                                            )
             return redirect('')
     else:
         form = InterestForm()

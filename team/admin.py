@@ -11,6 +11,14 @@ from .models import Profile, EmailAddress, Membership, Squad, Title, Award, Awar
 
 admin.site.register(Squad)
 
+@admin.register(EmailAddress)
+class EmailAddressAdmin(admin.ModelAdmin):
+    search_fields = ['email', 'profile__first_name', 'profile__last_name']
+
+@admin.register(Membership)
+class MembershipAdmin(admin.ModelAdmin):
+    search_fields = ['profile__first_name', 'profile__last_name']
+
 class AwardGivenInline(admin.TabularInline):
     model = AwardGiven
     classes = ['collapse']
@@ -38,7 +46,7 @@ class TitleAdmin(admin.ModelAdmin):
     list_filter = ('held_by',)
     list_editable = ('sequence',)
     ordering = ['-held_by', 'sequence',]
-    inlines = [MembershipInlineTitle,]
+    inlines = [MembershipInline,]
 
 class EmailAddressInline(admin.TabularInline):
     model = EmailAddress
@@ -138,6 +146,10 @@ class ProfileAdmin(admin.ModelAdmin):
                             year=row['year'],
                             squad=Squad.objects.get(squad=row['squad']),
                             )
+                    e, e_saved = EmailAddress.objects.get_or_create(
+                                                            email=row['email'],
+                                                            profile=p,
+                                                            )
                 self.message_user(request, "Your csv file has been imported")
                 return redirect("..")
         form = CsvImportForm()

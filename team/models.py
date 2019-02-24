@@ -12,8 +12,7 @@ def get_default_year():
 class Profile(models.Model):
     first_name = models.CharField(max_length=64, blank=False)
     last_name = models.CharField(max_length=64, blank=False)
-    email = models.EmailField(unique=True)
-    gtid = models.CharField("GT ID", blank=True, null=True, unique=True, max_length=9,
+    gtid = models.CharField("GT ID", unique=True, max_length=9,
                             validators=[RegexValidator(r'^(\d){9}$')])
     birthday = models.DateField(null=True, blank=True)
     major = models.CharField(max_length=64, blank=True)
@@ -37,6 +36,9 @@ class Profile(models.Model):
     def latest_year_active(self):
         return self.membership_set.latest('year').year
 
+    def latest_email(self):
+        return self.emailaddress_set.latest().email
+
 class EmailAddress(models.Model):
     email = models.EmailField(unique=True)
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
@@ -45,6 +47,7 @@ class EmailAddress(models.Model):
     class Meta:
         verbose_name_plural = 'email addresses'
         ordering = ['-date_added']
+        get_latest_by = ['date_added']
 
     def __str__(self):
         return '%s' % (self.email)
@@ -122,6 +125,7 @@ class Membership(models.Model):
         blank=True,
         null=True,
         )
+    objects = models.Manager()
     students = StudentManager()
     coaches = CoachManager()
 
