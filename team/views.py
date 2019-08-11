@@ -6,7 +6,7 @@ from django.contrib.auth import login, authenticate
 from .forms import SignUpForm, ProfileForm, InterestForm
 
 
-from .models import Profile, Page, Post, Membership
+from .models import Profile, EmailAddress, Page, Post, Membership
 
 def PageView(request, pagename):
     page = get_object_or_404(Page, page=pagename)
@@ -21,15 +21,9 @@ def PageView(request, pagename):
             'coaches': None,
             }
     if page.template == 'TEAM':
-        most_recent_member = Membership.objects.order_by('-year', 'semester').first()
-        year, semester = (most_recent_member.year, most_recent_member.semester)
-        payload['students'] = Membership.objects.filter(year=year, semester=semester).exclude(
-                                                            title__held_by='coach'
-                                                            ).exclude(
-                                                                title__held_by='alumni'
-                                                                )
-        payload['coaches'] = Membership.objects.filter(year=year, semester=semester, title__held_by='coach').order_by('title__sequence')
-        payload['officers'] = Membership.objects.filter(year=year, semester=semester, title__held_by='student').order_by('title__sequence')
+        payload['students'] = Membership.students.active()
+        payload['coaches'] = Membership.coaches.active().order_by('title__sequence')
+        payload['officers'] = Membership.students.active().filter(title__held_by='student').order_by('title__sequence')
     return render(request, 'team/page.html', payload)
     
 def HomeView(request):
@@ -42,13 +36,7 @@ class IndexView(generic.ListView):
     context_object_name = 'membership_list'
 
     def get_queryset(self):
-        most_recent_member = Membership.objects.order_by('-year', 'semester').first()
-        year, semester = (most_recent_member.year, most_recent_member.semester)
-        return Membership.objects.filter(year=year, semester=semester).exclude(
-                                                            title__held_by='coach'
-                                                            ).exclude(
-                                                                title__held_by='alumni'
-                                                                ).order_by('squad')
+        return Membership.students.active().order_by('squad')
 
 class DetailView(generic.DetailView):
     model = Membership
@@ -75,10 +63,13 @@ def interest(request):
             p = Profile(
                         first_name=first_name,
                         last_name=last_name,
-                        email=email,
                         gtid=gtid,
                         )
             p.save()
+            e, e_saved = EmailAddress.objects.get_or_create(
+                                                            email=email,
+                                                            profile=p,
+                                                            )
             return redirect('')
     else:
         form = InterestForm()

@@ -5,33 +5,19 @@ from django.shortcuts import render, redirect
 from .forms import CsvImportForm, ProfileForm
 #from django.contrib.auth import get_user_model
 from django.contrib import messages
-from .models import Profile, Membership, Squad, Title, Award, AwardGiven, Post, Page
+from .models import Profile, EmailAddress, Membership, Squad, Title, Award, AwardGiven, Post, Page
 
 #User = get_user_model()
 
+admin.site.register(Squad)
+
+@admin.register(EmailAddress)
+class EmailAddressAdmin(admin.ModelAdmin):
+    search_fields = ['email', 'profile__first_name', 'profile__last_name']
+
 @admin.register(Membership)
 class MembershipAdmin(admin.ModelAdmin):
-    list_display = ('profile', 'squad', 'year', 'semester')
-    list_filter = ('squad', 'year','semester',)
-
-class ProfileInline(admin.TabularInline):
-    model = Membership
-    classes = ['collapse']
-    fields = ('semester', 'year', 'profile',)
-    ordering = ['-year', 'semester',]
-    extra = 0
-
-@admin.register(Title)
-class TitleAdmin(admin.ModelAdmin):
-    list_display = ('title', 'held_by', 'sequence')
-    list_filter = ('held_by',)
-    list_editable = ('sequence',)
-    ordering = ['-held_by', 'sequence',]
-    inlines = [ProfileInline,]
-
-@admin.register(Squad)
-class SquadAdmin(admin.ModelAdmin):
-    inlines = [ProfileInline,]
+    search_fields = ['profile__first_name', 'profile__last_name']
 
 class AwardGivenInline(admin.TabularInline):
     model = AwardGiven
@@ -41,9 +27,6 @@ class AwardGivenInline(admin.TabularInline):
 @admin.register(Award)
 class AwardAdmin(admin.ModelAdmin):
     inlines = [AwardGivenInline,]
-    
-#    def has_add_permission(self, request):
-#        return False
 
 class MembershipInline(admin.TabularInline):
     model = Membership
@@ -51,15 +34,34 @@ class MembershipInline(admin.TabularInline):
     ordering = ['year', '-semester',]
     extra = 0
 
+class MembershipInlineTitle(MembershipInline):
+    ordering = ['-year', 'semester',]
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+@admin.register(Title)
+class TitleAdmin(admin.ModelAdmin):
+    list_display = ('title', 'held_by', 'sequence')
+    list_filter = ('held_by',)
+    list_editable = ('sequence',)
+    ordering = ['-held_by', 'sequence',]
+    inlines = [MembershipInline,]
+
+class EmailAddressInline(admin.TabularInline):
+    model = EmailAddress
+    extra = 0
+
 @admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):
     fieldsets = [
-        (None,               {'fields': ['first_name', 'last_name', 'email', 'bio', 'photo', ]}),
+        (None,               {'fields': ['first_name', 'last_name', 'bio', 'photo', ]}),
         ('Personal',         {'fields': ['gtid', 'birthday', 'major', 'hometown'], 'classes': ['collapse']}),
         ('Date information', {'fields': ['date_created', 'date_updated'], 'classes': ['collapse']}),
     ]
-    inlines = [AwardGivenInline, MembershipInline,]
+    inlines = [EmailAddressInline, AwardGivenInline, MembershipInline,]
     list_display = ('first_name', 'last_name', 'gtid', 'latest_year_active', 'date_updated')
+    list_filter = ('membership__squad', 'membership__year', 'membership__semester')
     readonly_fields = ('date_created', 'date_updated')
     search_fields = ['first_name', 'last_name', 'gtid']
     
@@ -80,15 +82,46 @@ class ProfileAdmin(admin.ModelAdmin):
             else:
                 reader = csv.DictReader(csv_file.read().decode("utf-8").splitlines())
                 for row in reader:
-                    row['email'] = row['email'].lower()
-                    row['first_name'] = row['first_name'].title()
-                    row['last_name'] = row['last_name'].title()
-                    row['hometown'] = row['hometown'].title()
-                    row['major'] = row['major'].title()
-                    row['title'] = row['title'].title()
-                    row['held_by'] = row['held_by'].lower()
-                    row['squad'] = row['squad'].title()
-                    row['semester'] = row['semester'].upper()
+                    try:
+                        row['email'] = row['email'].lower()                 #required
+                    except KeyError:
+                        pass
+                    try:
+                        row['first_name'] = row['first_name'].title()       #required
+                    except KeyError:
+                        pass
+                    try:
+                        row['last_name'] = row['last_name'].title()         #required
+                    except KeyError:
+                        pass
+                    try:
+                        row['hometown'] = row['hometown'].title()
+                    except KeyError:
+                        pass
+                    try:
+                        row['major'] = row['major'].title()
+                    except KeyError:
+                        pass
+                    try:
+                        row['title'] = row['title'].title()
+                    except KeyError:
+                        pass
+                    try:
+                        row['held_by'] = row['held_by'].lower()
+                    except KeyError:
+                        pass
+                    try:
+                        row['squad'] = row['squad'].title()
+                    except KeyError:
+                        pass
+                    try:
+                        row['semester'] = row['semester'].upper()           #required
+                    except KeyError:
+                        pass
+                    try:
+                        row['year'] = row['year']                           #required
+                    except KeyError:
+                        pass
                     p, p_created = Profile.objects.get_or_create(
                         gtid=row['gtid'],
                         )
@@ -113,6 +146,10 @@ class ProfileAdmin(admin.ModelAdmin):
                             year=row['year'],
                             squad=Squad.objects.get(squad=row['squad']),
                             )
+                    e, e_saved = EmailAddress.objects.get_or_create(
+                                                            email=row['email'],
+                                                            profile=p,
+                                                            )
                 self.message_user(request, "Your csv file has been imported")
                 return redirect("..")
         form = CsvImportForm()

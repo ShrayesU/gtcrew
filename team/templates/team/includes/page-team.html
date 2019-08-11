@@ -17,10 +17,10 @@
       <div class="product-item-description d-flex mr-auto">
         <div class="bg-faded p-5 rounded">
           <p class="mb-0">{{ coach.profile.bio }}</p>
-          {% if coach.profile.email %}
+          {% if coach.profile.latest_email %}
             <div class="intro-button mx-auto">
               <center>
-              <br><a class="btn btn-primary btn-xl" href="mailto:{{ coach.profile.email }}">Contact</a>
+              <br><a class="btn btn-primary btn-xl" href="mailto:{{ coach.profile.latest_email }}">Contact</a>
               </center>
             </div>
           {% endif %}
