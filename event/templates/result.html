@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block navbar %}
+    {% include "team/includes/navbar-goback.html" %}
+{% endblock %}
+
+{% block content %}
+<section class="page-section cta">
+  <div class="container">
+    <div class="row">
+      <div class="col-xl-9 mx-auto">
+        <div class="cta-inner text-center rounded">
+          <h2 class="section-heading mb-5">
+            <span class="section-heading-upper">Team</span>
+            <span class="section-heading-lower">Roster</span>
+          </h2>
+
+        <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" />
+        <script src="//code.jquery.com/jquery-3.3.1.js"></script>
+        <script type="text/javascript" src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function() {
+            var dt_table = $('#datatable').DataTable({
+                searching: true,
+                stripe: true,
+                autoWidth: true,
+                processing: true,
+                serverSide: true,
+                stateSave: true,
+                "ajax": "{% url "event:resultdatatable" %}",
+            });
+        });
+        </script>
+        <table id="datatable" class="display compact stripe" style="width:100%">
+            <thead>
+                <th>Date</th>
+                <th>Event</th>
+                <th>Race</th>
+                <th>Squad</th>
+                <th>Time</th>
+                <th>Distance</th>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
