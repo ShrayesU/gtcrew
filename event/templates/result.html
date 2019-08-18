@@ -18,11 +18,14 @@
             <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" />
             <script src="//code.jquery.com/jquery-3.3.1.js"></script>
             <script type="text/javascript" src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+            <script type="text/javascript" src="//cdn.datatables.net/rowgroup/1.1.0/js/dataTables.rowGroup.min.js"></script>
             <script type="text/javascript">
                 $(document).ready(function() {
                 var dt_table = $('#datatable').DataTable({
                     responsive: true,
-                    buttons: [ 'copy', 'csv', 'excel' ],
+                    rowGroup: {
+                        dataSrc: 1
+                    }
                     searching: true,
                     stripe: true,
                     processing: true,
