@@ -15,36 +15,36 @@
             <span class="section-heading-lower">Results</span>
           </h2>
 
-        <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" />
-        <script src="//code.jquery.com/jquery-3.3.1.js"></script>
-        <script type="text/javascript" src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
-        <script type="text/javascript">
-            $(document).ready(function() {
-            var dt_table = $('#datatable').DataTable({
-                responsive: true,
-                searching: true,
-                stripe: true,
-                autoWidth: true,
-                processing: true,
-                serverSide: true,
-                stateSave: true,
-                "ajax": "{% url "event:resultdatatable" %}",
+            <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" />
+            <script src="//code.jquery.com/jquery-3.3.1.js"></script>
+            <script type="text/javascript" src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+            <script type="text/javascript">
+                $(document).ready(function() {
+                var dt_table = $('#datatable').DataTable({
+                    responsive: true,
+                    searching: true,
+                    stripe: true,
+                    processing: true,
+                    serverSide: true,
+                    stateSave: true,
+                    "ajax": "{% url "event:resultdatatable" %}",
+                });
             });
-        });
-        </script>
-        <table id="datatable" class="display compact stripe" style="width:96px">
-            <thead>
-                <th>Date</th>
-                <th>Event</th>
-                <th>Race</th>
-                <th>Squad</th>
-                <th>Time</th>
-                <th>Distance</th>
-            </thead>
-            <tbody>
-            </tbody>
-        </table>
-
+            </script>
+          <div>
+            <table id="datatable" class="display compact stripe">
+                <thead>
+                    <th>Date</th>
+                    <th>Event</th>
+                    <th>Race</th>
+                    <th>Squad</th>
+                    <th>Time</th>
+                    <th>Distance</th>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
