@@ -22,4 +22,4 @@ class ResultView(TemplateView):
 
 class ResultDataTable(BaseDatatableView):
     model = Result
-    columns = ['event.start_datetime.date()', 'event.name', 'name', 'squad.squad', 'time', 'distance']
+    columns = ['event.start_datetime', 'event.name', 'name', 'squad.squad', 'time', 'distance']
