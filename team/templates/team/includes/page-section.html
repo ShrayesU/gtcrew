@@ -20,6 +20,11 @@
               </center>
             </div>
           {% endif %}
+          {% if post.document %}
+            <div class="intro-button mx-auto">
+              <a class="btn btn-primary btn-xl" href="{{ post.document.url }}">{{ post.document_name }}</a>
+            </div>
+          {% endif %}
         </div>
       </div>
     </div>

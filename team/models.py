@@ -4,10 +4,12 @@ from django.core.validators import RegexValidator
 
 from .utils import HELD_BY_CHOICES, STUDENT, SEMESTER_CHOICES, FALL, TEMPLATE_CHOICES, DEFAULT, TEAM_FOUNDED
 from .managers import StudentManager, CoachManager
+from .validators import validate_file_extension
 
 
 def get_default_year():
-  return now().year
+    return now().year
+
 
 class Profile(models.Model):
     first_name = models.CharField(max_length=64, blank=False)
@@ -39,6 +41,7 @@ class Profile(models.Model):
     def latest_email(self):
         return self.emailaddress_set.latest().email
 
+
 class EmailAddress(models.Model):
     email = models.EmailField(unique=True)
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
@@ -50,7 +53,8 @@ class EmailAddress(models.Model):
         get_latest_by = ['date_added']
 
     def __str__(self):
-        return '%s' % (self.email)
+        return '%s' % self.email
+
 
 class Title(models.Model):
     title = models.CharField(max_length=64)
@@ -69,6 +73,7 @@ class Title(models.Model):
     def __str__(self):
         return '%s: %s' % (self.held_by, self.title)
 
+
 class Squad(models.Model):
     squad = models.CharField(max_length=64)
     profiles = models.ManyToManyField(
@@ -78,7 +83,8 @@ class Squad(models.Model):
     )
 
     def __str__(self):
-        return '%s' % (self.squad)
+        return '%s' % self.squad
+
 
 class Award(models.Model):
     award = models.CharField(max_length=64, unique=True)
@@ -90,7 +96,8 @@ class Award(models.Model):
     )
 
     def __str__(self):
-        return '%s' % (self.award)
+        return '%s' % self.award
+
 
 class AwardGiven(models.Model):
     award = models.ForeignKey(Award, on_delete=models.CASCADE)
@@ -104,6 +111,7 @@ class AwardGiven(models.Model):
 
     def __str__(self):
         return '%s - %s' % (self.year, self.award)
+
 
 class Membership(models.Model):
     semester = models.CharField(
@@ -138,6 +146,7 @@ class Membership(models.Model):
         else:
             return self.year - TEAM_FOUNDED
 
+
 class TextGroup(models.Model):
     text = models.TextField(max_length=500, blank=True)
     header1 = models.CharField('small header', max_length=64, blank=True)
@@ -145,6 +154,7 @@ class TextGroup(models.Model):
 
     class Meta:
         abstract = True
+
 
 class Page(TextGroup):
     page = models.CharField(max_length=64, unique=True)
@@ -158,10 +168,13 @@ class Page(TextGroup):
     def __str__(self):
         return '%s' % (self.page)
 
+
 class Post(TextGroup):
-    photo = models.FileField()
+    photo = models.FileField()  # TODO: convert to ImageField for validation/security purposes
     additional_link = models.URLField(blank=True)
     additional_link_text = models.CharField(max_length=30, blank=True)
+    document = models.FileField(blank=True, validators=[validate_file_extension])
+    document_name = models.CharField(max_length=30, blank=True)
     page = models.ForeignKey(Page, on_delete=models.CASCADE, null=True)
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)

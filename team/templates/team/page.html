@@ -5,20 +5,6 @@
 {% endblock %}
 
 {% block content %}
-    {% if page.template == 'TEAM' %}
-        {% include "team/includes/page-team.html" with students=students coaches=coaches %}
-    {% endif %}
-
-    {% for post in posts %}
-        {% if page.template == 'HOME' %}
-            {% include "team/includes/page-home.html" %}
-        {% elif page.template == 'ABOUT' %}
-            {% include "team/includes/page-about.html" %}
-        {% else %}
-            {% include "team/includes/page-section.html" %}
-        {% endif %}
-    {% endfor %}
-
     {% if page.text %}
         <section class="page-section cta">
           <div class="container">
@@ -36,4 +22,18 @@
           </div>
         </section>
     {% endif %}
+
+    {% if page.template == 'TEAM' %}
+        {% include "team/includes/page-team.html" with students=students coaches=coaches %}
+    {% endif %}
+
+    {% for post in posts %}
+        {% if page.template == 'HOME' %}
+            {% include "team/includes/page-home.html" %}
+        {% elif page.template == 'ABOUT' %}
+            {% include "team/includes/page-about.html" %}
+        {% else %}
+            {% include "team/includes/page-section.html" %}
+        {% endif %}
+    {% endfor %}
 {% endblock %}
