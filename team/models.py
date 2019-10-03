@@ -174,7 +174,7 @@ class Post(TextGroup):
     additional_link = models.URLField(blank=True)
     additional_link_text = models.CharField(max_length=30, blank=True)
     document = models.FileField(blank=True, validators=[validate_file_extension])
-    document_name = models.CharField(max_length=30, blank=True)
+    document_name = models.CharField(max_length=30, blank=True)  # TODO: create migration files
     page = models.ForeignKey(Page, on_delete=models.CASCADE, null=True)
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
