@@ -1,70 +1,81 @@
-from django.contrib import admin
 import csv
-from django.urls import path
-from django.shortcuts import render, redirect
-from .forms import CsvImportForm, ProfileForm
-#from django.contrib.auth import get_user_model
+
+from django.contrib import admin
+# from django.contrib.auth import get_user_model
 from django.contrib import messages
+from django.shortcuts import render, redirect
+from django.urls import path
+
+from .forms import CsvImportForm, ProfileForm
 from .models import Profile, EmailAddress, Membership, Squad, Title, Award, AwardGiven, Post, Page
 
-#User = get_user_model()
+# User = get_user_model()
 
 admin.site.register(Squad)
+
 
 @admin.register(EmailAddress)
 class EmailAddressAdmin(admin.ModelAdmin):
     search_fields = ['email', 'profile__first_name', 'profile__last_name']
 
+
 @admin.register(Membership)
 class MembershipAdmin(admin.ModelAdmin):
     search_fields = ['profile__first_name', 'profile__last_name']
+
 
 class AwardGivenInline(admin.TabularInline):
     model = AwardGiven
     classes = ['collapse']
     extra = 0
 
+
 @admin.register(Award)
 class AwardAdmin(admin.ModelAdmin):
-    inlines = [AwardGivenInline,]
+    inlines = [AwardGivenInline, ]
+
 
 class MembershipInline(admin.TabularInline):
     model = Membership
     classes = ['collapse']
-    ordering = ['year', '-semester',]
+    ordering = ['year', '-semester', ]
     extra = 0
 
+
 class MembershipInlineTitle(MembershipInline):
-    ordering = ['-year', 'semester',]
+    ordering = ['-year', 'semester', ]
 
     def has_delete_permission(self, request, obj=None):
         return False
+
 
 @admin.register(Title)
 class TitleAdmin(admin.ModelAdmin):
     list_display = ('title', 'held_by', 'sequence')
     list_filter = ('held_by',)
     list_editable = ('sequence',)
-    ordering = ['-held_by', 'sequence',]
-    inlines = [MembershipInline,]
+    ordering = ['-held_by', 'sequence', ]
+    inlines = [MembershipInline, ]
+
 
 class EmailAddressInline(admin.TabularInline):
     model = EmailAddress
     extra = 0
 
+
 @admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):
     fieldsets = [
-        (None,               {'fields': ['first_name', 'last_name', 'bio', 'photo', ]}),
-        ('Personal',         {'fields': ['gtid', 'birthday', 'major', 'hometown'], 'classes': ['collapse']}),
+        (None, {'fields': ['first_name', 'last_name', 'bio', 'photo', ]}),
+        ('Personal', {'fields': ['gtid', 'birthday', 'major', 'hometown'], 'classes': ['collapse']}),
         ('Date information', {'fields': ['date_created', 'date_updated'], 'classes': ['collapse']}),
     ]
-    inlines = [EmailAddressInline, AwardGivenInline, MembershipInline,]
+    inlines = [EmailAddressInline, AwardGivenInline, MembershipInline, ]
     list_display = ('first_name', 'last_name', 'gtid', 'latest_year_active', 'date_updated')
     list_filter = ('membership__squad', 'membership__year', 'membership__semester')
     readonly_fields = ('date_created', 'date_updated')
     search_fields = ['first_name', 'last_name', 'gtid']
-    
+
     change_list_template = "team/profile_changelist.html"
 
     def get_urls(self):
@@ -78,20 +89,20 @@ class ProfileAdmin(admin.ModelAdmin):
         if request.method == "POST":
             csv_file = request.FILES["csv_file"]
             if not csv_file.name.endswith('.csv'):
-                messages.error(request,'File is not CSV type')
+                messages.error(request, 'File is not CSV type')
             else:
                 reader = csv.DictReader(csv_file.read().decode("utf-8").splitlines())
                 for row in reader:
                     try:
-                        row['email'] = row['email'].lower()                 #required
+                        row['email'] = row['email'].lower()  # required
                     except KeyError:
                         pass
                     try:
-                        row['first_name'] = row['first_name'].title()       #required
+                        row['first_name'] = row['first_name'].title()  # required
                     except KeyError:
                         pass
                     try:
-                        row['last_name'] = row['last_name'].title()         #required
+                        row['last_name'] = row['last_name'].title()  # required
                     except KeyError:
                         pass
                     try:
@@ -115,41 +126,41 @@ class ProfileAdmin(admin.ModelAdmin):
                     except KeyError:
                         pass
                     try:
-                        row['semester'] = row['semester'].upper()           #required
+                        row['semester'] = row['semester'].upper()  # required
                     except KeyError:
                         pass
                     try:
-                        row['year'] = row['year']                           #required
+                        row['year'] = row['year']  # required
                     except KeyError:
                         pass
                     p, p_created = Profile.objects.get_or_create(
                         gtid=row['gtid'],
-                        )
+                    )
                     pf = ProfileForm(row, instance=p)
                     if pf.is_valid():
                         pf.save()
-                    if len(row['title'])>0:
+                    if len(row['title']) > 0:
                         m, m_created = Membership.objects.update_or_create(
                             profile=p,
                             semester=row['semester'],
                             year=row['year'],
                             squad=Squad.objects.get(squad=row['squad']),
                             title=Title.objects.get(
-                                title=row['title'], 
+                                title=row['title'],
                                 held_by=row['held_by'],
-                                )
                             )
+                        )
                     else:
                         m, m_created = Membership.objects.update_or_create(
                             profile=p,
                             semester=row['semester'],
                             year=row['year'],
                             squad=Squad.objects.get(squad=row['squad']),
-                            )
+                        )
                     e, e_saved = EmailAddress.objects.get_or_create(
-                                                            email=row['email'],
-                                                            profile=p,
-                                                            )
+                        email=row['email'],
+                        profile=p,
+                    )
                 self.message_user(request, "Your csv file has been imported")
                 return redirect("..")
         form = CsvImportForm()
@@ -158,24 +169,27 @@ class ProfileAdmin(admin.ModelAdmin):
             request, "admin/csv_form.html", payload
         )
 
+
 class PostInline(admin.StackedInline):
     model = Post
     fieldsets = [
-        (None,               {'fields': ['header1', 'header2', 'photo', 'text',]}),
-        ('Optional Link',    {'fields': ['additional_link', 'additional_link_text'], 'classes': ['collapse']}),
+        (None, {'fields': ['header1', 'header2', 'photo', 'text', ]}),
+        ('Optional Link', {'fields': ['additional_link', 'additional_link_text'], 'classes': ['collapse']}),
+        ('Optional Attachment', {'fields': ['document', 'document_name'], 'classes': ['collapse']}),
         ('Date information', {'fields': ['date_created', 'date_updated'], 'classes': ['collapse']}),
     ]
     classes = ['collapse']
     readonly_fields = ('date_created', 'date_updated')
     extra = 0
 
+
 @admin.register(Page)
 class PageAdmin(admin.ModelAdmin):
     fieldsets = [
-        (None,               {'fields': ['page', 'template', 'sequence',]}),
-        ('Optional Textbox', {'fields': ['header1', 'header2', 'text',], 'classes': ['collapse']}),
+        (None, {'fields': ['page', 'template', 'sequence', ]}),
+        ('Optional Textbox', {'fields': ['header1', 'header2', 'text', ], 'classes': ['collapse']}),
     ]
-    inlines = [PostInline,]
+    inlines = [PostInline, ]
     list_display = ('page', 'sequence',)
     list_editable = ('sequence',)
-    ordering = ['sequence',]
+    ordering = ['sequence', ]
