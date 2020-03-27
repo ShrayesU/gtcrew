@@ -158,6 +158,12 @@ DEFAULT_FILE_STORAGE = 'rowingcrm.storage_backends.MediaStorage'
 
 AWS_DEFAULT_ACL = 'public-read'
 
+# Import local_settings if local
+try:
+    from .local_settings import *
+except ImportError:
+    pass
+
 # Activate Django-Heroku.
 if not DEBUG:
     django_heroku.settings(locals())
