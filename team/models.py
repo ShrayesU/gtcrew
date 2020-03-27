@@ -1,9 +1,9 @@
+from django.core.validators import RegexValidator
 from django.db import models
 from django.utils.timezone import now
-from django.core.validators import RegexValidator
 
-from .utils import HELD_BY_CHOICES, STUDENT, SEMESTER_CHOICES, FALL, TEMPLATE_CHOICES, DEFAULT, TEAM_FOUNDED
 from .managers import StudentManager, CoachManager
+from .utils import HELD_BY_CHOICES, STUDENT, SEMESTER_CHOICES, FALL, TEMPLATE_CHOICES, DEFAULT, TEAM_FOUNDED
 from .validators import validate_file_extension
 
 
@@ -122,17 +122,17 @@ class Membership(models.Model):
     year = models.PositiveIntegerField(default=get_default_year)
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
     squad = models.ForeignKey(
-        Squad, 
+        Squad,
         on_delete=models.CASCADE,
         blank=True,
         null=True,
-        )
+    )
     title = models.ForeignKey(
         Title,
         on_delete=models.CASCADE,
         blank=True,
         null=True,
-        )
+    )
     objects = models.Manager()
     students = StudentManager()
     coaches = CoachManager()
@@ -142,7 +142,7 @@ class Membership(models.Model):
 
     def season(self):
         if self.semester == FALL:
-            return self.year - (TEAM_FOUNDED-1)
+            return self.year - (TEAM_FOUNDED - 1)
         else:
             return self.year - TEAM_FOUNDED
 
@@ -166,7 +166,7 @@ class Page(TextGroup):
     )
 
     def __str__(self):
-        return '%s' % (self.page)
+        return '%s' % self.page
 
 
 class Post(TextGroup):
@@ -174,7 +174,7 @@ class Post(TextGroup):
     additional_link = models.URLField(blank=True)
     additional_link_text = models.CharField(max_length=30, blank=True)
     document = models.FileField(blank=True, validators=[validate_file_extension])
-    document_name = models.CharField(max_length=30, blank=True)  # TODO: create migration files
+    document_name = models.CharField(max_length=30, blank=True)
     page = models.ForeignKey(Page, on_delete=models.CASCADE, null=True)
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
