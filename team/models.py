@@ -197,4 +197,4 @@ class Post(TextGroup):
                 factor = 800 / width
             size = (width / factor, height / factor)
             self.photo = image.resize(size, Image.ANTIALIAS)
-            image.save(self.photo.path)
+            super(Post, self).save(*args, **kwargs)
