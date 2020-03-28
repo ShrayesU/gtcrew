@@ -27,6 +27,7 @@ class MembershipAdmin(admin.ModelAdmin):
 class AwardGivenInline(admin.TabularInline):
     model = AwardGiven
     classes = ['collapse']
+    autocomplete_fields = ['profile']
     extra = 0
 
 
@@ -39,6 +40,7 @@ class MembershipInline(admin.TabularInline):
     model = Membership
     classes = ['collapse']
     ordering = ['year', '-semester', ]
+    autocomplete_fields = ['profile']
     extra = 0
 
 
