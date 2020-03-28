@@ -1,6 +1,6 @@
 from django.contrib import admin
-from event.models import Event, Result
 
+from event.models import Event, Result
 
 admin.site.register(Event)
 

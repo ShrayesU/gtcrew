@@ -1,4 +1,5 @@
 from tastypie.resources import ModelResource
+
 from team.models import Profile
 
 
@@ -9,5 +10,5 @@ class ProfileResource(ModelResource):
         excludes = ['email', 'birthday']
         allowed_methods = ['get']
 
-## could add below to settings.py
-#TASTYPIE_DEFAULT_FORMATS = ['json', 'xml']
+# could add below to settings.py
+# TASTYPIE_DEFAULT_FORMATS = ['json', 'xml']

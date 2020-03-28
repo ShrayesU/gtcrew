@@ -1,5 +1,6 @@
 from django.views.generic import ListView, DetailView, TemplateView
 from django_datatables_view.base_datatable_view import BaseDatatableView
+
 from event.models import Event, Result
 
 

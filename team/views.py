@@ -1,36 +1,39 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from django.http import HttpResponseRedirect
-from django.views import generic
+from django.views.generic import DetailView, ListView
 
-from django.contrib.auth import login, authenticate
-from .forms import SignUpForm, ProfileForm, InterestForm
-
-
+from .forms import ProfileForm, InterestForm
 from .models import Profile, EmailAddress, Page, Post, Membership
 
-def PageView(request, pagename):
-    page = get_object_or_404(Page, page=pagename)
+
+def page_view(request, page_name):
+    page = get_object_or_404(Page, page=page_name)
     pages = Page.objects.all().order_by('sequence')
     posts = Post.objects.filter(page=page).order_by('date_created')
     form = interest(request)
     payload = {
-            'page': page,
-            'pages': pages,
-            'posts': posts,
-            'students': None,
-            'coaches': None,
-            }
+        'page': page,
+        'pages': pages,
+        'posts': posts,
+        'students': None,
+        'coaches': None,
+    }
     if page.template == 'TEAM':
-        payload['students'] = Membership.students.active()
-        payload['coaches'] = Membership.coaches.active().order_by('title__sequence')
-        payload['officers'] = Membership.students.active().filter(title__held_by='student').order_by('title__sequence')
+        students = Membership.students.active()
+        coaches = Membership.coaches.active()
+        if students:
+            payload['students'] = students
+            payload['officers'] = students.filter(title__held_by='student').order_by('title__sequence')
+        if coaches:
+            payload['coaches'] = coaches.order_by('title__sequence')
     return render(request, 'team/page.html', payload)
-    
-def HomeView(request):
-    pagename = Page.objects.all().order_by('sequence')[0].page
-    return PageView(request, pagename)
 
-class IndexView(generic.ListView):
+
+def home_view(request):
+    page_name = Page.objects.all().order_by('sequence')[0].page
+    return page_view(request, page_name)
+
+
+class IndexView(ListView):
     model = Membership
     template_name = 'team/membership_index.html'
     context_object_name = 'membership_list'
@@ -38,9 +41,11 @@ class IndexView(generic.ListView):
     def get_queryset(self):
         return Membership.students.active().order_by('squad')
 
-class DetailView(generic.DetailView):
+
+class DetailView(DetailView):
     model = Membership
     template_name = 'team/membership_detail.html'
+
 
 def signup(request):
     if request.method == 'POST':
@@ -49,7 +54,8 @@ def signup(request):
             form.save()
     else:
         form = ProfileForm()
-    return render(request, 'team/includes/signup.html', {'form':form})
+    return render(request, 'team/includes/signup.html', {'form': form})
+
 
 def interest(request):
     pages = Page.objects.all().order_by('sequence')
@@ -61,19 +67,20 @@ def interest(request):
             email = form.cleaned_data.get('email')
             gtid = form.cleaned_data.get('gtid')
             p = Profile(
-                        first_name=first_name,
-                        last_name=last_name,
-                        gtid=gtid,
-                        )
+                first_name=first_name,
+                last_name=last_name,
+                gtid=gtid,
+            )
             p.save()
             e, e_saved = EmailAddress.objects.get_or_create(
-                                                            email=email,
-                                                            profile=p,
-                                                            )
+                email=email,
+                profile=p,
+            )
             return redirect('')
     else:
         form = InterestForm()
-    return render(request, 'team/interest.html', {'form':form, 'pages':pages})
+    return render(request, 'team/interest.html', {'form': form, 'pages': pages})
+
 
 """
 def signup(request):

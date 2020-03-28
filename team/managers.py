@@ -1,4 +1,6 @@
 from django.db import models
+from django.core.exceptions import ObjectDoesNotExist
+
 
 class MembershipQuerySet(models.QuerySet):
     def student(self):
@@ -12,16 +14,24 @@ class MembershipQuerySet(models.QuerySet):
         year, semester = (most_recent_member.year, most_recent_member.semester)
         return self.filter(year=year, semester=semester)
 
+
 class StudentManager(models.Manager):
     def get_queryset(self):
         return MembershipQuerySet(self.model, using=self._db).student()
 
     def active(self):
-        return self.get_queryset().active()
+        try:
+            return self.get_queryset().active()
+        except ObjectDoesNotExist:
+            return None
+
 
 class CoachManager(models.Manager):
     def get_queryset(self):
         return MembershipQuerySet(self.model, using=self._db).coach()
 
     def active(self):
-        return self.get_queryset().active()
+        try:
+            return self.get_queryset().active()
+        except ObjectDoesNotExist:
+            return None

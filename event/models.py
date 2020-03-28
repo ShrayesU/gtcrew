@@ -1,6 +1,6 @@
+from django.core.validators import RegexValidator, MinValueValidator
 from django.db import models
 from django.utils.translation import pgettext_lazy
-from django.core.validators import RegexValidator, MinValueValidator
 
 from event.utils import EVENT_TYPES
 from team.models import Squad
@@ -21,7 +21,7 @@ class Event(models.Model):
         ordering = ['start_datetime']
 
     def __str__(self):
-        return '%s %s'%(self.name, self.start_datetime.year)
+        return '%s %s' % (self.name, self.start_datetime.year)
 
 
 class Result(models.Model):
@@ -36,4 +36,4 @@ class Result(models.Model):
                                    validators=[MinValueValidator(0)])
 
     def __str__(self):
-        return '%s (%s)'%(self.name, self.event)
+        return '%s (%s)' % (self.name, self.event)
