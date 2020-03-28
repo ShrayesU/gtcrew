@@ -1,3 +1,4 @@
+from PIL import Image
 from django.core.validators import RegexValidator
 from django.db import models
 from django.utils.timezone import now
@@ -170,7 +171,7 @@ class Page(TextGroup):
 
 
 class Post(TextGroup):
-    photo = models.FileField()  # TODO: convert to ImageField for validation/security purposes
+    photo = models.ImageField()
     additional_link = models.URLField(blank=True)
     additional_link_text = models.CharField(max_length=30, blank=True)
     document = models.FileField(blank=True, validators=[validate_file_extension])
@@ -181,3 +182,19 @@ class Post(TextGroup):
 
     def __str__(self):
         return '%s %s' % (self.header1, self.header2)
+
+    def save(self, *args, **kwargs):
+        super(Post, self).save(*args, **kwargs)
+
+        if self.photo:
+            image = Image.open(self.photo)
+            (width, height) = image.size
+
+            "Max width and height 800"
+            if 800 / width < 800 / height:
+                factor = 800 / height
+            else:
+                factor = 800 / width
+            size = (width / factor, height / factor)
+            self.photo = image.resize(size, Image.ANTIALIAS)
+            image.save(self.photo.path)
