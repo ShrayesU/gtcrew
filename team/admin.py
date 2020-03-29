@@ -189,7 +189,6 @@ class PostInline(admin.StackedInline):
 class PageAdmin(admin.ModelAdmin):
     fieldsets = [
         (None, {'fields': ['page', 'template', 'sequence', ]}),
-        ('Optional Textbox', {'fields': ['header1', 'header2', 'text', ], 'classes': ['collapse']}),
     ]
     inlines = [PostInline, ]
     list_display = ('page', 'sequence',)
