@@ -1,39 +1,47 @@
 {% extends "base.html" %}
 
 {% block navbar %}
-    {% include "team/includes/navbar.html" with pages=pages current=page.page %}
+{% include "team/includes/navbar.html" with pages=pages current=page.page %}
 {% endblock %}
 
 {% block content %}
-    {% if page.text %}
-        <section class="page-section cta">
-          <div class="container">
-            <div class="row">
-              <div class="col-xl-9 mx-auto">
+{% if page.template == 'TEAM' %}
+{% include "team/includes/page-team.html" with students=students coaches=coaches %}
+{% endif %}
+
+{% for post in posts %}
+{% if post.photo is None %}
+<section class="page-section cta">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-9 mx-auto">
                 <div class="cta-inner text-center rounded">
-                  <h2 class="section-heading mb-4">
-                    <span class="section-heading-upper">{{ page.header1 }}</span>
-                    <span class="section-heading-lower">{{ page.header2 }}</span>
-                  </h2>
-                  <p class="mb-0">{{ page.text }}</p>
+                    <h2 class="section-heading mb-4">
+                        <span class="section-heading-upper">{{ post.header1 }}</span>
+                        <span class="section-heading-lower">{{ post.header2 }}</span>
+                    </h2>
+                    <p class="mb-0">{{ post.text }}</p>
+                    {% if post.additional_link %}
+                    <div class="intro-button mx-auto">
+                        <a class="btn btn-primary btn-xl" href="{{ post.additional_link }}">{{ post.additional_link_text }}</a>
+                    </div>
+                    {% endif %}
+                    {% if post.document %}
+                    <div class="intro-button mx-auto">
+                        <a class="btn btn-primary btn-xl" href="{{ post.document.url }}">{{ post.document_name }}</a>
+                    </div>
+                    {% endif %}
                 </div>
-              </div>
             </div>
-          </div>
-        </section>
-    {% endif %}
-
-    {% if page.template == 'TEAM' %}
-        {% include "team/includes/page-team.html" with students=students coaches=coaches %}
-    {% endif %}
-
-    {% for post in posts %}
-        {% if page.template == 'HOME' %}
-            {% include "team/includes/page-home.html" %}
-        {% elif page.template == 'ABOUT' %}
-            {% include "team/includes/page-about.html" %}
-        {% else %}
-            {% include "team/includes/page-section.html" %}
-        {% endif %}
-    {% endfor %}
+        </div>
+    </div>
+</section>
+{% elif page.template == 'HOME' %}
+{% include "team/includes/page-home.html" %}
+{% elif page.template == 'ABOUT' %}
+{% include "team/includes/page-about.html" %}
+{% else %}
+{% include "team/includes/page-section.html" %}
+{% endif %}
+{% endfor %}
 {% endblock %}

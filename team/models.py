@@ -157,7 +157,7 @@ class TextGroup(models.Model):
         abstract = True
 
 
-class Page(TextGroup):
+class Page(models.Model):
     page = models.CharField(max_length=64, unique=True)
     sequence = models.PositiveIntegerField(unique=True)
     template = models.CharField(
@@ -171,7 +171,7 @@ class Page(TextGroup):
 
 
 class Post(TextGroup):
-    photo = models.ImageField()
+    photo = models.ImageField(blank=True, null=True)
     additional_link = models.URLField(blank=True)
     additional_link_text = models.CharField(max_length=30, blank=True)
     document = models.FileField(blank=True, validators=[validate_file_extension])
