@@ -23,7 +23,7 @@ class Profile(models.Model):
     bio = models.TextField(max_length=1500, blank=True)
     date_created = models.DateTimeField('date created', auto_now_add=True)
     date_updated = models.DateTimeField('date updated', auto_now=True)
-    photo = ResizedImageField(size=[300, 300], crop=['middle', 'center'], null=True, blank=True)
+    photo = ResizedImageField(size=[700, 700], crop=['middle', 'center'], null=True, blank=True)
 
     class Meta:
         verbose_name = 'profile'
