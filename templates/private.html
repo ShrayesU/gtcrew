@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Georgia Tech Rowing</title>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+    <!-- Google Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">
+    <!-- Bootstrap core CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Material Design Bootstrap -->
+<!--    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.14.1/css/mdb.min.css" rel="stylesheet">-->
+    <!-- JQuery -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <!-- Bootstrap tooltips -->
+    <script type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js"></script>
+    <!-- Bootstrap core JavaScript -->
+    <script type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <!-- MDB core JavaScript -->
+    <script type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.14.1/js/mdb.min.js"></script>
+    <!-- Theme from Bootswatch -->
+    <link href="https://stackpath.bootstrapcdn.com/bootswatch/4.4.1/cyborg/bootstrap.min.css" rel="stylesheet">
+    <!-- My customizations -->
+<!--    <style>-->
+<!--        .my-primary{-->
+<!--          color: #CFB53B;-->
+<!--        }-->
+
+<!--        .btn-outline-my-primary{-->
+<!--          color: #CFB53B;-->
+<!--        }-->
+
+<!--        .btn-outline-my-primary:focus, .btn-outline-my-primary:hover{-->
+<!--          color: #444;-->
+<!--          background-color: #CFB53B;-->
+<!--        }-->
+
+<!--        .btn-outline-my-primary,-->
+<!--        .btn-outline-my-primary:focus, .btn-outline-my-primary:hover {-->
+<!--          border-color: #CFB53B;-->
+<!--        }-->
+
+<!--        .btn-outline-my-primary {-->
+<!--          border-radius: var(&#45;&#45;border-radius);-->
+<!--        }-->
+
+<!--        .btn-outline-my-primary:hover {-->
+<!--          box-shadow: inset 0 0 0 20rem var(&#45;&#45;darken-1);-->
+<!--        }-->
+
+<!--        .btn-outline-my-primary:active {-->
+<!--          box-shadow: inset 0 0 0 20rem var(&#45;&#45;darken-2),-->
+<!--            inset 0 3px 4px 0 var(&#45;&#45;darken-3),-->
+<!--            0 0 1px var(&#45;&#45;darken-2);-->
+<!--        }-->
+
+<!--        .btn-outline-my-primary:disabled,-->
+<!--        .btn-outline-my-primary.is-disabled {-->
+<!--          opacity: .5;-->
+<!--        }-->
+<!--    </style>-->
+</head>
+<body>
+<h1 class="text-center">
+    <span class="my-primary mb-3">Georgia Tech</span>
+    <span class="text-secondary">Rowing</span>
+</h1>
+{% block navbar %}{% endblock %}
+<div class="content">
+    <div class="container" style="margin-top:30px; margin-bottom:30px">
+        {% block body %}
+        {% endblock %}
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,25 @@
+{% extends 'private.html' %}
+
+{% block body %}
+<div class="row">
+    <div class="col-sm-3">
+        <a type="button" class="btn btn-outline-primary btn-block"
+           href="{% url 'team:view_profile' membership.profile.id %}">
+            View Profile
+        </a>
+        <br>
+    </div>
+    <div class="col-sm-9">
+        <h5>Semester</h5>
+        <p>{{ membership.semester }}</p>
+        <h5>Year</h5>
+        <p>{{ membership.year }}</p>
+        <h5>Name</h5>
+        <p>{{ membership.profile.full_name }}</p>
+        <h5>Squad</h5>
+        <p>{{ membership.squad }}</p>
+        <h5>Title</h5>
+        <p>{{ membership.title }}</p>
+    </div>
+</div>
+{% endblock %}

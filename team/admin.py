@@ -68,8 +68,8 @@ class EmailAddressInline(admin.TabularInline):
 @admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):
     fieldsets = [
-        (None, {'fields': ['first_name', 'last_name', 'bio', 'photo', ]}),
-        ('Personal', {'fields': ['gtid', 'birthday', 'major', 'hometown'], 'classes': ['collapse']}),
+        (None, {'fields': ['first_name', 'last_name', 'gtid', 'bio', 'photo', ]}),
+        ('Personal', {'fields': ['birthday', 'major', 'hometown'], 'classes': ['collapse']}),
         ('Date information', {'fields': ['date_created', 'date_updated'], 'classes': ['collapse']}),
     ]
     inlines = [EmailAddressInline, AwardGivenInline, MembershipInline, ]

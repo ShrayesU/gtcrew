@@ -1,0 +1,23 @@
+{% extends 'private.html' %}
+
+{% block body %}
+<div class="row">
+    <div class="col-sm-3">
+        <a type="button" class="btn btn-outline-primary btn-block"
+           href="{% url 'team:view_profile' awardgiven.profile.id %}">
+            View Profile
+        </a>
+        <br>
+    </div>
+    <div class="col-sm-9">
+        <h5>Award</h5>
+        <p>{{ awardgiven.award }}</p>
+        <h5>Year</h5>
+        <p>{{ awardgiven.year }}</p>
+        <h5>Recipient</h5>
+        <p>{{ awardgiven.profile.full_name }}</p>
+        <h5>Description</h5>
+        <p>{{ awardgiven.award.description }}</p>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends 'private.html' %}
+
+{% block body %}
+<form method="post">{% csrf_token %}
+    <div class="form-group table-responsive">
+        <table class="table">
+            {{ form.as_table }}
+        </table>
+    </div>
+    <input class="btn btn-outline-primary btn-block" type="submit" value="Save">
+    <br>
+    <input type="button" value="Cancel"
+           class="btn btn-outline-danger btn-block"
+           onclick="window.history.go(-1);"/>
+</form>
+{% endblock %}

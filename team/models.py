@@ -2,6 +2,7 @@ from django_resized import ResizedImageField
 from django.core.validators import RegexValidator
 from django.db import models
 from django.utils.timezone import now
+from django.contrib.auth import get_user_model
 
 from .managers import StudentManager, CoachManager
 from .utils import HELD_BY_CHOICES, STUDENT, SEMESTER_CHOICES, FALL, TEMPLATE_CHOICES, DEFAULT, TEAM_FOUNDED
@@ -24,6 +25,12 @@ class Profile(models.Model):
     date_created = models.DateTimeField('date created', auto_now_add=True)
     date_updated = models.DateTimeField('date updated', auto_now=True)
     photo = ResizedImageField(size=[700, 700], crop=['middle', 'center'], null=True, blank=True)
+    owner = models.OneToOneField(
+        get_user_model(),
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+    )
 
     class Meta:
         verbose_name = 'profile'

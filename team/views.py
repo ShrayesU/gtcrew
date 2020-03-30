@@ -1,8 +1,12 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.messages.views import SuccessMessageMixin
 from django.shortcuts import render, get_object_or_404, redirect
-from django.views.generic import DetailView, ListView
+from django.urls import reverse_lazy
+from django.views.generic import ListView, CreateView, DetailView, UpdateView
 
-from .forms import ProfileForm, InterestForm
-from .models import Profile, EmailAddress, Page, Post, Membership
+from .forms import (ProfileForm, InterestForm, ProfileUpdateForm, MembershipInlineForm, MembershipUpdateForm,
+                    AwardInlineForm)
+from .models import Profile, EmailAddress, Page, Post, Membership, AwardGiven
 
 
 def page_view(request, page_name):
@@ -80,6 +84,132 @@ def interest(request):
     else:
         form = InterestForm()
     return render(request, 'team/interest.html', {'form': form, 'pages': pages})
+
+
+"""
+Profile Views
+"""
+
+
+class ProfileListView(LoginRequiredMixin, ListView):
+    model = Profile
+    template_name = 'profile/profiles.html'
+    paginate_by = 5
+
+
+class CreateProfileView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
+    model = Profile
+    template_name = 'profile/profile_create.html'
+    form_class = ProfileUpdateForm
+    success_url = reverse_lazy('team:list_profile')
+    success_message = "%(object)s was created successfully"
+
+    def get_success_message(self, cleaned_data):
+        return self.success_message % dict(
+            cleaned_data,
+            object=self.object,
+        )
+
+
+class ProfileDetailView(LoginRequiredMixin, DetailView):
+    model = Profile
+    template_name = 'profile/profile_view.html'
+
+
+class ProfileUpdateView(LoginRequiredMixin, UpdateView):
+    model = Profile
+    template_name = 'profile/profile_create.html'
+    form_class = ProfileUpdateForm
+    success_url = reverse_lazy('team:list_profile')
+
+    def get_success_url(self):
+        return reverse_lazy('team:view_profile', kwargs={'pk': self.object.pk})
+
+
+def manage_memberships(request, profile_id):
+    template_name = 'profile/manage_related.html'
+    profile = Profile.objects.get(pk=profile_id)
+    inline_form = MembershipInlineForm
+    prefix = 'membership_set'
+    success_url = reverse_lazy('team:view_profile', kwargs={'pk': profile.pk})
+
+    if request.method == "POST":
+        formset = inline_form(request.POST, request.FILES, instance=profile)
+        if formset.is_valid():
+            formset.save()
+            return redirect(success_url)
+    else:
+        formset = inline_form(instance=profile)
+
+    return render(request, template_name, {'formset': formset, 'profile': profile, 'prefix': prefix})
+
+
+def manage_awards(request, profile_id):
+    template_name = 'profile/manage_related.html'
+    profile = Profile.objects.get(pk=profile_id)
+    inline_form = AwardInlineForm
+    prefix = 'awardgiven_set'
+    success_url = reverse_lazy('team:view_profile', kwargs={'pk': profile.pk})
+
+    if request.method == "POST":
+        formset = inline_form(request.POST, request.FILES, instance=profile)
+        if formset.is_valid():
+            formset.save()
+            return redirect(success_url)
+    else:
+        formset = inline_form(instance=profile)
+
+    return render(request, template_name, {'formset': formset, 'profile': profile, 'prefix': prefix})
+
+
+"""
+Membership Views
+"""
+
+
+class MembershipListView(LoginRequiredMixin, ListView):
+    model = Membership
+    template_name = 'membership/memberships.html'
+    paginate_by = 5
+
+
+class CreateMembershipView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
+    model = Membership
+    template_name = 'membership/membership_create.html'
+    form_class = MembershipUpdateForm
+    success_url = reverse_lazy('team:list_membership')
+    success_message = "%(object)s was created successfully"
+
+    def get_success_message(self, cleaned_data):
+        return self.success_message % dict(
+            cleaned_data,
+            object=self.object,
+        )
+
+
+class MembershipDetailView(LoginRequiredMixin, DetailView):
+    model = Membership
+    template_name = 'membership/membership_view.html'
+
+
+class MembershipUpdateView(LoginRequiredMixin, UpdateView):
+    model = Membership
+    template_name = 'membership/membership_create.html'
+    form_class = MembershipUpdateForm
+    success_url = reverse_lazy('team:list_membership')
+
+    def get_success_url(self):
+        return reverse_lazy('team:view_profile', kwargs={'pk': self.object.profile.pk})
+
+
+"""
+Award Views
+"""
+
+
+class AwardDetailView(LoginRequiredMixin, DetailView):
+    model = AwardGiven
+    template_name = 'award/award_view.html'
 
 
 """

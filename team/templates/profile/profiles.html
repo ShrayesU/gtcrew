@@ -1,0 +1,15 @@
+{% extends 'private.html' %}
+
+{% block body %}
+<div class="row">
+    <div class="col-sm-3">
+        <a type="button" class="btn btn-outline-primary btn-block" href="{% url 'team:create_profile' %}">
+            Add Profile
+        </a>
+        <br>
+    </div>
+    <div class="col-sm-9 table-responsive">
+        {% include "profile/includes/profile_list.html" %}
+    </div>
+</div>
+{% endblock %}
