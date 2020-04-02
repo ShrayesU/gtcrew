@@ -155,6 +155,9 @@ try:
 except ImportError:
     pass
 
+LOGIN_URL = '/member/login'
+LOGIN_REDIRECT_URL = 'team:index'
+
 # Activate Django-Heroku.
 if not DEBUG:
     django_heroku.settings(locals())
