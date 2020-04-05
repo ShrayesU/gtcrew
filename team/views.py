@@ -3,8 +3,9 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, DetailView, UpdateView
+from django.contrib.auth import authenticate, login
 
-from .forms import (ProfileForm, InterestForm, ProfileUpdateForm, MembershipInlineForm, MembershipUpdateForm,
+from .forms import (SignUpForm, InterestForm, ProfileUpdateForm, MembershipInlineForm, MembershipUpdateForm,
                     AwardInlineForm)
 from .models import Profile, EmailAddress, Page, Post, Membership, AwardGiven
 
@@ -52,13 +53,21 @@ class DetailView(DetailView):
 
 
 def signup(request):
+    success_url = reverse_lazy('team:list_profile')
     if request.method == 'POST':
-        form = ProfileForm(request.POST)
+        form = SignUpForm(request.POST)
         if form.is_valid():
             form.save()
+            username = request.POST['username']
+            password = request.POST['password1']
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
+                login(request, user)
+            return redirect(success_url)
+
     else:
-        form = ProfileForm()
-    return render(request, 'team/includes/signup.html', {'form': form})
+        form = SignUpForm()
+    return render(request, 'team/register.html', {'form': form})
 
 
 def interest(request):

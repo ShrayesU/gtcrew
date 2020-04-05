@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'storages',
-    'antispam.captcha',
+    'captcha',
     'django_cleanup',
 ]
 
@@ -112,16 +112,10 @@ USE_L10N = True
 
 USE_TZ = True
 
-# Django-Antispam
-RECAPTCHA_SITEKEY = config('RECAPTCHA_SITEKEY', '')
-
-RECAPTCHA_SECRETKEY = config('RECAPTCHA_SECRETKEY', '')
-
-RECAPTCHA_WIDGET = 'antispam.captcha.widgets.ReCAPTCHA'
-
-RECAPTCHA_TIMEOUT = 5
-
-RECAPTCHA_PASS_ON_ERROR = False
+# Django-RECAPTCHA
+RECAPTCHA_PUBLIC_KEY = config('RECAPTCHA_SITEKEY', '')
+RECAPTCHA_PRIVATE_KEY = config('RECAPTCHA_SECRETKEY', '')
+# SILENCED_SYSTEM_CHECKS = ['captcha.recaptcha_test_key_error']  # used during testing only
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
@@ -155,7 +149,7 @@ try:
 except ImportError:
     pass
 
-LOGIN_URL = '/member/login'
+LOGIN_URL = '/login'
 LOGIN_REDIRECT_URL = 'team:index'
 
 # Activate Django-Heroku.

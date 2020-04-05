@@ -10,11 +10,11 @@ v1_api.register(ProfileResource())
 app_name = 'team'
 urlpatterns = [
     path('', views.home_view, name='index'),
-    path('<str:page_name>/', views.page_view, name='page'),
+    path('page/<str:page_name>/', views.page_view, name='page'),
     path('team/membership/', views.IndexView.as_view(), name='member_index'),
     path('team/membership/<int:pk>/', views.DetailView.as_view(), name='member_detail'),
     path('form/interest/', views.interest, name='interest'),
-    path('form/signup/', views.signup, name='signup'),
+    path('member/register/', views.signup, name='register'),
     path('team/api/', include(v1_api.urls)),
     # Profile urls
     path('member/profile/list/', views.ProfileListView.as_view(), name='list_profile'),

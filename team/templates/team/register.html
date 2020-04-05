@@ -1,0 +1,35 @@
+{% extends 'login.html' %}
+
+{% block body %}
+<form id="login-form" method="post">
+    {% csrf_token %}
+    <table class="table">
+        {% for field in form %}
+        <tr>
+            <td>{{ field.label }}</td>
+            <td>{{ field }}</td>
+<!--            {% if field.help_text %}-->
+<!--            <td><small style="color: grey">{{ field.help_text }}</small></td>-->
+<!--            {% endif %}-->
+<!--            {% for error in field.errors %}-->
+<!--            <td><p style="color: red">{{ error }}</p></td>-->
+<!--            {% endfor %}-->
+        </tr>
+        {% endfor %}
+    </table>
+
+    {% for field in form %}
+    {% if field.errors %}
+    <p class="label label-danger">
+        {{ field.label }}: {{ field.errors }}
+    </p>
+    {% endif %}
+    {% endfor %}
+    <input type="submit" value="Sign Up"
+           class="btn btn-primary btn-user btn-block"/>
+</form>
+<hr>
+<div class="text-center">
+    <a class="small" href="{% url 'login' %}">Already have an Account? Log in here</a>
+</div>
+{% endblock %}

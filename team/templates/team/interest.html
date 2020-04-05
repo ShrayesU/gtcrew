@@ -1,5 +1,4 @@
 {% extends "base.html" %}
-{% load recaptcha %}
 
 {% block navbar %}
     {% include "team/includes/navbar.html" with pages=pages current='none' %}
@@ -32,7 +31,6 @@
                     {% endfor %}
                   </p>
                 {% endfor %}-->
-                {% recaptcha_init %}
                 <button type="submit">Submit</button>
               </form>
               </p>
