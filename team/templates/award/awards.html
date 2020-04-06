@@ -1,6 +1,6 @@
 {% extends 'private.html' %}
 
-{% block title %}{{ award }}{% endblock %}
+{% block title %}Awards{% endblock %}
 
 {% block body %}
 <div class="row">
@@ -10,23 +10,22 @@
 <!--        </a>-->
 <!--        <br>-->
 <!--    </div>-->
-    <p class="mb-4">{{ award.description }}</p>
     <div class="col-sm-12 table-responsive">
         <table class="table">
             <thead>
             <tr>
-                <th scope="col">Year</th>
-                <th scope="col">Recipient</th>
+                <th scope="col">Award</th>
+                <th scope="col">Description</th>
                 <th scope="col"></th>
             </tr>
             </thead>
             <tbody>
-            {% for award in awardgiven_list %}
+            {% for award in award_list %}
             <tr>
-                <td>{{ award.year }}</td>
-                <td>{{ award.profile }}</td>
+                <td>{{ award }}</td>
+                <td>{{ award.description }}</td>
                 <td>
-                    <a href="{% url 'team:view_awardgiven' award.id %}">
+                    <a href="{% url 'team:view_award' award.id %}">
                         <i class="fa fa-info-circle"></i>
                     </a>
                 </td>

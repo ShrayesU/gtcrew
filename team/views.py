@@ -7,7 +7,7 @@ from django.contrib.auth import authenticate, login
 
 from .forms import (SignUpForm, InterestForm, ProfileUpdateForm, MembershipInlineForm, MembershipUpdateForm,
                     AwardInlineForm)
-from .models import Profile, EmailAddress, Page, Post, Membership, AwardGiven
+from .models import Profile, EmailAddress, Page, Post, Membership, AwardGiven, Award
 
 
 def page_view(request, page_name):
@@ -216,9 +216,31 @@ Award Views
 """
 
 
-class AwardDetailView(LoginRequiredMixin, DetailView):
+class AwardGivenDetailView(LoginRequiredMixin, DetailView):
+    model = AwardGiven
+    template_name = 'award/awardgiven_view.html'
+
+
+class AwardDetailView(LoginRequiredMixin, ListView):
     model = AwardGiven
     template_name = 'award/award_view.html'
+    paginate_by = 10
+
+    def get_context_data(self, **kwargs):
+        context = super(AwardDetailView, self).get_context_data(**kwargs)
+        if 'pk' in self.kwargs:
+            context['award'] = get_object_or_404(Award, id=self.kwargs['pk'])
+        return context
+
+    def get_queryset(self):
+        award = get_object_or_404(Award, id=self.kwargs['pk'])
+        return AwardGiven.objects.filter(award=award)
+
+
+class AwardListView(LoginRequiredMixin, ListView):
+    model = Award
+    template_name = 'award/awards.html'
+    paginate_by = 5
 
 
 """

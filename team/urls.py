@@ -29,5 +29,7 @@ urlpatterns = [
     path('member/membership/<int:pk>/view/', views.MembershipDetailView.as_view(), name='view_membership'),
     path('member/membership/<int:pk>/edit/', views.MembershipUpdateView.as_view(), name='edit_membership'),
     # Award urls
+    path('member/award/list/', views.AwardListView.as_view(), name='list_award'),
     path('member/award/<int:pk>/view/', views.AwardDetailView.as_view(), name='view_award'),
+    path('member/award/given/<int:pk>/view/', views.AwardGivenDetailView.as_view(), name='view_awardgiven'),
 ]
