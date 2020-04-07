@@ -103,7 +103,7 @@ Profile Views
 class ProfileListView(LoginRequiredMixin, ListView):
     model = Profile
     template_name = 'profile/profiles.html'
-    paginate_by = 5
+    paginate_by = 25
 
 
 class CreateProfileView(LoginRequiredMixin, SuccessMessageMixin, CreateView):

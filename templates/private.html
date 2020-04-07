@@ -78,6 +78,20 @@
             </div>
         </li>
         <li class="nav-item">
+            <a class="nav-link" href="#">
+                <i class="fas fa-fw fa-book"></i>
+                <span>Stories</span></a>
+        </li>
+
+        <!-- Divider -->
+        <hr class="sidebar-divider">
+
+        <!-- Heading -->
+        <div class="sidebar-heading">
+            Details
+        </div>
+
+        <li class="nav-item">
             <a class="nav-link" href="{% url 'team:list_award' %}">
                 <i class="fas fa-fw fa-trophy"></i>
                 <span>Awards</span></a>
@@ -86,11 +100,6 @@
             <a class="nav-link" href="#">
                 <i class="fas fa-fw fa-calendar-alt"></i>
                 <span>Events</span></a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#">
-                <i class="fas fa-fw fa-book"></i>
-                <span>Stories</span></a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="#">
@@ -159,7 +168,7 @@
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">
                                     {{ user.get_full_name }}
                                 </span>
-                            <img class="img-profile rounded-circle" src=""> <!-- TODO: add profile image -->
+                            <i class="rounded-circle fas fa-user-circle"></i>
                         </a>
                         <!-- Dropdown - User Information -->
                         <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
