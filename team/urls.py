@@ -1,5 +1,6 @@
 from django.urls import path, include
 from tastypie.api import Api
+from django.views.generic import TemplateView
 
 from team.api import ProfileResource
 from . import views
@@ -9,6 +10,7 @@ v1_api.register(ProfileResource())
 
 app_name = 'team'
 urlpatterns = [
+    # Public urls
     path('', views.home_view, name='index'),
     path('page/<str:page_name>/', views.page_view, name='page'),
     path('team/membership/', views.IndexView.as_view(), name='member_index'),
@@ -16,8 +18,11 @@ urlpatterns = [
     path('form/interest/', views.interest, name='interest'),
     path('member/register/', views.signup, name='register'),
     path('team/api/', include(v1_api.urls)),
+    # Member urls
+    path('member/', TemplateView.as_view(template_name='private.html'), name='index_member'),
     # Profile urls
     path('member/profile/list/', views.ProfileListView.as_view(), name='list_profile'),
+    path('member/profile/list/search/', views.SearchProfileListView.as_view(), name='search_profile'),
     path('member/profile/create/', views.CreateProfileView.as_view(), name='create_profile'),
     path('member/profile/<int:pk>/view/', views.ProfileDetailView.as_view(), name='view_profile'),
     path('member/profile/<int:pk>/edit/', views.ProfileUpdateView.as_view(), name='edit_profile'),

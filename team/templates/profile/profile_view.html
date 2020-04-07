@@ -48,8 +48,9 @@
                         {% if profile.membership_set.count > 0 %}
                         <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo"
                                 aria-expanded="false" aria-controls="collapseTwo">
-                            Semesters ({{ profile.membership_set.count }})
+                            Semesters
                         </button>
+                        <span class="badge badge-primary badge-pill">{{ profile.membership_set.count }}</span>
                         {% else %}
                         <button class="btn btn-link collapsed disabled" data-toggle="collapse"
                                 data-target="#collapseTwo"
@@ -71,8 +72,9 @@
                         {% if profile.awardgiven_set.count > 0 %}
                         <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseThree"
                                 aria-expanded="false" aria-controls="collapseThree">
-                            Awards ({{ profile.awardgiven_set.count }})
+                            Awards
                         </button>
+                        <span class="badge badge-primary badge-pill">{{ profile.awardgiven_set.count }}</span>
                         {% else %}
                         <button class="btn btn-link collapsed disabled" data-toggle="collapse"
                                 data-target="#collapseThree"
@@ -96,6 +98,7 @@
                                 aria-expanded="false" aria-controls="collapseFour">
                             Boats
                         </button>
+                        <span class="badge badge-primary badge-pill"></span>  <!-- TODO: include boat count -->
                         {% else %}
                         <button class="btn btn-link collapsed disabled" data-toggle="collapse"
                                 data-target="#collapseFour"

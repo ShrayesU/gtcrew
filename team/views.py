@@ -1,5 +1,9 @@
+import operator
+from functools import reduce
+
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
+from django.db.models import Q
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, DetailView, UpdateView
@@ -104,6 +108,23 @@ class ProfileListView(LoginRequiredMixin, ListView):
     model = Profile
     template_name = 'profile/profiles.html'
     paginate_by = 25
+
+
+class SearchProfileListView(ProfileListView):
+    def get_queryset(self):
+        result = super(SearchProfileListView, self).get_queryset()
+
+        query = self.request.GET.get('q')
+        if query:
+            query_list = query.split()
+            result = result.filter(
+                reduce(operator.and_,
+                       (Q(first_name__icontains=q) for q in query_list)) |
+                reduce(operator.and_,
+                       (Q(last_name__icontains=q) for q in query_list))
+            )
+
+        return result
 
 
 class CreateProfileView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
