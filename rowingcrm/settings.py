@@ -35,7 +35,9 @@ ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'gtcrew-staging.herokuapp.com',
 INSTALLED_APPS = [
     'team.apps.TeamConfig',
     'event.apps.EventConfig',
-    'story.apps.EventConfig',
+    'story.apps.StoryConfig',
+    'dal',
+    'dal_select2',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -45,6 +47,7 @@ INSTALLED_APPS = [
     'storages',
     'captcha',
     'django_cleanup',
+    'cuser',
 ]
 
 MIDDLEWARE = [
@@ -55,6 +58,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'cuser.middleware.CuserMiddleware',
 ]
 
 ROOT_URLCONF = 'rowingcrm.urls'

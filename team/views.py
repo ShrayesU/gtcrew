@@ -1,6 +1,7 @@
 import operator
 from functools import reduce
 
+from dal import autocomplete
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
@@ -147,6 +148,25 @@ class SearchProfileListView(ProfileListView):
             )
 
         return result
+
+
+class ProfileAutocomplete(autocomplete.Select2QuerySetView):
+    def get_queryset(self):
+        if not self.request.user.is_authenticated:
+            return Profile.objects.none()
+
+        qs = Profile.objects.all()
+
+        if self.q:
+            query_list = self.q.split()
+            qs = qs.filter(
+                reduce(operator.and_,
+                       (Q(first_name__icontains=q) for q in query_list)) |
+                reduce(operator.and_,
+                       (Q(last_name__icontains=q) for q in query_list))
+            )
+
+        return qs
 
 
 class CreateProfileView(LoginRequiredMixin, SuccessMessageMixin, CreateView):

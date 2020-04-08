@@ -1,7 +1,7 @@
-from django.urls import path, include
-from tastypie.api import Api
 from django.contrib.auth.decorators import login_required
+from django.urls import path, include
 from django.views.generic import TemplateView
+from tastypie.api import Api
 
 from team.api import ProfileResource
 from . import views
@@ -24,6 +24,7 @@ urlpatterns = [
     # Profile urls
     path('member/profile/list/', views.ProfileListView.as_view(), name='list_profile'),
     path('member/profile/list/search/', views.SearchProfileListView.as_view(), name='search_profile'),
+    path('member/profile/autocomplete/', views.ProfileAutocomplete.as_view(), name='profile_autocomplete'),
     path('member/profile/create/', views.CreateProfileView.as_view(), name='create_profile'),
     path('member/profile/<int:pk>/view/', views.ProfileDetailView.as_view(), name='view_profile'),
     path('member/profile/<int:pk>/edit/', views.ProfileUpdateView.as_view(), name='edit_profile'),

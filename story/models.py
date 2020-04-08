@@ -1,3 +1,4 @@
+from cuser.middleware import CuserMiddleware
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.utils.text import slugify
@@ -14,14 +15,12 @@ class Story(models.Model):
 
     profiles_mentioned = models.ManyToManyField(
         Profile,
-        on_delete=models.CASCADE,
-        null=True,
         blank=True,
     )
 
     created_by = models.ForeignKey(
         get_user_model(),
-        on_delete=models.SET_NULL
+        on_delete=models.PROTECT,
     )
 
     class Meta:
@@ -33,9 +32,9 @@ class Story(models.Model):
         return '%s' % (self.title,)
 
     def save(self, *args, **kwargs):
-        # user = CuserMiddleware.get_user()
-        # if not self.pk:
-        #     self.created_by = user
+        user = CuserMiddleware.get_user()
+        if not self.pk:
+            self.created_by = user
         if not self.slug:
             self.slug = slugify(self.title)
         super(Story, self).save(*args, **kwargs)
