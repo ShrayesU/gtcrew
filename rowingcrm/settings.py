@@ -35,6 +35,7 @@ ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'gtcrew-staging.herokuapp.com',
 INSTALLED_APPS = [
     'team.apps.TeamConfig',
     'event.apps.EventConfig',
+    'story.apps.EventConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
