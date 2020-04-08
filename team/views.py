@@ -108,7 +108,7 @@ Profile Views
 class ProfileListView(LoginRequiredMixin, ListView):
     model = Profile
     template_name = 'profile/profiles.html'
-    paginate_by = 25
+    paginate_by = 10
 
     def get_context_data(self, **kwargs):
         context = super(ProfileListView, self).get_context_data(**kwargs)
@@ -119,13 +119,14 @@ class ProfileListView(LoginRequiredMixin, ListView):
         num_pages = paginator.num_pages
         current_page = context.get('page_obj')
         page_no = current_page.number
+        max_shown = 7  # odd number
 
-        if num_pages <= 11 or page_no <= 6:
-            pages = [x for x in range(1, min(num_pages + 1, 12))]
-        elif page_no > num_pages - 6:
-            pages = [x for x in range(num_pages - 10, num_pages + 1)]
+        if num_pages <= max_shown or page_no <= (max_shown % 2 + 1):
+            pages = [x for x in range(1, min(num_pages + 1, max_shown + 1))]
+        elif page_no > num_pages - (max_shown % 2 + 1):
+            pages = [x for x in range(num_pages - max_shown + 1, num_pages + 1)]
         else:
-            pages = [x for x in range(page_no - 5, page_no + 6)]
+            pages = [x for x in range(page_no - max_shown % 2, page_no + max_shown % 2 + 1)]
 
         context.update({'pages': pages})
         return context
