@@ -23,12 +23,12 @@ class StoryListView(LoginRequiredMixin, ListView):
         page_no = current_page.number
         max_shown = 7  # odd number
 
-        if num_pages <= max_shown or page_no <= (max_shown % 2 + 1):
+        if num_pages <= max_shown or page_no <= (max_shown // 2 + 1):
             pages = [x for x in range(1, min(num_pages + 1, max_shown + 1))]
-        elif page_no > num_pages - (max_shown % 2 + 1):
+        elif page_no > num_pages - (max_shown // 2 + 1):
             pages = [x for x in range(num_pages - max_shown + 1, num_pages + 1)]
         else:
-            pages = [x for x in range(page_no - max_shown % 2, page_no + max_shown % 2 + 1)]
+            pages = [x for x in range(page_no - max_shown // 2, page_no + max_shown // 2 + 1)]
 
         context.update({'pages': pages})
         return context
