@@ -145,6 +145,9 @@ class Membership(models.Model):
     students = StudentManager()
     coaches = CoachManager()
 
+    class Meta:
+        ordering = ['year', '-semester']
+
     def __str__(self):
         return '%s%s: %s' % (self.semester, self.year, self.profile)
 

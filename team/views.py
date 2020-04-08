@@ -1,13 +1,13 @@
 import operator
 from functools import reduce
 
+from django.contrib.auth import authenticate, login
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, DetailView, UpdateView
-from django.contrib.auth import authenticate, login
 
 from .forms import (SignUpForm, InterestForm, ProfileUpdateForm, MembershipInlineForm, MembershipUpdateForm,
                     AwardInlineForm)
@@ -99,6 +99,7 @@ def interest(request):
     return render(request, 'team/interest.html', {'form': form, 'pages': pages})
 
 
+# case 3
 """
 Profile Views
 """
@@ -108,6 +109,26 @@ class ProfileListView(LoginRequiredMixin, ListView):
     model = Profile
     template_name = 'profile/profiles.html'
     paginate_by = 25
+
+    def get_context_data(self, **kwargs):
+        context = super(ProfileListView, self).get_context_data(**kwargs)
+        if not context.get('is_paginated', False):
+            return context
+
+        paginator = context.get('paginator')
+        num_pages = paginator.num_pages
+        current_page = context.get('page_obj')
+        page_no = current_page.number
+
+        if num_pages <= 11 or page_no <= 6:
+            pages = [x for x in range(1, min(num_pages + 1, 12))]
+        elif page_no > num_pages - 6:
+            pages = [x for x in range(num_pages - 10, num_pages + 1)]
+        else:
+            pages = [x for x in range(page_no - 5, page_no + 6)]
+
+        context.update({'pages': pages})
+        return context
 
 
 class SearchProfileListView(ProfileListView):

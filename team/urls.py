@@ -1,5 +1,6 @@
 from django.urls import path, include
 from tastypie.api import Api
+from django.contrib.auth.decorators import login_required
 from django.views.generic import TemplateView
 
 from team.api import ProfileResource
@@ -19,7 +20,7 @@ urlpatterns = [
     path('member/register/', views.signup, name='register'),
     path('team/api/', include(v1_api.urls)),
     # Member urls
-    path('member/', TemplateView.as_view(template_name='private.html'), name='index_member'),
+    path('member/', login_required(TemplateView.as_view(template_name='private.html')), name='index_member'),
     # Profile urls
     path('member/profile/list/', views.ProfileListView.as_view(), name='list_profile'),
     path('member/profile/list/search/', views.SearchProfileListView.as_view(), name='search_profile'),
