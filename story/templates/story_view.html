@@ -1,19 +1,46 @@
 {% extends 'private.html' %}
-
-{% block title %}View Story{% endblock %}
+{% load tz %}
+{% block title %}{{ story.title }}{% endblock %}
 
 {% block body %}
 <div class="row">
     <div class="col-sm-3">
-        <h2>Profiles Mentioned</h2>
-        {% for profile in story.profiles_mentioned.all %}
-        <p>{{ profile }}</p>
-        {% endfor %}
+        <div class="card shadow mb-4">
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Details</h6>
+                <div class="dropdown no-arrow">
+                </div>
+            </div>
+            <div class="card-body">
+                <p>Added: {{ story.date_added }}</p>
+                <p>Updated: {{ story.date_updated }}</p>
+            </div>
+        </div>
+        <div class="card shadow mb-4">
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Profiles Mentioned</h6>
+                <div class="dropdown no-arrow">
+                </div>
+            </div>
+            <div class="card-body">
+                {% for profile in story.profiles_mentioned.all %}
+                <p>{{ profile }}</p>
+                {% endfor %}
+            </div>
+        </div>
     </div>
     <div class="col-sm-9">
-        <h2>{{ story.title }}</h2>
-        <h5>{{ story.created_by }}</h5>
-        <p>{{ story.story }}</p>
+        <div class="card shadow mb-4">
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Story</h6>
+                <div class="dropdown no-arrow">
+                </div>
+            </div>
+            <div class="card-body">
+                <em>Written by {{ story.created_by.profile }}</em>
+                <p>{{ story.story|safe }}</p>
+            </div>
+        </div>
     </div>
 </div>
 

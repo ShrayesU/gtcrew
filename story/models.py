@@ -7,7 +7,7 @@ from team.models import Profile
 
 
 class Story(models.Model):
-    title = models.CharField(max_length=100)
+    title = models.CharField(unique=True, max_length=100)
     story = models.TextField()
     slug = models.SlugField(unique=True, max_length=100)
     date_added = models.DateTimeField(auto_now_add=True)
@@ -24,8 +24,6 @@ class Story(models.Model):
     )
 
     class Meta:
-        verbose_name = 'profile'
-        verbose_name_plural = 'profiles'
         ordering = ['-date_updated']
 
     def __str__(self):

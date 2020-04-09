@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'captcha',
     'django_cleanup',
     'cuser',
+    'django_summernote',
 ]
 
 MIDDLEWARE = [
@@ -147,6 +148,14 @@ STATIC_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
 DEFAULT_FILE_STORAGE = 'rowingcrm.storage_backends.MediaStorage'
 
 AWS_DEFAULT_ACL = 'public-read'
+
+# SummerNote
+X_FRAME_OPTIONS = 'SAMEORIGIN'
+SUMMERNOTE_THEME = 'bs4'
+SUMMERNOTE_CONFIG = {
+    'iframe': False,
+    'attachment_require_authentication': True,
+}
 
 # Import local_settings if local
 try:
