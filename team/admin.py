@@ -68,13 +68,13 @@ class EmailAddressInline(admin.TabularInline):
 @admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):
     fieldsets = [
-        (None, {'fields': ['first_name', 'last_name', 'gtid', 'owner', 'bio', 'photo', ]}),
+        (None, {'fields': ['first_name', 'last_name', 'gtid', 'status', 'owner', 'bio', 'photo', ]}),
         ('Personal', {'fields': ['birthday', 'major', 'hometown'], 'classes': ['collapse']}),
         ('Date information', {'fields': ['date_created', 'date_updated'], 'classes': ['collapse']}),
     ]
     inlines = [EmailAddressInline, AwardGivenInline, MembershipInline, ]
     list_display = ('first_name', 'last_name', 'gtid', 'latest_year_active', 'date_updated')
-    list_filter = ('membership__squad', 'membership__year', 'membership__semester')
+    list_filter = ('status', 'membership__squad', 'membership__year', 'membership__semester')
     readonly_fields = ('date_created', 'date_updated')
     search_fields = ['first_name', 'last_name', 'gtid']
 

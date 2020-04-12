@@ -24,6 +24,8 @@ class Story(models.Model):
     )
 
     class Meta:
+        verbose_name = 'story'
+        verbose_name_plural = 'stories'
         ordering = ['-date_updated']
 
     def __str__(self):

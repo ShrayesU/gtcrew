@@ -34,11 +34,11 @@
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion toggled" id="accordionSidebar">
 
         <!-- Sidebar - Brand -->
-        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{% url 'team:index' %}">
-            <div class="sidebar-brand-icon rotate-n-15">
-                <!-- <i class="fas fa-laugh-wink"></i> -->
+        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{% url 'team:index_member' %}">
+            <div class="sidebar-brand-icon">
+                GT
             </div>
-            <div class="sidebar-brand-text mx-3">GT Crew</div>
+            <div class="sidebar-brand-text mx-2">Rowing</div>
         </a>
 
         <!-- Divider -->
@@ -46,8 +46,8 @@
 
         <!-- Nav Item - Dashboard -->
         <li class="nav-item active">
-            <a class="nav-link" href="{% url 'team:index' %}">
-                <i class="fas fa-fw"></i>
+            <a class="nav-link" href="{% url 'team:index_member' %}">
+                <i class="fas fa-fw fa-tachometer-alt"></i>
                 <span>Welcome</span></a>
         </li>
 
@@ -304,6 +304,41 @@
 <!-- Custom scripts for all pages-->
 <script src="{% static 'private/js/sb-admin-2.min.js' %}"></script>
 
+<script>
+// remember state of accordians
+/*
+    $(".collapse").on("hidden.bs.collapse", function() {
+      localStorage.setItem("coll_" + this.id, false);
+    });
+
+    $(".collapse").on("shown.bs.collapse", function() {
+      localStorage.setItem("coll_" + this.id, true);
+    });
+
+    $(".collapse").each(function() {
+      if (localStorage.getItem("coll_" + this.id) == "true") {
+        $(this).collapse("show");
+      }
+    });
+*/
+
+/** Set local storage **/
+$("#sidebarToggle, #sidebarToggleTop").on("click", function(e){
+    if (document.getElementById("page-top").className == 'sidebar-toggled') {
+        localStorage.setItem("accordionSidebar","expanded");
+    } else {
+        localStorage.setItem("accordionSidebar","false");
+    }
+});
+
+
+/** Retrieve local storage value and change class of body **/
+if(localStorage.getItem("accordionSidebar") !== null) {
+    if(localStorage.getItem("accordionSidebar") == 'expanded') {
+        document.getElementById("sidebarToggle").click();
+    }
+}
+</script>
 </body>
 
 </html>
