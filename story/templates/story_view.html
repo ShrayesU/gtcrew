@@ -4,6 +4,18 @@
 
 {% block body %}
 <div class="row">
+    <div class="col-sm-9">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Written by {{ story.created_by.profile }}</h6>
+                <div class="dropdown no-arrow">
+                </div>
+            </div>
+            <div class="card-body">
+                <p>{{ story.story|safe }}</p>
+            </div>
+        </div>
+    </div>
     <div class="col-sm-3">
         <div class="card shadow mb-4">
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
@@ -16,6 +28,7 @@
                 <p>Updated: {{ story.date_updated }}</p>
             </div>
         </div>
+        {% if story.profiles_mentioned.all %}
         <div class="card shadow mb-4">
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                 <h6 class="m-0 font-weight-bold text-primary">Profiles Mentioned</h6>
@@ -23,24 +36,15 @@
                 </div>
             </div>
             <div class="card-body">
+                <p>
                 {% for profile in story.profiles_mentioned.all %}
-                <p>{{ profile }}</p>
+                    <a href="{% url 'team:view_profile' profile.id %}">
+                        {{ profile }}</a>{% if not forloop.last %}, {% endif %}
                 {% endfor %}
+                </p>
             </div>
         </div>
-    </div>
-    <div class="col-sm-9">
-        <div class="card shadow mb-4">
-            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                <h6 class="m-0 font-weight-bold text-primary">Story</h6>
-                <div class="dropdown no-arrow">
-                </div>
-            </div>
-            <div class="card-body">
-                <em>Written by {{ story.created_by.profile }}</em>
-                <p>{{ story.story|safe }}</p>
-            </div>
-        </div>
+        {% endif %}
     </div>
 </div>
 

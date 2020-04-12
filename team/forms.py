@@ -50,7 +50,7 @@ class SignUpForm(BaseForm, UserCreationForm):
 class ProfileUpdateForm(BaseForm, forms.ModelForm):
     class Meta:
         model = Profile
-        exclude = ('date_updated', 'date_added', 'owner')
+        exclude = ('date_updated', 'date_added', 'owner', 'status')
 
 
 class MembershipCreateForm(BaseForm, forms.ModelForm):

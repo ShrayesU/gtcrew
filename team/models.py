@@ -5,7 +5,8 @@ from django.utils.timezone import now
 from django.contrib.auth import get_user_model
 
 from .managers import StudentManager, CoachManager
-from .utils import HELD_BY_CHOICES, STUDENT, SEMESTER_CHOICES, FALL, TEMPLATE_CHOICES, DEFAULT, TEAM_FOUNDED
+from .utils import HELD_BY_CHOICES, STUDENT, SEMESTER_CHOICES, FALL, TEMPLATE_CHOICES, DEFAULT, TEAM_FOUNDED, \
+    PROFILE_STATUS_CHOICES, UNCLAIMED
 from .validators import validate_file_extension
 
 
@@ -16,15 +17,20 @@ def get_default_year():
 class Profile(models.Model):
     first_name = models.CharField(max_length=64, blank=False)
     last_name = models.CharField(max_length=64, blank=False)
-    gtid = models.CharField("GT ID", unique=True, max_length=9,
+    gtid = models.CharField("GT ID", max_length=9, blank=True,
                             validators=[RegexValidator(r'^(\d){9}$')])
     birthday = models.DateField(null=True, blank=True)
     major = models.CharField(max_length=64, blank=True)
     hometown = models.CharField(max_length=64, blank=True)
     bio = models.TextField(max_length=1500, blank=True)
-    date_created = models.DateTimeField('date created', auto_now_add=True)
-    date_updated = models.DateTimeField('date updated', auto_now=True)
+    date_created = models.DateTimeField(auto_now_add=True)
+    date_updated = models.DateTimeField(auto_now=True)
     photo = ResizedImageField(size=[700, 700], crop=['middle', 'center'], null=True, blank=True)
+    status = models.CharField(
+        max_length=10,
+        choices=PROFILE_STATUS_CHOICES,
+        default=UNCLAIMED,
+    )
     owner = models.OneToOneField(
         get_user_model(),
         on_delete=models.PROTECT,
@@ -35,7 +41,7 @@ class Profile(models.Model):
     class Meta:
         verbose_name = 'profile'
         verbose_name_plural = 'profiles'
-        ordering = ['-date_updated']
+        ordering = ['last_name']
 
     def __str__(self):
         return '%s %s' % (self.first_name, self.last_name)

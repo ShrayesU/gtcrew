@@ -1,25 +1,32 @@
 {% extends 'private.html' %}
 
-{% block title %}View Profile{% endblock %}
+{% block title %}View Profile: {{ profile.full_name }}{% endblock %}
 
 {% block body %}
 <div class="row">
     <div class="col-sm-3">
-        <a type="button" class="btn btn-outline-primary btn-block"
-           href="{% url 'team:manage_memberships' profile_id=profile.id%}">
-            Manage Membership
-        </a>
-        <a type="button" class="btn btn-outline-primary btn-block"
-           href="{% url 'team:manage_awards' profile_id=profile.id%}">
-            Manage Awards
-        </a>
-        <br>
+        <div class="card shadow mb-4">
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Actions</h6>
+                <div class="dropdown no-arrow">
+                </div>
+            </div>
+            <div class="card-body">
+                <a type="button" class="btn btn-outline-primary btn-block"
+                   href="{% url 'team:manage_memberships' profile_id=profile.id%}">
+                    Manage Membership
+                </a>
+                <a type="button" class="btn btn-outline-primary btn-block"
+                   href="{% url 'team:manage_awards' profile_id=profile.id%}">
+                    Manage Awards
+                </a>
+            </div>
+        </div>
     </div>
     <div class="col-sm-9">
-        <h2>{{ profile.first_name }} {{ profile.last_name }}</h2>
-        <h5>{{ profile.gtid }}</h5>
         <div id="accordion">
-            <div class="card">
+            <!-- Details -->
+            <div class="card shadow">
                 <div class="card-header" id="headingOne">
                     <h5 class="mb-0">
                         <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne"
@@ -31,6 +38,8 @@
 
                 <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
                     <div class="card-body">
+                        <h5>GT ID</h5>
+                        <p>*****{{ profile.gtid|slice:'-4:' }}</p>
                         <h5>Birthday</h5>
                         <p>{{ profile.birthday }}</p>
                         <h5>Hometown</h5>
@@ -42,8 +51,9 @@
                     </div>
                 </div>
             </div>
-            <div class="card">
-                <div class="card-header" id="headingTwo">
+            <!-- Semesters -->
+            <div class="card shadow">
+                <div class="card-header d-flex flex-row align-items-center justify-content-between" id="headingTwo">
                     <h5 class="mb-0">
                         {% if profile.membership_set.count > 0 %}
                         <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo"
@@ -62,11 +72,14 @@
                 </div>
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
                     <div class="card-body table-responsive">
-                        {% include "membership/includes/membership_list.html" with membership_list=profile.membership_set.all %}
+                        {% with profile.membership_set.all as memberships %}
+                        {% include "membership/includes/membership_list.html" with membership_list=memberships %}
+                        {% endwith %}
                     </div>
                 </div>
             </div>
-            <div class="card">
+            <!-- Awards -->
+            <div class="card shadow">
                 <div class="card-header" id="headingThree">
                     <h5 class="mb-0">
                         {% if profile.awardgiven_set.count > 0 %}
@@ -90,7 +103,8 @@
                     </div>
                 </div>
             </div>
-            <div class="card">
+            <!-- Results -->
+            <div class="card shadow">
                 <div class="card-header" id="headingFour">
                     <h5 class="mb-0">
                         {% if profile.awardgiven_set.count > 0 %} <!-- TODO: include boats if-else statement -->

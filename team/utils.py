@@ -1,5 +1,14 @@
 # from django.utils.translation import ugettext_lazy as _
 
+UNCLAIMED = 'unclaimed'
+PENDING = 'pending'
+APPROVED = 'approved'
+PROFILE_STATUS_CHOICES = (
+    (UNCLAIMED, 'Unclaimed'),
+    (PENDING, 'Pending Approval'),
+    (APPROVED, 'Approved')
+)
+
 STUDENT = 'student'
 COACH = 'coach'
 ALUMNI = 'alumni'

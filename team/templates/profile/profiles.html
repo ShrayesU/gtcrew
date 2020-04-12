@@ -5,13 +5,31 @@
 {% block body %}
 <div class="row">
     <div class="col-sm-3">
-        <a type="button" class="btn btn-outline-primary btn-block" href="{% url 'team:create_profile' %}">
-            Add Profile
-        </a>
-        <br>
+        <div class="card shadow mb-4">
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Actions</h6>
+                <div class="dropdown no-arrow">
+                </div>
+            </div>
+            <div class="card-body">
+                <a type="button" class="btn btn-outline-primary btn-block" href="{% url 'team:create_profile' %}">
+                    Add Profile
+                </a>
+            </div>
+        </div>
     </div>
-    <div class="col-sm-9 table-responsive">
-        {% include "profile/includes/profile_list.html" %}
+
+    <div class="col-sm-9">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Profiles</h6>
+                <div class="dropdown no-arrow">
+                </div>
+            </div>
+            <div class="card-body table-responsive">
+                {% include "profile/includes/profile_list.html" %}
+            </div>
+        </div>
     </div>
 </div>
 {% endblock %}

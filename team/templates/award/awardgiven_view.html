@@ -5,21 +5,39 @@
 {% block body %}
 <div class="row">
     <div class="col-sm-3">
-        <a type="button" class="btn btn-outline-primary btn-block"
-           href="{% url 'team:view_profile' awardgiven.profile.id %}">
-            View Profile
-        </a>
-        <br>
+        <div class="card shadow mb-4">
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Actions</h6>
+                <div class="dropdown no-arrow">
+                </div>
+            </div>
+            <div class="card-body">
+                <a type="button" class="btn btn-outline-primary btn-block"
+                   href="{% url 'team:view_profile' awardgiven.profile.id %}">
+                    View Profile
+                </a>
+            </div>
+        </div>
     </div>
+
     <div class="col-sm-9">
-        <h5>Award</h5>
-        <p>{{ awardgiven.award }}</p>
-        <h5>Year</h5>
-        <p>{{ awardgiven.year }}</p>
-        <h5>Recipient</h5>
-        <p>{{ awardgiven.profile.full_name }}</p>
-        <h5>Description</h5>
-        <p>{{ awardgiven.award.description }}</p>
+        <div class="card shadow mb-4">
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Details</h6>
+                <div class="dropdown no-arrow">
+                </div>
+            </div>
+            <div class="card-body">
+                <h5>Award</h5>
+                <p>{{ awardgiven.award }}</p>
+                <h5>Year</h5>
+                <p>{{ awardgiven.year }}</p>
+                <h5>Recipient</h5>
+                <p>{{ awardgiven.profile.full_name }}</p>
+                <h5>Description</h5>
+                <p>{{ awardgiven.award.description }}</p>
+            </div>
+        </div>
     </div>
 </div>
 {% endblock %}
