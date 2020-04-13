@@ -28,6 +28,7 @@ urlpatterns = [
     path('member/profile/create/', views.CreateProfileView.as_view(), name='create_profile'),
     path('member/profile/<int:pk>/view/', views.ProfileDetailView.as_view(), name='view_profile'),
     path('member/profile/<int:pk>/edit/', views.ProfileUpdateView.as_view(), name='edit_profile'),
+    path('member/profile/<int:pk>/claim/', views.claim_profile, name='claim_profile'),
     path('member/profile/<int:profile_id>/manage_memberships/', views.manage_memberships, name='manage_memberships'),
     path('member/profile/<int:profile_id>/manage_awards/', views.manage_awards, name='manage_awards'),
     # Membership urls

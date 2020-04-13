@@ -1,10 +1,11 @@
 import operator
 from functools import reduce
-
+from django.contrib import messages
 from dal import autocomplete
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
+from django.core.exceptions import PermissionDenied
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
@@ -13,6 +14,7 @@ from django.views.generic import ListView, CreateView, DetailView, UpdateView
 from .forms import (SignUpForm, InterestForm, ProfileUpdateForm, MembershipInlineForm, MembershipUpdateForm,
                     AwardInlineForm)
 from .models import Profile, EmailAddress, Page, Post, Membership, AwardGiven, Award
+from .utils import APPROVED, UNCLAIMED, PENDING
 
 
 def page_view(request, page_name):
@@ -100,7 +102,6 @@ def interest(request):
     return render(request, 'team/interest.html', {'form': form, 'pages': pages})
 
 
-# case 3
 """
 Profile Views
 """
@@ -187,6 +188,27 @@ class ProfileDetailView(LoginRequiredMixin, DetailView):
     model = Profile
     template_name = 'profile/profile_view.html'
 
+    def get_context_data(self, **kwargs):
+        context = super(ProfileDetailView, self).get_context_data(**kwargs)
+
+        allowed_to_edit = False
+        if self.request.user.is_staff:
+            allowed_to_edit = True
+        elif Profile.objects.filter(owner=self.request.user).exists():
+            user_owns_profile = self.request.user.profile == self.object
+            profile_approved = self.object.status == APPROVED
+            allowed_to_edit = user_owns_profile and profile_approved
+        context.update({'allowed_to_edit': allowed_to_edit})
+
+        profile_status = self.object.status
+        if profile_status == UNCLAIMED:
+            context.update({'profile_status': 'unclaimed'})
+        elif profile_status == PENDING:
+            context.update({'profile_status': 'pending',
+                            'pending_owner': self.object.owner.username, })
+
+        return context
+
 
 class ProfileUpdateView(LoginRequiredMixin, UpdateView):
     model = Profile
@@ -197,31 +219,65 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
     def get_success_url(self):
         return reverse_lazy('team:view_profile', kwargs={'pk': self.object.pk})
 
+    def get_context_data(self, **kwargs):
+        context = super(ProfileUpdateView, self).get_context_data(**kwargs)
+
+        allowed_to_edit = False
+        if Profile.objects.filter(owner=self.request.user).exists():
+            user_owns_profile = self.request.user.profile == self.object
+            profile_approved = self.object.status == APPROVED
+            allowed_to_edit = user_owns_profile and profile_approved
+        if not allowed_to_edit:
+            raise PermissionDenied
+
+        return context
+
 
 def manage_memberships(request, profile_id):
     template_name = 'profile/manage_related.html'
-    profile = Profile.objects.get(pk=profile_id)
+    profile = get_object_or_404(Profile, pk=profile_id)
     inline_form = MembershipInlineForm
     prefix = 'membership_set'
     success_url = reverse_lazy('team:view_profile', kwargs={'pk': profile.pk})
 
+    allowed_to_edit = False
+    if request.user.is_staff:
+        allowed_to_edit = True
+    elif Profile.objects.filter(owner=request.user).exists():
+        user_owns_profile = request.user.profile == profile
+        profile_approved = profile.status == APPROVED
+        allowed_to_edit = user_owns_profile and profile_approved
+    if not allowed_to_edit:
+        raise PermissionDenied
+
     if request.method == "POST":
         formset = inline_form(request.POST, request.FILES, instance=profile)
-        if formset.is_valid():
+        if formset.is_valid() and allowed_to_edit:
             formset.save()
             return redirect(success_url)
     else:
         formset = inline_form(instance=profile)
 
-    return render(request, template_name, {'formset': formset, 'profile': profile, 'prefix': prefix})
+    context = {'formset': formset, 'profile': profile, 'prefix': prefix, }
+    return render(request, template_name, context)
 
 
 def manage_awards(request, profile_id):
     template_name = 'profile/manage_related.html'
-    profile = Profile.objects.get(pk=profile_id)
+    profile = get_object_or_404(Profile, pk=profile_id)
     inline_form = AwardInlineForm
     prefix = 'awardgiven_set'
     success_url = reverse_lazy('team:view_profile', kwargs={'pk': profile.pk})
+
+    allowed_to_edit = False
+    if request.user.is_staff:
+        allowed_to_edit = True
+    elif Profile.objects.filter(owner=request.user).exists():
+        user_owns_profile = request.user.profile == profile
+        profile_approved = profile.status == APPROVED
+        allowed_to_edit = user_owns_profile and profile_approved
+    if not allowed_to_edit:
+        raise PermissionDenied
 
     if request.method == "POST":
         formset = inline_form(request.POST, request.FILES, instance=profile)
@@ -233,6 +289,24 @@ def manage_awards(request, profile_id):
 
     return render(request, template_name, {'formset': formset, 'profile': profile, 'prefix': prefix})
 
+
+def claim_profile(request, pk):
+    profile = get_object_or_404(Profile, pk=pk)
+    success_url = reverse_lazy('team:view_profile', kwargs={'pk': profile.pk})
+
+    if Profile.objects.filter(owner=request.user).exists():
+        # user already has a profile
+        messages.warning(request, 'Attempt failed. You already have a profile claimed on your account.')
+    elif profile.owner:
+        # profile already has an owner
+        messages.warning(request, 'Attempt failed. This profile already has an owner.')
+    else:
+        profile.owner = request.user
+        profile.status = PENDING
+        profile.save()
+        messages.success(request, 'You have successfully submitted a claim for this profile.')
+
+    return redirect(success_url)
 
 """
 Membership Views

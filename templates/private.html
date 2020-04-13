@@ -48,7 +48,7 @@
         <li class="nav-item active">
             <a class="nav-link" href="{% url 'team:index_member' %}">
                 <i class="fas fa-fw fa-tachometer-alt"></i>
-                <span>Welcome</span></a>
+                <span>Member Portal</span></a>
         </li>
 
         <!-- Divider -->
@@ -155,15 +155,59 @@
                     <li class="nav-item dropdown no-arrow mx-1">
                         <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button"
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <!--                                <i class="fas fa-envelope fa-fw"></i>-->
                             {% timezone "America/New_York" %}
                             <span class="mr-2 d-none d-lg-inline text-gray-600 small">
                                     Last Login: {{ user.last_login }}
                                 </span>
                             {% endtimezone %}
-                            <!--<span class="badge badge-danger badge-counter">7</span>-->
+<!--                            <i class="fas fa-envelope fa-fw"></i>-->
+<!--                            <span class="badge badge-danger badge-counter">7</span>-->
                         </a>
                     </li>
+<!--                    &lt;!&ndash; Nav Item - Alerts &ndash;&gt;-->
+<!--                    <li class="nav-item dropdown no-arrow mx-1">-->
+<!--                        <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"-->
+<!--                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">-->
+<!--                            <i class="fas fa-bell fa-fw"></i>-->
+<!--                            &lt;!&ndash; Counter - Alerts &ndash;&gt;-->
+<!--                            {% if messages %}-->
+<!--                            <span class="badge badge-danger badge-counter">{{ messages.count }}</span>-->
+<!--                            {% endif %}-->
+<!--                        </a>-->
+<!--                        &lt;!&ndash; Dropdown - Alerts &ndash;&gt;-->
+<!--                        <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated&#45;&#45;grow-in"-->
+<!--                             aria-labelledby="alertsDropdown">-->
+<!--                            <h6 class="dropdown-header">-->
+<!--                                Alerts Center-->
+<!--                            </h6>-->
+
+<!--                            {% if messages %}-->
+<!--                            {% for message in messages %}-->
+<!--                            <a class="dropdown-item d-flex align-items-center" href="#">-->
+<!--                                <div class="mr-3">-->
+<!--                                    <div class="icon-circle bg-{{ message.tags }}">-->
+<!--                                        <i class="fas fa-bell text-white"></i>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                                <div>-->
+<!--                                    <div class="small text-gray-500">{{ message.tags|title }}</div>-->
+<!--                                    <span class="font-weight-bold">{{ message }}</span>-->
+<!--                                </div>-->
+<!--                            </a>-->
+<!--                            {% endfor %}-->
+<!--                            {% else %}-->
+<!--                            <a class="dropdown-item d-flex align-items-center" href="#">-->
+<!--                                <div class="mr-3">-->
+
+<!--                                </div>-->
+<!--                                <div>-->
+<!--                                    <span class="font-weight-bold">No notifications.</span>-->
+<!--                                </div>-->
+<!--                            </a>-->
+<!--                            {% endif %}-->
+<!--                            <a class="dropdown-item text-center small text-gray-500" href="#">&#45;&#45;</a>-->
+<!--                        </div>-->
+<!--                    </li>-->
 
                     <div class="topbar-divider d-none d-sm-block"></div>
 
@@ -186,10 +230,10 @@
                             </a>
                             <div class="dropdown-divider"></div>
                             {% endif %}
-                            <!--                            <a class="dropdown-item" href="#">-->
-                            <!--                                <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>-->
-                            <!--                                Settings-->
-                            <!--                            </a>-->
+<!--                            <a class="dropdown-item" href="#">-->
+<!--                                <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>-->
+<!--                                Settings-->
+<!--                            </a>-->
                             <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                                 <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                 Logout
@@ -208,6 +252,19 @@
 
             </nav>
             <!-- End of Topbar -->
+
+            <!-- Messages -->
+            {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show"
+                 role="alert">{{ message }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            {% endfor %}
+            {% endif %}
+            <!-- End of Messages -->
 
             <!-- Begin Page Content -->
             <div class="container-fluid">
@@ -305,7 +362,7 @@
 <script src="{% static 'private/js/sb-admin-2.min.js' %}"></script>
 
 <script>
-// remember state of accordians
+// remember state of accordions
 /*
     $(".collapse").on("hidden.bs.collapse", function() {
       localStorage.setItem("coll_" + this.id, false);
@@ -338,6 +395,9 @@ if(localStorage.getItem("accordionSidebar") !== null) {
         document.getElementById("sidebarToggle").click();
     }
 }
+
+
+
 </script>
 </body>
 
