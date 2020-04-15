@@ -14,6 +14,13 @@ class StoryListView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super(StoryListView, self).get_context_data(**kwargs)
+
+        # include popular and newest stories
+        popular_stories = Story.objects.all()[0:3]
+        newest_stories = Story.objects.all().order_by('-date_added')[:3]
+        context.update({'popular_stories': popular_stories, 'newest_stories': newest_stories})
+
+        # customer pagination numbers/pages
         if not context.get('is_paginated', False):
             return context
 

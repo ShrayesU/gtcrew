@@ -4,7 +4,19 @@
 
 {% block body %}
 <div class="row">
-    <div class="col-sm-3">
+    <div class="col-sm-8">
+        <div class="card shadow mb-5">
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">All Stories</h6>
+                <div class="dropdown no-arrow">
+                </div>
+            </div>
+            <div class="card-body table-responsive">
+                {% include "includes/story_list.html" %}
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-4">
         <div class="card shadow mb-4">
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                 <h6 class="m-0 font-weight-bold text-primary">Actions</h6>
@@ -19,16 +31,24 @@
                 </p>
             </div>
         </div>
-    </div>
-    <div class="col-sm-9">
         <div class="card shadow mb-4">
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                <h6 class="m-0 font-weight-bold text-primary">Stories</h6>
+                <h6 class="m-0 font-weight-bold text-primary">Popular Stories</h6>
                 <div class="dropdown no-arrow">
                 </div>
             </div>
             <div class="card-body table-responsive">
-                {% include "includes/story_list.html" %}
+                {% include "includes/story_list.html" with story_list=popular_stories%}
+            </div>
+        </div>
+        <div class="card shadow mb-4">
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Newest Stories</h6>
+                <div class="dropdown no-arrow">
+                </div>
+            </div>
+            <div class="card-body table-responsive">
+                {% include "includes/story_list.html" with story_list=newest_stories %}
             </div>
         </div>
     </div>

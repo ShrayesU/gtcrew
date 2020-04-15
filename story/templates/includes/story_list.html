@@ -4,29 +4,39 @@
         <th scope="col">Title</th>
         <th scope="col">Created By</th>
         <th scope="col"></th>
-        <th scope="col"></th>
-        <th scope="col"></th>
     </tr>
     </thead>
     <tbody>
     {% for story in story_list %}
     <tr>
-        <td>{{ story.title }}</td>
+        <td><a href="{% url 'story:view' story.slug %}">{{ story.title }}</a></td>
         <td>{{ story.created_by }}</td>
-        <td>
-            <a href="{% url 'story:view' story.slug %}">
-                <i class="fa fa-info-circle"></i>
+        <td class="nav-item dropdown no-arrow">
+            <a class="nav-link dropdown-toggle" href="#" id="storyDropdown_{{ story.pk }}" role="button"
+               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fa fa-caret-square-down"></i>
             </a>
-        </td>
-        <td>
-            <a href="{% url 'story:edit' story.slug %}">
-                <i class="fa fa-edit"></i>
-            </a>
-        </td>
-        <td>
-            <a href="">
-                <i class="fa fa-trash"></i>
-            </a>
+            <!-- Dropdown - User Information -->
+            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                 aria-labelledby="storyDropdown_{{ story.pk }}">
+                <a class="dropdown-item" href="{% url 'story:view' story.slug %}">
+                    <i class="fa fa-info-circle"></i>
+                    Details
+                </a>
+                {% if user == story.created_by or user.is_staff %}
+                <a class="dropdown-item" href="{% url 'story:edit' story.slug %}">
+                    <i class="fa fa-edit"></i>
+                    Edit
+                </a>
+                {% endif %}
+                {% if user.is_staff %}
+<!--                <div class="dropdown-divider"></div>-->
+<!--                <a class="dropdown-item" href="">-->
+<!--                    <i class="fa fa-trash"></i>-->
+<!--                    Delete-->
+<!--                </a>-->
+                {% endif %}
+            </div>
         </td>
     </tr>
     {% endfor %}
