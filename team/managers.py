@@ -12,7 +12,7 @@ class MembershipQuerySet(models.QuerySet):
     def active(self):
         most_recent_member = self.latest('year', '-semester')
         year, semester = (most_recent_member.year, most_recent_member.semester)
-        return self.filter(year=year, semester=semester)
+        return self.filter(year=year, semester=semester, public=True)
 
 
 class StudentManager(models.Manager):

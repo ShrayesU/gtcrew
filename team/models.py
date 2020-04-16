@@ -1,3 +1,4 @@
+from cuser.middleware import CuserMiddleware
 from django_resized import ResizedImageField
 from django.core.validators import RegexValidator
 from django.db import models
@@ -25,6 +26,7 @@ class Profile(models.Model):
     bio = models.TextField(max_length=1500, blank=True)
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
+    public = models.BooleanField(default=False)
     photo = ResizedImageField(size=[700, 700], crop=['middle', 'center'], null=True, blank=True)
     status = models.CharField(
         max_length=10,
@@ -43,6 +45,12 @@ class Profile(models.Model):
 
     def __str__(self):
         return '%s %s' % (self.first_name, self.last_name)
+
+    def save(self, *args, **kwargs):
+        user = CuserMiddleware.get_user()
+        if user.is_staff:
+            self.public = True
+        super(Profile, self).save(*args, **kwargs)
 
     def full_name(self):
         return '%s %s' % (self.first_name, self.last_name)
@@ -145,6 +153,7 @@ class Membership(models.Model):
         blank=True,
         null=True,
     )
+    public = models.BooleanField(default=False)
     objects = models.Manager()
     students = StudentManager()
     coaches = CoachManager()
@@ -154,6 +163,12 @@ class Membership(models.Model):
 
     def __str__(self):
         return '%s%s: %s' % (self.semester, self.year, self.profile)
+
+    def save(self, *args, **kwargs):
+        user = CuserMiddleware.get_user()
+        if user.is_staff:
+            self.public = True
+        super(Membership, self).save(*args, **kwargs)
 
     def season(self):
         if self.semester == FALL:

@@ -51,7 +51,7 @@ class SignUpForm(BaseForm, UserCreationForm):
 class ProfileUpdateForm(BaseForm, forms.ModelForm):
     class Meta:
         model = Profile
-        exclude = ('date_updated', 'date_added', 'owner', 'status')
+        exclude = ('date_updated', 'date_added', 'owner', 'status', 'public')
         widgets = {
             'bio': SummernoteWidget(),
         }

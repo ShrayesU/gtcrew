@@ -5,6 +5,7 @@ from django.contrib import admin
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.urls import path
+from django_summernote.admin import SummernoteModelAdmin, SummernoteInlineModelAdmin
 
 from .forms import CsvImportForm, ProfileForm
 from .models import Profile, EmailAddress, Membership, Squad, Title, Award, AwardGiven, Post, Page
@@ -22,6 +23,17 @@ class EmailAddressAdmin(admin.ModelAdmin):
 @admin.register(Membership)
 class MembershipAdmin(admin.ModelAdmin):
     search_fields = ['profile__first_name', 'profile__last_name']
+    list_filter = ('public',)
+    autocomplete_fields = ['profile']
+    actions = ['make_public', ]
+
+    def make_public(self, request, queryset):
+        rows_updated = queryset.update(public=True)
+        if rows_updated == 1:
+            message_bit = "1 membership was"
+        else:
+            message_bit = "%s memberships were" % rows_updated
+        self.message_user(request, "%s successfully marked as public." % message_bit)
 
 
 class AwardGivenInline(admin.TabularInline):
@@ -66,19 +78,29 @@ class EmailAddressInline(admin.TabularInline):
 
 
 @admin.register(Profile)
-class ProfileAdmin(admin.ModelAdmin):
+class ProfileAdmin(SummernoteModelAdmin):
     fieldsets = [
-        (None, {'fields': ['first_name', 'last_name', 'gtid', 'status', 'owner', 'bio', 'photo', ]}),
+        (None, {'fields': ['first_name', 'last_name', 'gtid', 'status', 'public', 'owner', 'bio', 'photo', ]}),
         ('Personal', {'fields': ['birthday', 'major', 'hometown'], 'classes': ['collapse']}),
         ('Date information', {'fields': ['date_created', 'date_updated'], 'classes': ['collapse']}),
     ]
     inlines = [EmailAddressInline, AwardGivenInline, MembershipInline, ]
     list_display = ('first_name', 'last_name', 'gtid', 'latest_year_active', 'date_updated')
-    list_filter = ('status', 'membership__squad', 'membership__year', 'membership__semester')
+    list_filter = ('status', 'public', 'membership__squad', 'membership__year', 'membership__semester')
     readonly_fields = ('date_created', 'date_updated')
     search_fields = ['first_name', 'last_name', 'gtid']
-
+    autocomplete_fields = ['owner']
+    actions = ['make_public', ]
+    summernote_fields = '__all__'
     change_list_template = "team/profile_changelist.html"
+
+    def make_public(self, request, queryset):
+        rows_updated = queryset.update(public=True)
+        if rows_updated == 1:
+            message_bit = "1 profile was"
+        else:
+            message_bit = "%s profiles were" % rows_updated
+        self.message_user(request, "%s successfully marked as public." % message_bit)
 
     def get_urls(self):
         urls = super().get_urls()
@@ -172,7 +194,7 @@ class ProfileAdmin(admin.ModelAdmin):
         )
 
 
-class PostInline(admin.StackedInline):
+class PostInline(admin.StackedInline, SummernoteInlineModelAdmin):
     model = Post
     fieldsets = [
         (None, {'fields': ['header1', 'header2', 'photo', 'text', ]}),
