@@ -11,7 +11,7 @@ class StoryCreateForm(BaseForm, forms.ModelForm):
         model = Story
         exclude = ('date_added', 'slug', 'created_by')
         widgets = {
-            'story': SummernoteWidget(),
+            'story': SummernoteWidget(attrs={'summernote': {'width': '100%', }}),
             'profiles_mentioned': autocomplete.ModelSelect2Multiple(url='team:profile_autocomplete')
         }
 
@@ -21,6 +21,6 @@ class StoryUpdateForm(BaseForm, forms.ModelForm):
         model = Story
         exclude = ('date_added', 'slug', 'created_by')
         widgets = {
-            'story': SummernoteWidget(),
+            'story': SummernoteWidget(attrs={'summernote': {'width': '100%', }}),
             'profiles_mentioned': autocomplete.ModelSelect2Multiple(url='team:profile_autocomplete')
         }

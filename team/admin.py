@@ -5,7 +5,6 @@ from django.contrib import admin
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.urls import path
-from django_summernote.admin import SummernoteModelAdmin, SummernoteInlineModelAdmin
 
 from .forms import CsvImportForm, ProfileForm
 from .models import Profile, EmailAddress, Membership, Squad, Title, Award, AwardGiven, Post, Page
@@ -78,7 +77,7 @@ class EmailAddressInline(admin.TabularInline):
 
 
 @admin.register(Profile)
-class ProfileAdmin(SummernoteModelAdmin):
+class ProfileAdmin(admin.ModelAdmin):
     fieldsets = [
         (None, {'fields': ['first_name', 'last_name', 'gtid', 'status', 'public', 'owner', 'bio', 'photo', ]}),
         ('Personal', {'fields': ['birthday', 'major', 'hometown'], 'classes': ['collapse']}),
@@ -91,7 +90,6 @@ class ProfileAdmin(SummernoteModelAdmin):
     search_fields = ['first_name', 'last_name', 'gtid']
     autocomplete_fields = ['owner']
     actions = ['make_public', ]
-    summernote_fields = '__all__'
     change_list_template = "team/profile_changelist.html"
 
     def make_public(self, request, queryset):
@@ -194,7 +192,7 @@ class ProfileAdmin(SummernoteModelAdmin):
         )
 
 
-class PostInline(admin.StackedInline, SummernoteInlineModelAdmin):
+class PostInline(admin.StackedInline):
     model = Post
     fieldsets = [
         (None, {'fields': ['header1', 'header2', 'photo', 'text', ]}),

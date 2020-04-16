@@ -17,7 +17,7 @@
       {% endif %}
       <div class="product-item-description d-flex mr-auto">
         <div class="bg-faded p-5 rounded">
-          <p class="mb-0">{{ coach.profile.bio }}</p>
+          <p class="mb-0">{{ coach.profile.bio|safe }}</p>
           {% if coach.profile.latest_email %}
             <div class="intro-button mx-auto">
               <center>

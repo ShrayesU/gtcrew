@@ -53,7 +53,7 @@ class ProfileUpdateForm(BaseForm, forms.ModelForm):
         model = Profile
         exclude = ('date_updated', 'date_added', 'owner', 'status', 'public')
         widgets = {
-            'bio': SummernoteWidget(),
+            'bio': SummernoteWidget(attrs={'summernote': {'width': '100%', }}),
         }
 
 
