@@ -5,35 +5,21 @@
 {% block body %}
 <div class="row">
     <div class="col-sm-3">
+        {% if profile.photo %}
         <div class="card shadow mb-4">
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                <h6 class="m-0 font-weight-bold text-primary">Actions</h6>
+                <h6 class="m-0 font-weight-bold text-primary">Photo</h6>
                 <div class="dropdown no-arrow">
                 </div>
             </div>
             <div class="card-body">
-                {% if allowed_to_edit %}
-                <a type="button" class="btn btn-outline-primary btn-block"
-                   href="{% url 'team:manage_memberships' profile_id=profile.id%}">
-                    Manage Membership
-                </a>
-                <a type="button" class="btn btn-outline-primary btn-block"
-                   href="{% url 'team:manage_awards' profile_id=profile.id%}">
-                    Manage Awards
-                </a>
-                {% else %}
-                <h6 class="font-weight-bold text-primary text-center">You do not have access to edit this Profile</h6>
-                <a type="button" class="btn btn-outline-primary btn-block disabled"
-                   href="{% url 'team:manage_memberships' profile_id=profile.id%}">
-                    Manage Membership
-                </a>
-                <a type="button" class="btn btn-outline-primary btn-block disabled"
-                   href="{% url 'team:manage_awards' profile_id=profile.id%}">
-                    Manage Awards
-                </a>
-                {% endif %}
+                <div class="text-center">
+                    <img class="img-fluid" style="width: 25rem;"
+                         src="{{ profile.photo.url }}" alt="">
+                </div>
             </div>
         </div>
+        {% endif %}
         {% if profile_status %}
         <div class="card shadow mb-4">
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
@@ -54,6 +40,43 @@
             </div>
         </div>
         {% endif %}
+        <div class="card shadow mb-4">
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Actions</h6>
+                <div class="dropdown no-arrow">
+                </div>
+            </div>
+            <div class="card-body">
+                {% if allowed_to_edit %}
+                <a type="button" class="btn btn-outline-primary btn-block"
+                   href="{% url 'team:edit_profile' profile.id%}">
+                    Edit Profile
+                </a>
+                <a type="button" class="btn btn-outline-primary btn-block"
+                   href="{% url 'team:manage_memberships' profile_id=profile.id%}">
+                    Manage Membership
+                </a>
+                <a type="button" class="btn btn-outline-primary btn-block"
+                   href="{% url 'team:manage_awards' profile_id=profile.id%}">
+                    Manage Awards
+                </a>
+                {% else %}
+                <h6 class="font-weight-bold text-primary text-center">You do not have access to edit this Profile</h6>
+                <a type="button" class="btn btn-outline-primary btn-block disabled"
+                   href="{% url 'team:edit_profile' profile.id%}">
+                    Edit Profile
+                </a>
+                <a type="button" class="btn btn-outline-primary btn-block disabled"
+                   href="{% url 'team:manage_memberships' profile_id=profile.id%}">
+                    Manage Membership
+                </a>
+                <a type="button" class="btn btn-outline-primary btn-block disabled"
+                   href="{% url 'team:manage_awards' profile_id=profile.id%}">
+                    Manage Awards
+                </a>
+                {% endif %}
+            </div>
+        </div>
     </div>
     <div class="col-sm-9">
         <div id="accordion">
@@ -79,7 +102,7 @@
                         <h5>Major</h5>
                         <p>{{ profile.major }}</p>
                         <h5>Bio</h5>
-                        <p>{{ profile.bio }}</p>
+                        <p>{{ profile.bio|safe }}</p>
                     </div>
                 </div>
             </div>

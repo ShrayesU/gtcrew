@@ -15,7 +15,7 @@ urlpatterns = [
     path('', views.home_view, name='index'),
     path('page/<str:page_name>/', views.page_view, name='page'),
     path('team/membership/', views.IndexView.as_view(), name='member_index'),
-    path('team/membership/<int:pk>/', views.DetailView.as_view(), name='member_detail'),
+    path('team/membership/<int:pk>/', views.MembershipDetail.as_view(), name='member_detail'),
     path('form/interest/', views.interest, name='interest'),
     path('member/register/', views.signup, name='register'),
     path('team/api/', include(v1_api.urls)),

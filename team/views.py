@@ -1,7 +1,8 @@
 import operator
 from functools import reduce
-from django.contrib import messages
+
 from dal import autocomplete
+from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
@@ -54,7 +55,7 @@ class IndexView(ListView):
         return Membership.students.active().order_by('squad')
 
 
-class DetailView(DetailView):
+class MembershipDetail(DetailView):
     model = Membership
     template_name = 'team/membership_detail.html'
 
@@ -223,11 +224,14 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
         context = super(ProfileUpdateView, self).get_context_data(**kwargs)
 
         allowed_to_edit = False
-        if Profile.objects.filter(owner=self.request.user).exists():
+        if self.request.user.is_staff:
+            allowed_to_edit = True
+        elif Profile.objects.filter(owner=self.request.user).exists():
             user_owns_profile = self.request.user.profile == self.object
             profile_approved = self.object.status == APPROVED
             allowed_to_edit = user_owns_profile and profile_approved
         if not allowed_to_edit:
+            messages.warning(self.request, 'You do not have permission to edit %s' % self.object)
             raise PermissionDenied
 
         return context
@@ -248,6 +252,7 @@ def manage_memberships(request, profile_id):
         profile_approved = profile.status == APPROVED
         allowed_to_edit = user_owns_profile and profile_approved
     if not allowed_to_edit:
+        messages.warning(request, 'You do not have permission to edit %s' % profile)
         raise PermissionDenied
 
     if request.method == "POST":
@@ -277,6 +282,7 @@ def manage_awards(request, profile_id):
         profile_approved = profile.status == APPROVED
         allowed_to_edit = user_owns_profile and profile_approved
     if not allowed_to_edit:
+        messages.warning(request, 'You do not have permission to edit %s' % profile)
         raise PermissionDenied
 
     if request.method == "POST":
@@ -307,6 +313,7 @@ def claim_profile(request, pk):
         messages.success(request, 'You have successfully submitted a claim for this profile.')
 
     return redirect(success_url)
+
 
 """
 Membership Views

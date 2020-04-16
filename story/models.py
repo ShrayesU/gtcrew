@@ -16,11 +16,13 @@ class Story(models.Model):
     profiles_mentioned = models.ManyToManyField(
         Profile,
         blank=True,
+        related_name='stories_mentioned',
     )
 
     created_by = models.ForeignKey(
-        get_user_model(),
+        Profile,
         on_delete=models.PROTECT,
+        related_name='stories_created',
     )
 
     class Meta:
@@ -34,7 +36,7 @@ class Story(models.Model):
     def save(self, *args, **kwargs):
         user = CuserMiddleware.get_user()
         if not self.pk:
-            self.created_by = user
+            self.created_by = user.profile
         if not self.slug:
             self.slug = slugify(self.title)
         super(Story, self).save(*args, **kwargs)

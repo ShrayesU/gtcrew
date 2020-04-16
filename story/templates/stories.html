@@ -24,11 +24,21 @@
                 </div>
             </div>
             <div class="card-body">
+                {% if user.profile %}
                 <p>
                     <a type="button" class="btn btn-outline-primary btn-block" href="{% url 'story:create' %}">
                         Add Story
                     </a>
                 </p>
+                {% else %}
+                <h6 class="font-weight-bold text-primary text-center">You must first claim a Profile before submitting a
+                    story.</h6>
+                <p>
+                    <a type="button" class="btn btn-outline-primary btn-block disabled" href="">
+                        Add Story
+                    </a>
+                </p>
+                {% endif %}
             </div>
         </div>
         <div class="card shadow mb-4">

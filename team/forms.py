@@ -4,6 +4,7 @@ from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
 from django.forms import modelform_factory, inlineformset_factory
+from django_summernote.widgets import SummernoteWidget
 
 from common.forms import BaseForm
 from .models import Profile, Membership, AwardGiven
@@ -51,6 +52,9 @@ class ProfileUpdateForm(BaseForm, forms.ModelForm):
     class Meta:
         model = Profile
         exclude = ('date_updated', 'date_added', 'owner', 'status')
+        widgets = {
+            'bio': SummernoteWidget(),
+        }
 
 
 class MembershipCreateForm(BaseForm, forms.ModelForm):
