@@ -1,0 +1,52 @@
+{% extends 'private.html' %}
+{% load tz %}
+{% block title %}{{ asset.name }}{% endblock %}
+
+{% block body %}
+<div class="row">
+    <div class="col-sm-9">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Description</h6>
+                <div class="dropdown no-arrow">
+                </div>
+            </div>
+            <div class="card-body">
+                <p>{{ asset.type }}</p>
+                <p>Purchased: {{ asset.acquisition_date }}</p>
+                <p>{{ asset.description|safe }}</p>
+                <p>{{ asset.retirement_reason|safe }}</p>
+            </div>
+        </div>
+        {% if asset.retirement_date %}
+        <div class="card shadow mb-4">
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Retirement</h6>
+                <div class="dropdown no-arrow">
+                </div>
+            </div>
+            <div class="card-body">
+                <p>Retired: {{ asset.retirement_date }}</p>
+                <p>{{ asset.retirement_reason|safe }}</p>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+    <div class="col-sm-3">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Details</h6>
+                <div class="dropdown no-arrow">
+                </div>
+            </div>
+            <div class="card-body">
+                <p>Created By: {{ asset.created_by }}</p>
+                <p>Added: {{ asset.date_added }}</p>
+                <p>Last Modified By: {{ asset.last_modified_by }}</p>
+                <p>Updated: {{ asset.date_updated }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

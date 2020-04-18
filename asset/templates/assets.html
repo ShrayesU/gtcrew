@@ -1,0 +1,45 @@
+{% extends 'private.html' %}
+
+{% block title %}Assets{% endblock %}
+
+{% block body %}
+<div class="row">
+    <div class="col-sm-8">
+        <div class="card shadow mb-5">
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Assets</h6>
+                <div class="dropdown no-arrow">
+                </div>
+            </div>
+            <div class="card-body table-responsive">
+                {% include "includes/asset_list.html" %}
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Actions</h6>
+                <div class="dropdown no-arrow">
+                </div>
+            </div>
+            <div class="card-body">
+                {% if user.profile %}
+                <p>
+                    <a type="button" class="btn btn-outline-primary btn-block" href="{% url 'asset:create' %}">
+                        Add an Asset
+                    </a>
+                </p>
+                {% else %}
+                <h6 class="font-weight-bold text-primary text-center">You must first claim a Profile before adding.</h6>
+                <p>
+                    <a type="button" class="btn btn-outline-primary btn-block disabled" href="">
+                        Add an Asset
+                    </a>
+                </p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

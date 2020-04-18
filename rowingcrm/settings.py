@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'team.apps.TeamConfig',
     'event.apps.EventConfig',
     'story.apps.StoryConfig',
+    'asset.apps.AssetConfig',
     'dal',
     'dal_select2',
     'django.contrib.admin',
