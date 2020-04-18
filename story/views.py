@@ -19,7 +19,7 @@ class StoryListView(LoginRequiredMixin, ListView):
         context = super(StoryListView, self).get_context_data(**kwargs)
 
         # include popular and newest stories
-        popular_stories = Story.objects.all()[0:3]
+        popular_stories = Story.objects.all().order_by('-page_views')[0:3]
         newest_stories = Story.objects.all().order_by('-date_added')[:3]
         context.update({'popular_stories': popular_stories, 'newest_stories': newest_stories})
 
@@ -54,6 +54,12 @@ class CreateStoryView(LoginRequiredMixin, CreateView):
 class StoryDetailView(LoginRequiredMixin, DetailView):
     model = Story
     template_name = 'story_view.html'
+
+    def get_object(self, queryset=None):
+        story = super().get_object(queryset)
+        story.page_views += 1
+        story.save()
+        return story
 
 
 class StoryUpdateView(LoginRequiredMixin, UpdateView):

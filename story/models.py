@@ -10,6 +10,7 @@ class Story(models.Model):
     title = models.CharField(unique=True, max_length=100)
     story = models.TextField()
     slug = models.SlugField(unique=True, max_length=100)
+    page_views = models.PositiveIntegerField(default=0)
     date_added = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
 
