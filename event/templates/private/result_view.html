@@ -1,0 +1,54 @@
+{% extends 'private.html' %}
+{% load tz %}
+{% block title %}{{ result.name }}{% endblock %}
+
+{% block body %}
+<div class="row">
+    <div class="col-sm-9">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Description</h6>
+                <div class="dropdown no-arrow">
+                </div>
+            </div>
+            <div class="card-body">
+                <p>{{ result.name }}</p>
+                <p>{{ result.distance }}</p>
+                <p>{{ result.pace_string }}</p>
+                {% if result.coxswain %}
+                <p>Coxswain: <a href="{% url 'team:view_profile' result.coxswain.id %}">{{ result.coxswain }}</a></p>
+                {% endif %}
+                {% if result.shell %}
+                <p>Shell: <a href="{% url 'asset:view' result.shell.id %}">{{ result.shell }}</a></p>
+                {% endif %}
+            </div>
+        </div>
+        {% if result.rowers %}
+        <div class="card shadow mb-4">
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Rowers</h6>
+                <div class="dropdown no-arrow">
+                </div>
+            </div>
+            <div class="card-body table-responsive">
+                {% include "profile/includes/profile_list.html" with profile_list=result.rowers.all %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+    <div class="col-sm-3">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Details</h6>
+                <div class="dropdown no-arrow">
+                </div>
+            </div>
+            <div class="card-body">
+                <p>Created By: {{ result.created_by }}</p>
+                <p>Last Modified By: {{ result.last_modified_by }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

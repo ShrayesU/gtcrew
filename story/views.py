@@ -1,6 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
+from django.db.models import F
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
 
@@ -57,7 +58,7 @@ class StoryDetailView(LoginRequiredMixin, DetailView):
 
     def get_object(self, queryset=None):
         story = super().get_object(queryset)
-        story.page_views += 1
+        story.page_views = F('page_views') + 1
         story.save()
         return story
 

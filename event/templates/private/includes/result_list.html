@@ -4,40 +4,38 @@
     <thead>
     <tr>
         <th scope="col">Name</th>
-        <th scope="col">Type</th>
-        <th scope="col">Acquired</th>
-        <th scope="col">Description</th>
+        <th scope="col">Pace</th>
+        <th scope="col">Meters</th>
         <th scope="col"></th>
     </tr>
     </thead>
     <tbody>
-    {% for asset in asset_list %}
+    {% for result in result_list %}
     <tr>
-        <td><a href="{% url 'asset:view' asset.id %}">{{ asset.name }}</a></td>
-        <td>{{ asset.type }}</td>
-        <td>{{ asset.acquisition_date }}</td>
-        <td>{{ asset.description|safe }}</td>
+        <td><a href="{% url 'event:member_result_view' result.id %}">{{ result.name }}</a></td>
+        <td>{{ result.pace_string }}</td>
+        <td>{{ result.distance }}</td>
         <td class="nav-item dropdown no-arrow">
-            <a class="nav-link dropdown-toggle" href="#" id="assetDropdown_{{ asset.pk }}" role="button"
+            <a class="nav-link dropdown-toggle" href="#" id="resultDropdown_{{ result.pk }}" role="button"
                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="fa fa-caret-square-down"></i>
             </a>
             <!-- Dropdown - User Information -->
             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                 aria-labelledby="assetDropdown_{{ asset.pk }}">
-                <a class="dropdown-item" href="{% url 'asset:view' asset.id %}">
+                 aria-labelledby="resultDropdown_{{ result.pk }}">
+                <a class="dropdown-item" href="{% url 'event:member_result_view' result.id %}">
                     <i class="fa fa-info-circle"></i>
                     Details
                 </a>
-                {% if user == asset.created_by or user.is_staff %}
-                <a class="dropdown-item" href="{% url 'asset:edit' asset.id %}">
+                {% if user == event.created_by or user.is_staff %}
+                <a class="dropdown-item" href="{% url 'event:member_result_edit' result.id %}">
                     <i class="fa fa-edit"></i>
                     Edit
                 </a>
                 {% endif %}
                 {% if user.is_staff %}
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="{% url 'asset:delete' asset.id %}">
+                <a class="dropdown-item" href="{% url 'event:member_result_delete' result.id %}">
                     <i class="fa fa-trash"></i>
                     Delete
                 </a>

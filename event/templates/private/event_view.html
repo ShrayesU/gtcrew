@@ -1,0 +1,77 @@
+{% extends 'private.html' %}
+{% load tz %}
+{% block title %}{{ event.name }}{% endblock %}
+
+{% block body %}
+<div class="row">
+    <div class="col-sm-9">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Description</h6>
+                <div class="dropdown no-arrow">
+                </div>
+            </div>
+            <div class="card-body">
+                <p>{{ event.name }}</p>
+                <p>{{ event.start_datetime }}{% if event.end_datetime %} until {{ event.end_datetime }}{% endif %}</p>
+                <p>{{ event.location }}</p>
+                <p>{{ event.description|safe }}</p>
+            </div>
+        </div>
+        {% if results %}
+        <div class="card shadow mb-4">
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Results</h6>
+                <div class="dropdown no-arrow">
+                </div>
+            </div>
+            <div class="card-body table-responsive">
+                {% include "private/includes/result_list.html" with result_list=results %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+    <div class="col-sm-3">
+        {% if event.event_type == 'Race' %}
+        <div class="card shadow mb-4">
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Actions</h6>
+                <div class="dropdown no-arrow">
+                </div>
+            </div>
+            <div class="card-body">
+                {% if user.profile %}
+                <p>
+                    <a type="button" class="btn btn-outline-primary btn-block"
+                       href="{% url 'event:member_result_create' %}">
+                        Add Result
+                    </a>
+                </p>
+                {% else %}
+                <h6 class="font-weight-bold text-primary text-center">You must first claim a Profile before adding.</h6>
+                <p>
+                    <a type="button" class="btn btn-outline-primary btn-block disabled" href="">
+                        Add Result
+                    </a>
+                </p>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+        <div class="card shadow mb-4">
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Details</h6>
+                <div class="dropdown no-arrow">
+                </div>
+            </div>
+            <div class="card-body">
+                <p>Created By: {{ event.created_by }}</p>
+                <p>Added: {{ event.date_added }}</p>
+                <p>Last Modified By: {{ event.last_modified_by }}</p>
+                <p>Updated: {{ event.date_updated }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

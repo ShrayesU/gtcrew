@@ -21,6 +21,7 @@ urlpatterns = [
     path('', include('team.urls')),
     path('event/', include('event.urls')),
     path('story/', include('story.urls')),
+    path('asset/', include('asset.urls')),
     path('summernote/', include('django_summernote.urls')),
     path('admin/', admin.site.urls),
     path('login/', LoginView.as_view(template_name='login.html'),

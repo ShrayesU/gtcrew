@@ -7,17 +7,17 @@ from team.models import Profile
 
 class Asset(models.Model):
     name = models.CharField(unique=True, max_length=100)
-    serial_number = models.CharField(blank=True, max_length=100)
-    description = models.TextField(blank=True)
+    serial_number = models.CharField(null=True, blank=True, max_length=100)
+    description = models.TextField(null=True, blank=True)
     type = models.CharField(
         max_length=6,
         choices=ASSET_TYPE_CHOICES,
         default=SHELL,
     )
-    acquisition_date = models.DateField(blank=True, help_text='Date of purchase.')
-    acquisition_price = models.DecimalField(max_digits=10, decimal_places=2, blank=True)
-    retirement_date = models.DateField(blank=True, help_text='Date removed from service.')
-    retirement_reason = models.TextField(blank=True)
+    acquisition_date = models.DateField(null=True, blank=True, help_text='Date of purchase.')
+    acquisition_price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    retirement_date = models.DateField(null=True, blank=True, help_text='Date removed from service.')
+    retirement_reason = models.TextField(null=True, blank=True)
     date_added = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
 

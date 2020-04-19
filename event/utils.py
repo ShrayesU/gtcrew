@@ -1,5 +1,8 @@
+RACE = 'Race'
+ADMINISTRATIVE = 'Administrative'
+SOCIAL = 'Social'
 EVENT_TYPES = (
-    ('Race', 'Race'),
-    ('Administrative', 'Administrative'),
-    ('Social', 'Social'),
+    (RACE, 'Race'),
+    (ADMINISTRATIVE, 'Administrative'),
+    (SOCIAL, 'Social'),
 )

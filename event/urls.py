@@ -1,10 +1,9 @@
 from django.urls import path
 
 from event.views import (
-    EventListView, EventDetailView, ResultView, ResultDataTable
-    # CreateEventView, UpdateEventView,
-    # DeleteEventView, GetContactView, GetEventsView,
-    # DeleteAttachmentView, AddAttachmentView
+    EventListView, EventDetailView, ResultView, ResultDataTable, EventListViewPrivate, CreateEventViewPrivate,
+    EventDetailViewPrivate, EventUpdateViewPrivate, EventDeleteViewPrivate, CreateResultViewPrivate,
+    ResultDetailViewPrivate, ResultUpdateViewPrivate, ResultDeleteViewPrivate
 )
 
 app_name = 'event'
@@ -13,14 +12,17 @@ urlpatterns = [
     path('result/', ResultView.as_view(), name='result'),
     path('list/', EventListView.as_view(), name='list'),
     path('data/', ResultDataTable.as_view(), name='resultdatatable'),
-    # path('create/', CreateEventView.as_view(), name='save'),
     path('<int:pk>/view/', EventDetailView.as_view(), name="event_view"),
-    # path('<int:pk>/edit/', UpdateEventView.as_view(), name="event_edit"),
-    # path('<int:pk>/delete/', DeleteEventView.as_view(), name="event_remove"),
-
-    # path('contacts/', GetContactView.as_view(), name="contacts"),
-    # path('get/list/', GetEventsView.as_view(), name="get_Event"),
-
-    # path('attachment/add/', AddAttachmentView.as_view(), name="add_attachment"),
-    # path('attachment/remove/', DeleteAttachmentView.as_view(), name="remove_attachment"),
+    # Private Member urls: Event
+    path('member/list/', EventListViewPrivate.as_view(), name='member_event_list'),
+    path('member/create/', CreateEventViewPrivate.as_view(), name='member_event_create'),
+    path('member/<int:pk>/view/', EventDetailViewPrivate.as_view(), name='member_event_view'),
+    path('member/<int:pk>/edit/', EventUpdateViewPrivate.as_view(), name='member_event_edit'),
+    path('member/<int:pk>/delete/', EventDeleteViewPrivate.as_view(), name='member_event_delete'),
+    # Private Member urls: Result
+    # path('member/result/list/', ResultListViewPrivate.as_view(), name='member_result_list'),
+    path('member/result/create/', CreateResultViewPrivate.as_view(), name='member_result_create'),
+    path('member/result/<int:pk>/view/', ResultDetailViewPrivate.as_view(), name='member_result_view'),
+    path('member/result/<int:pk>/edit/', ResultUpdateViewPrivate.as_view(), name='member_result_edit'),
+    path('member/result/<int:pk>/delete/', ResultDeleteViewPrivate.as_view(), name='member_result_delete'),
 ]

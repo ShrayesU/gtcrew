@@ -1,0 +1,17 @@
+{% extends 'private.html' %}
+
+{% block title %}Delete Event{% endblock %}
+
+{% block body %}
+<div class="text-center">
+    <h3>Are you sure?</h3>
+    <p>You're about to delete {{ event.name }}.<br>Please confirm.</p>
+    <form action="" method="post">
+        {% csrf_token %}
+        <input type="button" value="Cancel"
+               class="btn btn-outline-primary btn-block"
+               onclick="window.history.go(-1);"/>
+        <input class="btn btn-outline-danger btn-block" type="submit" value="Confirm">
+    </form>
+</div>
+{% endblock %}
