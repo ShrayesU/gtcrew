@@ -4,8 +4,9 @@
     <thead>
     <tr>
         <th scope="col">Name</th>
-        <th scope="col">Pace</th>
+        <th scope="col">Time</th>
         <th scope="col">Meters</th>
+        <th scope="col">Pace</th>
         <th scope="col"></th>
     </tr>
     </thead>
@@ -13,8 +14,9 @@
     {% for result in result_list %}
     <tr>
         <td><a href="{% url 'event:member_result_view' result.id %}">{{ result.name }}</a></td>
-        <td>{{ result.pace_string }}</td>
+        <td>{{ result.total_time_string }}</td>
         <td>{{ result.distance }}</td>
+        <td>{{ result.pace_string }}</td>
         <td class="nav-item dropdown no-arrow">
             <a class="nav-link dropdown-toggle" href="#" id="resultDropdown_{{ result.pk }}" role="button"
                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

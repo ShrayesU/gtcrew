@@ -117,6 +117,10 @@ class Result(models.Model):
 
         super(Result, self).save(*args, **kwargs)
 
+    def total_time_string(self):
+        """Returns string of total time"""
+        return '{:02d}:{:06.3f}'.format(self.minutes, self.seconds)
+
     def pace(self):
         """Returns the pace rowed in the form of seconds per 500 meters."""
         seconds = float(self.minutes * 60) + float(self.seconds)

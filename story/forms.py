@@ -9,7 +9,7 @@ from .models import Story
 class StoryCreateForm(BaseForm, forms.ModelForm):
     class Meta:
         model = Story
-        exclude = ('date_added', 'slug', 'created_by')
+        exclude = ('date_added', 'slug', 'created_by', 'last_modified_by', 'page_views', )
         widgets = {
             'story': SummernoteWidget(attrs={'summernote': {'width': '100%', }}),
             'profiles_mentioned': autocomplete.ModelSelect2Multiple(url='team:profile_autocomplete')
@@ -19,7 +19,7 @@ class StoryCreateForm(BaseForm, forms.ModelForm):
 class StoryUpdateForm(BaseForm, forms.ModelForm):
     class Meta:
         model = Story
-        exclude = ('date_added', 'slug', 'created_by')
+        exclude = ('date_added', 'slug', 'created_by', 'last_modified_by', 'page_views', )
         widgets = {
             'story': SummernoteWidget(attrs={'summernote': {'width': '100%', }}),
             'profiles_mentioned': autocomplete.ModelSelect2Multiple(url='team:profile_autocomplete')

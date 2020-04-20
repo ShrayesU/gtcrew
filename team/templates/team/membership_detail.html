@@ -17,7 +17,7 @@
             </h2>
             <p class="mb-3">Hometown: {{ membership.profile.hometown }}</p>
             <p class="mb-3">Major: {{ membership.profile.major }}</p>
-            <p class="mb-3">Bio: {{ membership.profile.bio }}</p>
+            <p class="mb-3">Bio: {{ membership.profile.bio|safe }}</p>
           </div>  
         </div>
       </div>

@@ -13,8 +13,9 @@
             </div>
             <div class="card-body">
                 <p>{{ result.name }}</p>
-                <p>{{ result.distance }}</p>
-                <p>{{ result.pace_string }}</p>
+                <p>Time: {{ result.total_time_string }}</p>
+                <p>Length: {{ result.distance }} meters</p>
+                <p>Pace: {{ result.pace_string }}</p>
                 {% if result.coxswain %}
                 <p>Coxswain: <a href="{% url 'team:view_profile' result.coxswain.id %}">{{ result.coxswain }}</a></p>
                 {% endif %}
@@ -23,7 +24,7 @@
                 {% endif %}
             </div>
         </div>
-        {% if result.rowers %}
+        {% if result.rowers.all %}
         <div class="card shadow mb-4">
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                 <h6 class="m-0 font-weight-bold text-primary">Rowers</h6>

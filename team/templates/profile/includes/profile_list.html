@@ -3,7 +3,6 @@
     <tr>
         <th scope="col">First Name</th>
         <th scope="col">Last Name</th>
-        <th scope="col">Status</th>
         <th scope="col"></th>
         <th scope="col"></th>
     </tr>
@@ -13,7 +12,6 @@
     <tr>
         <td>{{ profile.first_name }}</td>
         <td>{{ profile.last_name }}</td>
-        <td>{{ profile.status }}</td>
         <td>
             <a href="{% url 'team:view_profile' profile.id %}">
                 <i class="fa fa-info-circle"></i>

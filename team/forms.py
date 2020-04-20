@@ -13,7 +13,7 @@ User = get_user_model()
 
 ProfileForm = modelform_factory(Profile, exclude=('bio',))
 
-MembershipInlineForm = inlineformset_factory(Profile, Membership, exclude=(), extra=1)
+MembershipInlineForm = inlineformset_factory(Profile, Membership, exclude=('public',), extra=1)
 
 AwardInlineForm = inlineformset_factory(Profile, AwardGiven, exclude=(), extra=1)
 

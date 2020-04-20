@@ -60,7 +60,7 @@ class StoryDetailView(LoginRequiredMixin, DetailView):
         story = super().get_object(queryset)
         story.page_views = F('page_views') + 1
         story.save()
-        return story
+        return super().get_object(queryset)
 
 
 class StoryUpdateView(LoginRequiredMixin, UpdateView):

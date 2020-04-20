@@ -16,7 +16,11 @@
         <td><a href="{% url 'asset:view' asset.id %}">{{ asset.name }}</a></td>
         <td>{{ asset.type }}</td>
         <td>{{ asset.acquisition_date }}</td>
-        <td>{{ asset.description|safe }}</td>
+        {% if asset.description|length >= 100 %}
+        <td>{{ asset.description|slice:'0:100' }}...</td>
+        {% else %}
+        <td>{{ asset.description }}</td>
+        {% endif %}
         <td class="nav-item dropdown no-arrow">
             <a class="nav-link dropdown-toggle" href="#" id="assetDropdown_{{ asset.pk }}" role="button"
                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

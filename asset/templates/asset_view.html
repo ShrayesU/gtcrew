@@ -13,9 +13,8 @@
             </div>
             <div class="card-body">
                 <p>{{ asset.type }}</p>
-                <p>Purchased: {{ asset.acquisition_date }}</p>
-                <p>{{ asset.description|safe }}</p>
-                <p>{{ asset.retirement_reason|safe }}</p>
+                <p>Purchased Date: {{ asset.acquisition_date }}</p>
+                <p>{{ asset.description }}</p>
             </div>
         </div>
         {% if asset.retirement_date %}
@@ -27,7 +26,7 @@
             </div>
             <div class="card-body">
                 <p>Retired: {{ asset.retirement_date }}</p>
-                <p>{{ asset.retirement_reason|safe }}</p>
+                <p>{{ asset.retirement_reason }}</p>
             </div>
         </div>
         {% endif %}
@@ -41,8 +40,8 @@
             </div>
             <div class="card-body">
                 <p>Created By: {{ asset.created_by }}</p>
-                <p>Added: {{ asset.date_added }}</p>
                 <p>Last Modified By: {{ asset.last_modified_by }}</p>
+                <p>Added: {{ asset.date_added }}</p>
                 <p>Updated: {{ asset.date_updated }}</p>
             </div>
         </div>
