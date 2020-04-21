@@ -12,16 +12,82 @@
                 </div>
             </div>
             <div class="card-body">
-                <form method="post">{% csrf_token %}
-                    <div class="form-group table-responsive">
-                        <table class="table">
-                            {{ form.as_table }}
-                        </table>
+                <form class="needs-validation" novalidate method="post">{% csrf_token %}
+                    <div class="row mb-3">
+                        <div class="col">
+                            {{ form.first_name }}
+                        </div>
+                        <div class="col">
+                            {{ form.last_name }}
+                        </div>
                     </div>
-                    <input class="btn btn-outline-primary btn-block" type="submit" value="Save">
-                    <input type="button" value="Cancel"
-                           class="btn btn-outline-danger btn-block"
-                           onclick="window.history.go(-1);"/>
+                    {% if form.gtid.errors %}
+                    {% for error in form.gtid.errors %}
+                    <label class="text-danger">
+                        {{ error|escape }}
+                    </label>
+                    {% endfor %}
+                    {% endif %}
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                                <span class="input-group-text"
+                                      id="{{ form.gtid.id_for_label }}">{{ form.gtid.label }}</span>
+                        </div>
+                        {{ form.gtid }}
+                    </div>
+                    {% if form.birthday.errors %}
+                    {% for error in form.birthday.errors %}
+                    <label class="text-danger">
+                        {{ error|escape }}
+                    </label>
+                    {% endfor %}
+                    {% endif %}
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                                <span class="input-group-text"
+                                      id="{{ form.birthday.id_for_label }}">{{ form.birthday.label }}</span>
+                        </div>
+                        {{ form.birthday }}
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                                <span class="input-group-text"
+                                      id="{{ form.major.id_for_label }}">{{ form.major.label }}</span>
+                        </div>
+                        {{ form.major }}
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                                <span class="input-group-text"
+                                      id="{{ form.hometown.id_for_label }}">{{ form.hometown.label }}</span>
+                        </div>
+                        {{ form.hometown }}
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Photo</span>
+                        </div>
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="{{ form.photo.id_for_label }}">
+                            <label class="custom-file-label" for="{{ form.photo.id_for_label }}">Choose file</label>
+                        </div>
+                    </div>
+                    <div class="dropdown-divider"></div>
+                    <div class="form-group mb-3">
+                        {{ form.bio }}
+                    </div>
+
+                    <div class="dropdown-divider"></div>
+
+                    <div class="input-group mb-3 my-3">
+                        <div class="col">
+                            <input class="btn btn-outline-primary btn-block" type="submit" value="Save">
+                        </div>
+                        <div class="col">
+                            <input type="button" value="Cancel"
+                                   class="btn btn-outline-danger btn-block"
+                                   onclick="window.history.go(-1);"/></div>
+                    </div>
                 </form>
             </div>
         </div>

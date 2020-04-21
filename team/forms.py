@@ -53,8 +53,19 @@ class ProfileUpdateForm(BaseForm, forms.ModelForm):
         model = Profile
         exclude = ('date_updated', 'date_added', 'owner', 'status', 'public')
         widgets = {
-            'bio': SummernoteWidget(attrs={'summernote': {'width': '100%', }}),
+            'bio': SummernoteWidget(attrs={'summernote': {'width': '100%',
+                                                          'placeholder': 'Write a little something...'}
+                                           }),
         }
+
+    def __init__(self, *args, **kwargs):
+        super(ProfileUpdateForm, self).__init__(*args, **kwargs)
+        self.fields['first_name'].widget.attrs['placeholder'] = 'First Name'
+        self.fields['last_name'].widget.attrs['placeholder'] = 'Last Name'
+        self.fields['gtid'].widget.attrs['placeholder'] = '90*******'
+        self.fields['birthday'].widget.attrs['placeholder'] = 'YYYY-MM-DD'
+        self.fields['major'].widget.attrs['placeholder'] = 'Mechanical Engineering'
+        self.fields['hometown'].widget.attrs['placeholder'] = 'Atlanta, GA'
 
 
 class MembershipCreateForm(BaseForm, forms.ModelForm):
