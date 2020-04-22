@@ -4,7 +4,6 @@
         <th scope="col">First Name</th>
         <th scope="col">Last Name</th>
         <th scope="col"></th>
-        <th scope="col"></th>
     </tr>
     </thead>
     <tbody>
@@ -12,15 +11,25 @@
     <tr>
         <td>{{ profile.first_name }}</td>
         <td>{{ profile.last_name }}</td>
-        <td>
-            <a href="{% url 'team:view_profile' profile.id %}">
-                <i class="fa fa-info-circle"></i>
+        <td class="nav-item dropdown no-arrow">
+            <a class="nav-link dropdown-toggle" href="#" id="profileDropdown_{{ profile.pk }}" role="button"
+               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fa fa-caret-square-down"></i>
             </a>
-        </td>
-        <td>
-            <a href="{% url 'team:edit_profile' profile.id %}">
-                <i class="fa fa-edit"></i>
-            </a>
+            <!-- Dropdown - User Information -->
+            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                 aria-labelledby="profileDropdown_{{ profile.pk }}">
+                <a class="dropdown-item" href="{% url 'team:view_profile' profile.id %}">
+                    <i class="fa fa-info-circle"></i>
+                    Details
+                </a>
+                {% if user == profile.created_by or user.is_staff %}
+                <a class="dropdown-item" href="{% url 'team:edit_profile' profile.id %}">
+                    <i class="fa fa-edit"></i>
+                    Edit
+                </a>
+                {% endif %}
+            </div>
         </td>
     </tr>
     {% endfor %}

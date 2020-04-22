@@ -14,7 +14,7 @@
     {% for asset in asset_list %}
     <tr>
         <td><a href="{% url 'asset:view' asset.id %}">{{ asset.name }}</a></td>
-        <td>{{ asset.type }}</td>
+        <td>{{ asset.get_type_display }}</td>
         <td>{{ asset.acquisition_date }}</td>
         {% if asset.description|length >= 100 %}
         <td>{{ asset.description|slice:'0:100' }}...</td>

@@ -36,13 +36,8 @@
                 <div class="dropdown no-arrow">
                 </div>
             </div>
-            <div class="card-body">
-                <p>
-                {% for profile in story.profiles_mentioned.all %}
-                    <a href="{% url 'team:view_profile' profile.id %}">
-                        {{ profile }}</a>{% if not forloop.last %}, {% endif %}
-                {% endfor %}
-                </p>
+            <div class="card-body table-responsive">
+                {% include "profile/includes/profile_list.html" with profile_list=story.profiles_mentioned.all %}
             </div>
         </div>
         {% endif %}

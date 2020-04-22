@@ -13,15 +13,38 @@
             </div>
             <div class="card-body">
                 <form method="post">{% csrf_token %}
-                    <div class="form-group table-responsive">
-                        <table class="table">
-                            {{ form.as_table }}
-                        </table>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                                <span class="input-group-text"
+                                      id="{{ form.title.id_for_label }}">{{ form.title.label }}</span>
+                        </div>
+                        {{ form.title }}
                     </div>
-                    <input class="btn btn-outline-primary btn-block" type="submit" value="Save">
-                    <input type="button" value="Cancel"
-                           class="btn btn-outline-danger btn-block"
-                           onclick="window.history.go(-1);"/>
+
+                    <div class="dropdown-divider"></div>
+
+                    {{ form.profiles_mentioned }}
+                    <small id="{{ form.profiles_mentioned.id_for_label }}" class="form-text text-muted">
+                        List all profiles mentioned
+                    </small>
+
+                    <div class="dropdown-divider"></div>
+
+                    <div class="form-group mb-3">
+                        {{ form.story }}
+                    </div>
+
+                    <div class="dropdown-divider"></div>
+
+                    <div class="input-group mb-3 my-3">
+                        <div class="col">
+                            <input class="btn btn-outline-primary btn-block" type="submit" value="Save">
+                        </div>
+                        <div class="col">
+                            <input type="button" value="Cancel"
+                                   class="btn btn-outline-danger btn-block"
+                                   onclick="window.history.go(-1);"/></div>
+                    </div>
                 </form>
             </div>
         </div>
