@@ -107,6 +107,17 @@
                 <span>Inventory</span></a>
         </li>
 
+        <hr class="sidebar-divider my-0">
+
+        <li class="nav-item">
+            <a class="nav-link" href="" data-toggle="modal" data-target="#feedbackModal">
+                <i class="fas fa-fw fa-comment-alt"></i>
+                <span>Feedback</span>
+            </a>
+        </li>
+
+        <hr class="sidebar-divider">
+
         <!-- Sidebar Toggler (Sidebar) -->
         <div class="text-center d-none d-md-inline">
             <button class="rounded-circle border-0" id="sidebarToggle"></button>
@@ -160,54 +171,54 @@
                                     Last Login: {{ user.last_login }}
                                 </span>
                             {% endtimezone %}
-<!--                            <i class="fas fa-envelope fa-fw"></i>-->
-<!--                            <span class="badge badge-danger badge-counter">7</span>-->
+                            <!--                            <i class="fas fa-envelope fa-fw"></i>-->
+                            <!--                            <span class="badge badge-danger badge-counter">7</span>-->
                         </a>
                     </li>
-<!--                    &lt;!&ndash; Nav Item - Alerts &ndash;&gt;-->
-<!--                    <li class="nav-item dropdown no-arrow mx-1">-->
-<!--                        <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"-->
-<!--                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">-->
-<!--                            <i class="fas fa-bell fa-fw"></i>-->
-<!--                            &lt;!&ndash; Counter - Alerts &ndash;&gt;-->
-<!--                            {% if messages %}-->
-<!--                            <span class="badge badge-danger badge-counter">{{ messages.count }}</span>-->
-<!--                            {% endif %}-->
-<!--                        </a>-->
-<!--                        &lt;!&ndash; Dropdown - Alerts &ndash;&gt;-->
-<!--                        <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated&#45;&#45;grow-in"-->
-<!--                             aria-labelledby="alertsDropdown">-->
-<!--                            <h6 class="dropdown-header">-->
-<!--                                Alerts Center-->
-<!--                            </h6>-->
+                    <!--                    &lt;!&ndash; Nav Item - Alerts &ndash;&gt;-->
+                    <!--                    <li class="nav-item dropdown no-arrow mx-1">-->
+                    <!--                        <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"-->
+                    <!--                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">-->
+                    <!--                            <i class="fas fa-bell fa-fw"></i>-->
+                    <!--                            &lt;!&ndash; Counter - Alerts &ndash;&gt;-->
+                    <!--                            {% if messages %}-->
+                    <!--                            <span class="badge badge-danger badge-counter">{{ messages.count }}</span>-->
+                    <!--                            {% endif %}-->
+                    <!--                        </a>-->
+                    <!--                        &lt;!&ndash; Dropdown - Alerts &ndash;&gt;-->
+                    <!--                        <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated&#45;&#45;grow-in"-->
+                    <!--                             aria-labelledby="alertsDropdown">-->
+                    <!--                            <h6 class="dropdown-header">-->
+                    <!--                                Alerts Center-->
+                    <!--                            </h6>-->
 
-<!--                            {% if messages %}-->
-<!--                            {% for message in messages %}-->
-<!--                            <a class="dropdown-item d-flex align-items-center" href="#">-->
-<!--                                <div class="mr-3">-->
-<!--                                    <div class="icon-circle bg-{{ message.tags }}">-->
-<!--                                        <i class="fas fa-bell text-white"></i>-->
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                                <div>-->
-<!--                                    <div class="small text-gray-500">{{ message.tags|title }}</div>-->
-<!--                                    <span class="font-weight-bold">{{ message }}</span>-->
-<!--                                </div>-->
-<!--                            </a>-->
-<!--                            {% endfor %}-->
-<!--                            {% else %}-->
-<!--                            <a class="dropdown-item d-flex align-items-center" href="#">-->
-<!--                                <div class="mr-3">-->
+                    <!--                            {% if messages %}-->
+                    <!--                            {% for message in messages %}-->
+                    <!--                            <a class="dropdown-item d-flex align-items-center" href="#">-->
+                    <!--                                <div class="mr-3">-->
+                    <!--                                    <div class="icon-circle bg-{{ message.tags }}">-->
+                    <!--                                        <i class="fas fa-bell text-white"></i>-->
+                    <!--                                    </div>-->
+                    <!--                                </div>-->
+                    <!--                                <div>-->
+                    <!--                                    <div class="small text-gray-500">{{ message.tags|title }}</div>-->
+                    <!--                                    <span class="font-weight-bold">{{ message }}</span>-->
+                    <!--                                </div>-->
+                    <!--                            </a>-->
+                    <!--                            {% endfor %}-->
+                    <!--                            {% else %}-->
+                    <!--                            <a class="dropdown-item d-flex align-items-center" href="#">-->
+                    <!--                                <div class="mr-3">-->
 
-<!--                                </div>-->
-<!--                                <div>-->
-<!--                                    <span class="font-weight-bold">No notifications.</span>-->
-<!--                                </div>-->
-<!--                            </a>-->
-<!--                            {% endif %}-->
-<!--                            <a class="dropdown-item text-center small text-gray-500" href="#">&#45;&#45;</a>-->
-<!--                        </div>-->
-<!--                    </li>-->
+                    <!--                                </div>-->
+                    <!--                                <div>-->
+                    <!--                                    <span class="font-weight-bold">No notifications.</span>-->
+                    <!--                                </div>-->
+                    <!--                            </a>-->
+                    <!--                            {% endif %}-->
+                    <!--                            <a class="dropdown-item text-center small text-gray-500" href="#">&#45;&#45;</a>-->
+                    <!--                        </div>-->
+                    <!--                    </li>-->
 
                     <div class="topbar-divider d-none d-sm-block"></div>
 
@@ -234,10 +245,10 @@
                             </a>
                             <div class="dropdown-divider"></div>
                             {% endif %}
-<!--                            <a class="dropdown-item" href="#">-->
-<!--                                <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>-->
-<!--                                Settings-->
-<!--                            </a>-->
+                            <!--                            <a class="dropdown-item" href="#">-->
+                            <!--                                <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>-->
+                            <!--                                Settings-->
+                            <!--                            </a>-->
                             <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                                 <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                 Logout
@@ -291,10 +302,10 @@
                             </div>
                             <!-- Card Body -->
                             <div class="card-body">
-<!--                                <div class="text-center">-->
-<!--                                    <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;"-->
-<!--                                         src="" alt="">-->
-<!--                                </div>-->
+                                <!--                                <div class="text-center">-->
+                                <!--                                    <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;"-->
+                                <!--                                         src="" alt="">-->
+                                <!--                                </div>-->
                                 <p>I am still working on this site, but I hope you see the promise.</p>
                                 <p>If this is your first time, please search for your profile and claim it. You can use
                                     the search bar at the top of the page -- for mobile devices, you may need landscape
@@ -355,6 +366,33 @@
     </div>
 </div>
 
+<!-- Modal -->
+<div class="modal fade" id="feedbackModal" tabindex="-1" role="dialog" aria-labelledby="feedbackModalTitle"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="feedbackModalTitle">Feedback</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="{% url 'feedback:create' %}" method="post">{% csrf_token %}
+                <div class="modal-body">
+                    <input type="hidden" name="next" value="{{ request.path }}">
+                    <div class="form-group">
+                        <textarea name="feedback" class="form-control"
+                                  id="id_feedback" placeholder="Thanks Champ..."></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input class="btn btn-outline-primary btn-block" type="submit" value="Submit Feedback">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <!-- JQuery -->
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <!-- Bootstrap tooltips -->
@@ -402,6 +440,9 @@ if(localStorage.getItem("accordionSidebar") !== null) {
         document.getElementById("sidebarToggle").click();
     }
 }
+
+
+
 
 
 

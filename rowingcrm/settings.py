@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'event.apps.EventConfig',
     'story.apps.StoryConfig',
     'asset.apps.AssetConfig',
+    'feedback.apps.FeedbackConfig',
     'dal',
     'dal_select2',
     'django.contrib.admin',
