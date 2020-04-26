@@ -162,12 +162,12 @@
             <div class="card shadow">
                 <div class="card-header" id="headingFour">
                     <h5 class="mb-0">
-                        {% if profile.awardgiven_set.count > 0 %} <!-- TODO: include boats if-else statement -->
+                        {% if profile.results_rowed.all.count > 0 %}
                         <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseFour"
                                 aria-expanded="false" aria-controls="collapseFour">
-                            Boats
+                            Results
                         </button>
-                        <span class="badge badge-primary badge-pill"></span>  <!-- TODO: include boat count -->
+                        <span class="badge badge-primary badge-pill">{{ profile.results_rowed.all.count }}</span>
                         {% else %}
                         <button class="btn btn-link collapsed disabled" data-toggle="collapse"
                                 data-target="#collapseFour"
@@ -179,7 +179,7 @@
                 </div>
                 <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordion">
                     <div class="card-body table-responsive">
-                        <!-- TODO: include boats table -->
+                        {% include "private/includes/result_list.html" with result_list=profile.results_rowed.all %}
                     </div>
                 </div>
             </div>
