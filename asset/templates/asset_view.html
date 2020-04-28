@@ -14,7 +14,7 @@
             <div class="card-body">
                 <p>{{ asset.get_type_display }}</p>
                 <p>Purchased Date: {{ asset.acquisition_date }}</p>
-                <p>{{ asset.description }}</p>
+                <p>{{ asset.description|safe }}</p>
             </div>
         </div>
         {% if asset.retirement_date %}

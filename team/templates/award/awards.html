@@ -24,11 +24,7 @@
                     {% for award in award_list %}
                     <tr>
                         <td>{{ award }}</td>
-                        {% if award.description|length >= 100 %}
-                        <td>{{ award.description|slice:'0:100' }}...</td>
-                        {% else %}
-                        <td>{{ award.description }}</td>
-                        {% endif %}
+                        <td>{{ award.description|truncatewords_html:25 }}</td>
                         <td>
                             <a href="{% url 'team:view_award' award.id %}">
                                 <i class="fa fa-info-circle"></i>

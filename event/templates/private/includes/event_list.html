@@ -20,7 +20,7 @@
         <td>{{ event.location }}</td>
         <td>{{ event.start_datetime }}</td>
         <td>{{ event.end_datetime }}</td>
-        <td>{{ event.description|safe }}</td>
+        <td>{{ event.description|safe|truncatewords_html:25 }}</td>
         <td class="nav-item dropdown no-arrow">
             <a class="nav-link dropdown-toggle" href="#" id="resultDropdown_{{ event.pk }}" role="button"
                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
