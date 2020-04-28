@@ -8,7 +8,7 @@ from django_datatables_view.base_datatable_view import BaseDatatableView
 
 from event.models import Event, Result
 from team.models import Profile
-from .forms import EventCreateForm, EventUpdateForm, ResultCreateForm, ResultUpdateForm
+from .forms import EventCreateForm, EventUpdateForm, ResultCreateForm, ResultUpdateForm, ResultPersonalCreateForm
 
 
 class EventListView(ListView):
@@ -119,6 +119,13 @@ class ResultUpdateViewPrivate(LoginRequiredMixin, UpdateView):
     template_name = 'private/result_create.html'
     form_class = ResultUpdateForm
     success_url = reverse_lazy('event:member_event_list')
+
+    def get_form_class(self, **kwargs):
+        result = self.object
+        if result.personal_record:
+            return ResultPersonalCreateForm
+        else:
+            return super(ResultUpdateViewPrivate, self).get_form_class(**kwargs)
 
     def get_context_data(self, **kwargs):
         context = super(ResultUpdateViewPrivate, self).get_context_data(**kwargs)

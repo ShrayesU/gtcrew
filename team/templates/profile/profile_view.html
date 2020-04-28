@@ -60,6 +60,10 @@
                    href="{% url 'team:manage_awards' profile_id=profile.id%}">
                     Manage Awards
                 </a>
+                <a type="button" class="btn btn-outline-primary btn-block"
+                   href="{% url 'team:manage_results' profile_id=profile.id%}">
+                    Add Personal Results
+                </a>
                 {% else %}
                 <h6 class="font-weight-bold text-primary text-center">You do not have access to edit this Profile</h6>
                 <a type="button" class="btn btn-outline-primary btn-block disabled"
@@ -73,6 +77,10 @@
                 <a type="button" class="btn btn-outline-primary btn-block disabled"
                    href="{% url 'team:manage_awards' profile_id=profile.id%}">
                     Manage Awards
+                </a>
+                <a type="button" class="btn btn-outline-primary btn-block"
+                   href="{% url 'team:manage_results' profile_id=profile.id%}">
+                    Add Personal Results
                 </a>
                 {% endif %}
             </div>
@@ -172,7 +180,7 @@
                         <button class="btn btn-link collapsed disabled" data-toggle="collapse"
                                 data-target="#collapseFour"
                                 aria-expanded="false" aria-controls="collapseFour">
-                            Boats
+                            Results
                         </button>
                         {% endif %}
                     </h5>

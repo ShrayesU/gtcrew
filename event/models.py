@@ -69,6 +69,7 @@ class Result(models.Model):
     seconds = models.DecimalField(max_digits=5, decimal_places=3, default=0,
                                   validators=[MinValueValidator(0), MaxValueValidator(59.999)])
     public = models.BooleanField(default=False)
+    personal_record = models.BooleanField(default=False)
 
     shell = models.ForeignKey(
         Asset,

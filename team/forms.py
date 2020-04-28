@@ -7,6 +7,7 @@ from django.forms import modelform_factory, inlineformset_factory
 from django_summernote.widgets import SummernoteWidget
 
 from common.forms import BaseForm
+from event.models import Result
 from .models import Profile, Membership, AwardGiven
 
 User = get_user_model()
@@ -16,6 +17,10 @@ ProfileForm = modelform_factory(Profile, exclude=('bio',))
 MembershipInlineForm = inlineformset_factory(Profile, Membership, exclude=('public',), extra=1)
 
 AwardInlineForm = inlineformset_factory(Profile, AwardGiven, exclude=(), extra=1)
+
+ResultInlineForm = inlineformset_factory(Profile, Result.rowers.through, extra=1,
+                                         exclude=())
+                                         # fields=('date', 'distance', 'minutes', 'seconds',))
 
 
 class InterestForm(forms.Form):
