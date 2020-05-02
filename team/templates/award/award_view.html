@@ -39,7 +39,7 @@
                     {% for award in awardgiven_list %}
                     <tr>
                         <td>{{ award.year }}</td>
-                        <td>{{ award.profile }}</td>
+                        <td><a href="{% url 'team:view_profile' award.profile.id %}">{{ award.profile }}</a></td>
                         <td>
                             <a href="{% url 'team:view_awardgiven' award.id %}">
                                 <i class="fa fa-info-circle"></i>

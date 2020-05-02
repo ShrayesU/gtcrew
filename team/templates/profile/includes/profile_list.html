@@ -9,8 +9,8 @@
     <tbody>
     {% for profile in profile_list %}
     <tr>
-        <td>{{ profile.first_name }}</td>
-        <td>{{ profile.last_name }}</td>
+        <td><a href="{% url 'team:view_profile' profile.id %}">{{ profile.first_name }}</a></td>
+        <td><a href="{% url 'team:view_profile' profile.id %}">{{ profile.last_name }}</a></td>
         <td class="nav-item dropdown no-arrow">
             <a class="nav-link dropdown-toggle" href="#" id="profileDropdown_{{ profile.pk }}" role="button"
                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

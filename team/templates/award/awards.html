@@ -23,7 +23,7 @@
                     <tbody>
                     {% for award in award_list %}
                     <tr>
-                        <td>{{ award }}</td>
+                        <td><a href="{% url 'team:view_award' award.id %}">{{ award }}</a></td>
                         <td>{{ award.description|truncatewords_html:25 }}</td>
                         <td>
                             <a href="{% url 'team:view_award' award.id %}">

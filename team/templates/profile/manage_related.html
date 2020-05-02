@@ -43,10 +43,18 @@
                             {% endfor %}
                         </table>
                     </div>
-                    <input class="btn btn-outline-primary btn-block" type="submit" value="Save">
-                    <input type="button" value="Cancel"
-                           class="btn btn-outline-danger btn-block"
-                           onclick="window.history.go(-1);"/>
+
+                    <div class="dropdown-divider"></div>
+
+                    <div class="input-group mb-3 my-3">
+                        <div class="col">
+                            <input class="btn btn-outline-primary btn-block" type="submit" value="Save">
+                        </div>
+                        <div class="col">
+                            <input type="button" value="Cancel"
+                                   class="btn btn-outline-danger btn-block"
+                                   onclick="window.history.go(-1);"/></div>
+                    </div>
                 </form>
             </div>
         </div>
