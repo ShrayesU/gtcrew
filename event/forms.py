@@ -13,8 +13,12 @@ class EventCreateForm(BaseForm, forms.ModelForm):
         exclude = ('date_added', 'date_updated', 'public', 'created_by', 'last_modified_by')
         widgets = {
             'description': SummernoteWidget(attrs={'summernote': {'width': '100%', }}),
-            'start_datetime': DateTimePicker(),
-            'end_datetime': DateTimePicker(),
+            'start_datetime': DateTimePicker(options={
+                'icons': {'time': "fa fa-clock"},
+            }),
+            'end_datetime': DateTimePicker(options={
+                'icons': {'time': "fa fa-clock"},
+            }),
         }
 
 
@@ -24,8 +28,12 @@ class EventUpdateForm(BaseForm, forms.ModelForm):
         exclude = ('date_added', 'date_updated', 'public', 'created_by', 'last_modified_by')
         widgets = {
             'description': SummernoteWidget(attrs={'summernote': {'width': '100%', }}),
-            'start_datetime': DateTimePicker(),
-            'end_datetime': DateTimePicker(),
+            'start_datetime': DateTimePicker(options={
+                'icons': {'time': "fa fa-clock"},
+            }),
+            'end_datetime': DateTimePicker(options={
+                'icons': {'time': "fa fa-clock"},
+            }),
         }
 
 
@@ -33,7 +41,8 @@ class ResultCreateForm(BaseForm, forms.ModelForm):
     class Meta:
         model = Result
         exclude = (
-        'created_by', 'last_modified_by', 'public', 'time', 'personal_record')  # TODO: remove time after deleting field
+            'created_by', 'last_modified_by', 'public', 'time',
+            'personal_record')  # TODO: remove time after deleting field
         widgets = {
             'coxswain': autocomplete.ModelSelect2(url='team:profile_autocomplete'),
             'rowers': autocomplete.ModelSelect2Multiple(url='team:profile_autocomplete'),
