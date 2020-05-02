@@ -10,7 +10,7 @@
     {% for story in story_list %}
     <tr>
         <td><a href="{% url 'story:view' story.slug %}">{{ story.title }}</a></td>
-        <td>{{ story.created_by }}</td>
+        <td><a href="{% url 'team:view_profile' story.created_by.id %}">{{ story.created_by }}</a></td>
         <td class="nav-item dropdown no-arrow">
             <a class="nav-link dropdown-toggle" href="#" id="storyDropdown_{{ story.pk }}" role="button"
                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

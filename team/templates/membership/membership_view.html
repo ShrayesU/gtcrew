@@ -4,24 +4,41 @@
 
 {% block body %}
 <div class="row">
-    <div class="col-sm-3">
-        <a type="button" class="btn btn-outline-primary btn-block"
-           href="{% url 'team:view_profile' membership.profile.id %}">
-            View Profile
-        </a>
-        <br>
+    <div class="col-sm-4">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Actions</h6>
+                <div class="dropdown no-arrow">
+                </div>
+            </div>
+            <div class="card-body">
+                <a type="button" class="btn btn-outline-primary btn-block"
+                   href="{% url 'team:view_profile' membership.profile.id %}">
+                    View Profile
+                </a>
+            </div>
+        </div>
     </div>
-    <div class="col-sm-9">
-        <h5>Semester</h5>
-        <p>{{ membership.semester }}</p>
-        <h5>Year</h5>
-        <p>{{ membership.year }}</p>
-        <h5>Name</h5>
-        <p>{{ membership.profile.full_name }}</p>
-        <h5>Squad</h5>
-        <p>{{ membership.squad }}</p>
-        <h5>Title</h5>
-        <p>{{ membership.title }}</p>
+    <div class="col-sm-8">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Details</h6>
+                <div class="dropdown no-arrow">
+                </div>
+            </div>
+            <div class="card-body">
+                <h5>Semester</h5>
+                <p>{{ membership.semester }}</p>
+                <h5>Year</h5>
+                <p>{{ membership.year }}</p>
+                <h5>Name</h5>
+                <p>{{ membership.profile.full_name }}</p>
+                <h5>Squad</h5>
+                <p>{{ membership.squad }}</p>
+                <h5>Title</h5>
+                <p>{{ membership.title }}</p>
+            </div>
+        </div>
     </div>
 </div>
 {% endblock %}
