@@ -26,7 +26,7 @@
             </div>
             <div class="card-body">
                 <p>Retired: {{ asset.retirement_date }}</p>
-                <p>{{ asset.retirement_reason }}</p>
+                <p>{{ asset.retirement_reason|safe }}</p>
             </div>
         </div>
         {% endif %}

@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'django_cleanup',
     'cuser',
     'django_summernote',
+    'tempus_dominus',
 ]
 
 MIDDLEWARE = [
