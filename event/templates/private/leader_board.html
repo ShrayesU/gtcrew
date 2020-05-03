@@ -1,0 +1,93 @@
+{% extends 'private.html' %}
+{% load tz %}
+{% block title %}Leader Board{% endblock %}
+
+{% block body %}
+<div class="row">
+    <div class="col-sm-9">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Leader Board</h6>
+                <div class="dropdown no-arrow">
+                </div>
+            </div>
+            <div class="card-body table-responsive">
+                {% if result_list %}
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">Rank</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Time</th>
+                        <th scope="col">Meters</th>
+                        <th scope="col">Pace</th>
+                        <th scope="col"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for result in result_list %}
+                    <tr>
+                        <td>{{ result.rank }}</td>
+                        <td><a href="{% url 'team:view_profile' result.id %}">{{ result.name }}</a></td>
+                        <td>{{ result.total_time_string }}</td>
+                        <td>{{ result.distance }}</td>
+                        <td>{{ result.pace_string }}</td>
+                        <td>
+                            {% if result.lightweight %}
+                            <i class="fas fa-feather-alt"></i>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <div class="text-center">
+                    <i class="far fa-flushed"></i> No Results Found
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-3">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Filters</h6>
+                <div class="dropdown no-arrow">
+                </div>
+            </div>
+            <div class="card-body">
+                <form action="{% url 'event:member_result_leader_board' %}" method="get">
+                    <!--Distance-->
+                    <div class="input-group mb-3">
+                        <select class="custom-select" name="distance" id="distance">
+                            <option selected value="2000">Distance</option>
+                            <option value="2000">2k</option>
+                            <option value="6000">6k</option>
+                        </select>
+                    </div>
+                    <!--Lightweight-->
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">
+                                <input type="checkbox" value="True" id="lightweight"
+                                       name="lightweight">
+                            </div>
+                        </div>
+                        <label class="form-control" for="lightweight">Lightweight Only</label>
+                    </div>
+
+
+                    <div class="dropdown-divider"></div>
+
+                    <div class="input-group mb-3 my-3">
+                        <div class="col">
+                            <input class="btn btn-outline-primary btn-block" type="submit" value="Apply Filters">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

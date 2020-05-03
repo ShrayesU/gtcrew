@@ -15,7 +15,7 @@ class Event(models.Model):
     start_datetime = models.DateTimeField()
     end_datetime = models.DateTimeField(blank=True, null=True)
     event_type = models.CharField(pgettext_lazy('Type of Event', 'Type'), max_length=64, choices=EVENT_TYPES)
-    squads = models.ManyToManyField(Squad)
+    squads = models.ManyToManyField(Squad, blank=True, null=True)
     description = models.TextField(blank=True, null=True)
     date_added = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
@@ -68,6 +68,9 @@ class Result(models.Model):
     minutes = models.PositiveIntegerField(default=0)
     seconds = models.DecimalField(max_digits=5, decimal_places=3, default=0,
                                   validators=[MinValueValidator(0), MaxValueValidator(59.999)])
+    lightweight = models.BooleanField(default=False)
+    rank = models.PositiveIntegerField(default=1, validators=[MinValueValidator(1), ])
+    pace = models.FloatField(default=0)
     public = models.BooleanField(default=False)
     personal_record = models.BooleanField(default=False)
 
@@ -116,13 +119,15 @@ class Result(models.Model):
             self.created_by = user.profile
         self.last_modified_by = user.profile
 
+        self.pace = self.get_pace()
+
         super(Result, self).save(*args, **kwargs)
 
     def total_time_string(self):
         """Returns string of total time"""
         return '{:02d}:{:06.3f}'.format(self.minutes, self.seconds)
 
-    def pace(self):
+    def get_pace(self):
         """Returns the pace rowed in the form of seconds per 500 meters."""
         seconds = float(self.minutes * 60) + float(self.seconds)
         five_hundred = float(self.distance) / 500
@@ -130,11 +135,11 @@ class Result(models.Model):
 
     def pace_string(self):
         """Returns pace in string format of MM:SS.mmm/Meters"""
-        pace = self.pace()
+        pace = self.get_pace()
         minutes, seconds = int(pace // 60), pace % 60
         return '{:02d}:{:06.3f}/500m'.format(minutes, seconds)
 
     def watts(self):
         """Returns the power in watts based on average pace per 500 meters."""
-        pace = self.pace()
+        pace = self.get_pace()
         return 2.80 / (pace ** 3)

@@ -42,7 +42,7 @@ class ResultCreateForm(BaseForm, forms.ModelForm):
         model = Result
         exclude = (
             'created_by', 'last_modified_by', 'public', 'time',
-            'personal_record')  # TODO: remove time after deleting field
+            'personal_record', 'pace')  # TODO: remove time after deleting field
         widgets = {
             'coxswain': autocomplete.ModelSelect2(url='team:profile_autocomplete'),
             'rowers': autocomplete.ModelSelect2Multiple(url='team:profile_autocomplete'),
@@ -53,7 +53,7 @@ class ResultCreateForm(BaseForm, forms.ModelForm):
 class ResultUpdateForm(BaseForm, forms.ModelForm):
     class Meta:
         model = Result
-        exclude = ('created_by', 'last_modified_by', 'public', 'time', 'personal_record')
+        exclude = ('created_by', 'last_modified_by', 'public', 'time', 'personal_record', 'pace')
         widgets = {
             'coxswain': autocomplete.ModelSelect2(url='team:profile_autocomplete'),
             'rowers': autocomplete.ModelSelect2Multiple(url='team:profile_autocomplete'),
@@ -64,7 +64,7 @@ class ResultUpdateForm(BaseForm, forms.ModelForm):
 class ResultPersonalCreateForm(BaseForm, forms.ModelForm):
     class Meta:
         model = Result
-        fields = ('date', 'distance', 'minutes', 'seconds')
+        fields = ('date', 'distance', 'minutes', 'seconds', 'lightweight')
         widgets = {
             'date': DatePicker(),
         }

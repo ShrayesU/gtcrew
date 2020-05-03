@@ -1,6 +1,8 @@
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
+from django.db.models import Min
+from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
 from django.views.generic import TemplateView
@@ -148,3 +150,41 @@ class ResultDeleteViewPrivate(LoginRequiredMixin, DeleteView):
     model = Result
     template_name = 'private/result_delete.html'
     success_url = reverse_lazy('event:member_event_list')
+
+
+def view_leader_board(request):
+    template_name = 'private/leader_board.html'
+    distance = int(request.GET.get('distance', 2000))
+    lightweight = bool(request.GET.get('lightweight', False))
+
+    if lightweight:
+        qs = Profile.objects.filter(results_rowed__personal_record=True,
+                                    results_rowed__distance=distance,
+                                    results_rowed__lightweight=True,
+                                    ).values('first_name',
+                                             'last_name',
+                                             'id',
+                                             'results_rowed__lightweight',
+                                             ).annotate(pace=Min('results_rowed__pace')).order_by('pace')[:10]
+    else:
+        qs = Profile.objects.filter(results_rowed__personal_record=True,
+                                    results_rowed__distance=distance,
+                                    ).values('first_name',
+                                             'last_name',
+                                             'id',
+                                             'results_rowed__lightweight',
+                                             ).annotate(pace=Min('results_rowed__pace')).order_by('pace')[:10]
+
+    for i, result in enumerate(qs):
+        result['name'] = result['first_name'] + ' ' + result['last_name']
+        result['lightweight'] = result['results_rowed__lightweight']
+        result['rank'] = i + 1
+        total = result['pace'] * distance / 500
+        total_minutes, total_seconds = int(total // 60), total % 60
+        result['total_time_string'] = '{:02d}:{:06.3f}'.format(total_minutes, total_seconds)
+        result['distance'] = distance
+        minutes, seconds = int(result['pace'] // 60), result['pace'] % 60
+        result['pace_string'] = '{:02d}:{:06.3f}/500m'.format(minutes, seconds)
+
+    context = {'result_list': qs, }
+    return render(request, template_name, context)
