@@ -13,34 +13,24 @@
             </div>
             <div class="card-body table-responsive">
                 {% if result_list %}
-                <table class="table">
-                    <thead>
-                    <tr>
-                        <th scope="col">Rank</th>
-                        <th scope="col">Name</th>
-                        <th scope="col">Time</th>
-                        <th scope="col">Meters</th>
-                        <th scope="col">Pace</th>
-                        <th scope="col"></th>
-                    </tr>
-                    </thead>
-                    <tbody>
+                <div class="list-group">
                     {% for result in result_list %}
-                    <tr>
-                        <td>{{ result.rank }}</td>
-                        <td><a href="{% url 'team:view_profile' result.id %}">{{ result.name }}</a></td>
-                        <td>{{ result.total_time_string }}</td>
-                        <td>{{ result.distance }}</td>
-                        <td>{{ result.pace_string }}</td>
-                        <td>
+                    <a href="{% url 'team:view_profile' result.id %}"
+                       class="list-group-item list-group-item-action flex-column align-items-start">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1">{{ result.rank }}. {{ result.name }}</h5>
+                            <small class="text-muted">{{ result.distance }}meters</small>
+                        </div>
+                        <div class="d-flex w-100 justify-content-between">
+                            <p class="mb-1">Total Time: {{ result.total_time_string }}</p>
                             {% if result.lightweight %}
                             <i class="fas fa-feather-alt"></i>
                             {% endif %}
-                        </td>
-                    </tr>
+                        </div>
+                        <small class="text-muted">{{ result.pace_string }}</small>
+                    </a>
                     {% endfor %}
-                    </tbody>
-                </table>
+                </div>
                 {% else %}
                 <div class="text-center">
                     <i class="far fa-flushed"></i> No Results Found
