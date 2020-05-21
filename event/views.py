@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.db.models import Min
@@ -152,6 +153,7 @@ class ResultDeleteViewPrivate(LoginRequiredMixin, DeleteView):
     success_url = reverse_lazy('event:member_event_list')
 
 
+@login_required
 def view_leader_board(request):
     template_name = 'private/leader_board.html'
     distance = int(request.GET.get('distance', 2000))

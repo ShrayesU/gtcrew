@@ -4,6 +4,7 @@ from functools import reduce
 from dal import autocomplete
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.core.exceptions import PermissionDenied
@@ -238,6 +239,7 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
         return context
 
 
+@login_required
 def manage_memberships(request, profile_id):
     template_name = 'profile/manage_related.html'
     profile = get_object_or_404(Profile, pk=profile_id)
@@ -268,6 +270,7 @@ def manage_memberships(request, profile_id):
     return render(request, template_name, context)
 
 
+@login_required
 def manage_awards(request, profile_id):
     template_name = 'profile/manage_related.html'
     profile = get_object_or_404(Profile, pk=profile_id)
@@ -297,6 +300,7 @@ def manage_awards(request, profile_id):
     return render(request, template_name, {'formset': formset, 'profile': profile, 'prefix': prefix})
 
 
+@login_required
 def manage_results(request, profile_id):
     template_name = 'private/event_create.html'
     profile = get_object_or_404(Profile, pk=profile_id)
@@ -329,6 +333,7 @@ def manage_results(request, profile_id):
     return render(request, template_name, {'form': form, 'profile': profile, })
 
 
+@login_required
 def claim_profile(request, pk):
     profile = get_object_or_404(Profile, pk=pk)
     success_url = reverse_lazy('team:view_profile', kwargs={'pk': profile.pk})
