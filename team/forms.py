@@ -37,6 +37,7 @@ class CsvImportForm(forms.Form):
 
 
 class SignUpForm(BaseForm, UserCreationForm):
+    access_code = forms.CharField(max_length=17)
     captcha = ReCaptchaField(widget=ReCaptchaV2Checkbox)
 
     class Meta:
@@ -51,6 +52,13 @@ class SignUpForm(BaseForm, UserCreationForm):
         self.fields['email'].widget.attrs['placeholder'] = 'Email Address'
         self.fields['password1'].widget.attrs['placeholder'] = 'Password'
         self.fields['password2'].widget.attrs['placeholder'] = 'Repeat Password'
+        self.fields['access_code'].widget.attrs['placeholder'] = 'Enter Access Code'
+
+    def clean_access_code(self):
+        data = self.cleaned_data['access_code']
+        if data != 'expecttowin85':
+            raise forms.ValidationError('Invalid access code.')
+        return data
 
 
 class ProfileUpdateForm(BaseForm, forms.ModelForm):
