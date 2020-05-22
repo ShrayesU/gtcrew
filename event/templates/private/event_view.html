@@ -4,7 +4,7 @@
 
 {% block body %}
 <div class="row">
-    <div class="col-sm-9">
+    <div class="col-lg-9">
         <div class="card shadow mb-4">
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                 <h6 class="m-0 font-weight-bold text-primary">Description</h6>
@@ -12,10 +12,35 @@
                 </div>
             </div>
             <div class="card-body">
-                <p>{{ event.name }}</p>
-                <p>{{ event.start_datetime }}{% if event.end_datetime %} until {{ event.end_datetime }}{% endif %}</p>
-                <p>{{ event.location }}</p>
-                <p>{{ event.description|safe }}</p>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-xs-4 col-md-3">Event Name</div>
+                            <div class="col-xs-8 col-md-9 text-primary">{{ event.name }}</div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-xs-4 col-md-3">Time</div>
+                            <div class="col-xs-8 col-md-9 text-primary">
+                                {{ event.start_datetime }}
+                                {% if event.end_datetime %} until {{ event.end_datetime }}{% endif %}
+                            </div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-xs-4 col-md-3">Location</div>
+                            <div class="col-xs-8 col-md-9 text-primary">{{ event.location }}</div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-xs-4 col-md-3">Description</div>
+                            <div class="col-xs-8 col-md-9 text-primary">{{ event.description|safe }}</div>
+                        </div>
+                    </li>
+                </ul>
             </div>
         </div>
         {% if results %}
@@ -31,7 +56,7 @@
         </div>
         {% endif %}
     </div>
-    <div class="col-sm-3">
+    <div class="col-lg-3">
         {% if event.event_type == 'Race' %}
         <div class="card shadow mb-4">
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
@@ -65,10 +90,32 @@
                 </div>
             </div>
             <div class="card-body">
-                <p>Created By: {{ event.created_by }}</p>
-                <p>Added: {{ event.date_added }}</p>
-                <p>Last Modified By: {{ event.last_modified_by }}</p>
-                <p>Updated: {{ event.date_updated }}</p>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-md-6">Created By</div>
+                            <div class="col-md-6 text-primary">{{ event.created_by }}</div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-md-6">Added</div>
+                            <div class="col-md-6 text-primary">{{ event.date_added }}</div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-md-6">Last Modified By</div>
+                            <div class="col-md-6 text-primary">{{ event.last_modified_by }}</div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-md-6">Updated</div>
+                            <div class="col-md-6 text-primary">{{ event.date_updated }}</div>
+                        </div>
+                    </li>
+                </ul>
             </div>
         </div>
     </div>

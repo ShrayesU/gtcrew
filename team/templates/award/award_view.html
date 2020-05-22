@@ -4,7 +4,7 @@
 
 {% block body %}
 <div class="row">
-    <div class="col-sm-4">
+    <div class="col-lg-4">
         <div class="card shadow mb-4">
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                 <h6 class="m-0 font-weight-bold text-primary">Details</h6>
@@ -12,14 +12,24 @@
                 </div>
             </div>
             <div class="card-body">
-                <h5>Award</h5>
-                <p>{{ award }}</p>
-                <h5>Description</h5>
-                <p>{{ award.description }}</p>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-md-4">Award</div>
+                            <div class="col-md-8 text-primary">{{ award }}</div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-md-4">Description</div>
+                            <div class="col-md-8 text-primary">{{ award.description }}</div>
+                        </div>
+                    </li>
+                </ul>
             </div>
         </div>
     </div>
-    <div class="col-sm-8 table-responsive">
+    <div class="col-lg-8 table-responsive">
         <div class="card shadow mb-4">
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                 <h6 class="m-0 font-weight-bold text-primary">Recipients</h6>

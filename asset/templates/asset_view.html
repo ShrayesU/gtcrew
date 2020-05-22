@@ -12,9 +12,26 @@
                 </div>
             </div>
             <div class="card-body">
-                <p>{{ asset.get_type_display }}</p>
-                <p>Purchased Date: {{ asset.acquisition_date }}</p>
-                <p>{{ asset.description|safe }}</p>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-xs-4 col-md-3">Type</div>
+                            <div class="col-xs-8 col-md-9 text-primary">{{ asset.get_type_display }}</div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-xs-4 col-md-3">Purchased Date</div>
+                            <div class="col-xs-8 col-md-9 text-primary">{{ asset.acquisition_date }}</div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-xs-4 col-md-3">Description</div>
+                            <div class="col-xs-8 col-md-9 text-primary">{{ asset.description|safe }}</div>
+                        </div>
+                    </li>
+                </ul>
             </div>
         </div>
         {% if asset.retirement_date %}
@@ -25,8 +42,20 @@
                 </div>
             </div>
             <div class="card-body">
-                <p>Retired: {{ asset.retirement_date }}</p>
-                <p>{{ asset.retirement_reason|safe }}</p>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-xs-4 col-md-3">Retired</div>
+                            <div class="col-xs-8 col-md-9 text-primary">{{ asset.retirement_date }}</div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-xs-4 col-md-3">Reason</div>
+                            <div class="col-xs-8 col-md-9 text-primary">{{ asset.retirement_reason|safe }}</div>
+                        </div>
+                    </li>
+                </ul>
             </div>
         </div>
         {% endif %}
@@ -39,10 +68,32 @@
                 </div>
             </div>
             <div class="card-body">
-                <p>Created By: {{ asset.created_by }}</p>
-                <p>Last Modified By: {{ asset.last_modified_by }}</p>
-                <p>Added: {{ asset.date_added }}</p>
-                <p>Updated: {{ asset.date_updated }}</p>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-md-6">Created By</div>
+                            <div class="col-md-6 text-primary">{{ asset.created_by }}</div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-md-6">Added</div>
+                            <div class="col-md-6 text-primary">{{ asset.date_added }}</div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-md-6">Last Modified By</div>
+                            <div class="col-md-6 text-primary">{{ asset.last_modified_by }}</div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-md-6">Updated</div>
+                            <div class="col-md-6 text-primary">{{ asset.date_updated }}</div>
+                        </div>
+                    </li>
+                </ul>
             </div>
         </div>
     </div>

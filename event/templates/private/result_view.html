@@ -4,7 +4,7 @@
 
 {% block body %}
 <div class="row">
-    <div class="col-sm-9">
+    <div class="col-lg-8">
         <div class="card shadow mb-4">
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                 <h6 class="m-0 font-weight-bold text-primary">Description</h6>
@@ -12,22 +12,56 @@
                 </div>
             </div>
             <div class="card-body">
-                <p>{{ result.name }}</p>
-                <p>Time: {{ result.total_time_string }}</p>
-                <p>Length: {{ result.distance }} meters</p>
-                <p>Pace: {{ result.pace_string }}</p>
-                {% if result.coxswain %}
-                <p>Coxswain: <a href="{% url 'team:view_profile' result.coxswain.id %}">{{ result.coxswain }}</a></p>
-                {% endif %}
-                {% if result.shell %}
-                <p>Shell: <a href="{% url 'asset:view' result.shell.id %}">{{ result.shell }}</a></p>
-                {% endif %}
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-xs-4 col-md-3">Time</div>
+                            <div class="col-xs-8 col-md-9 text-primary">{{ result.total_time_string }}</div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-xs-4 col-md-3">Length</div>
+                            <div class="col-xs-8 col-md-9 text-primary">{{ result.distance }} meters</div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-xs-4 col-md-3">Pace</div>
+                            <div class="col-xs-8 col-md-9 text-primary">{{ result.pace_string }}</div>
+                        </div>
+                    </li>
+                    {% if result.coxswain %}
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-xs-4 col-md-3">Coxswain</div>
+                            <div class="col-xs-8 col-md-9">
+                                <a href="{% url 'team:view_profile' result.coxswain.id %}">{{ result.coxswain }}</a>
+                            </div>
+                        </div>
+                    </li>
+                    {% endif %}
+                    {% if result.shell %}
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-xs-4 col-md-3">Shell</div>
+                            <div class="col-xs-8 col-md-9">
+                                <a href="{% url 'asset:view' result.shell.id %}">{{ result.shell }}</a>
+                            </div>
+                        </div>
+                    </li>
+                    {% endif %}
+                </ul>
             </div>
         </div>
         {% if result.rowers.all %}
         <div class="card shadow mb-4">
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                {% if result.rowers.all|length == 1%}
+                <h6 class="m-0 font-weight-bold text-primary">Rower</h6>
+                {% else %}
                 <h6 class="m-0 font-weight-bold text-primary">Rowers</h6>
+                {% endif %}
                 <div class="dropdown no-arrow">
                 </div>
             </div>
@@ -37,7 +71,7 @@
         </div>
         {% endif %}
     </div>
-    <div class="col-sm-3">
+    <div class="col-lg-4">
         <div class="card shadow mb-4">
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                 <h6 class="m-0 font-weight-bold text-primary">Details</h6>
@@ -45,8 +79,20 @@
                 </div>
             </div>
             <div class="card-body">
-                <p>Created By: {{ result.created_by }}</p>
-                <p>Last Modified By: {{ result.last_modified_by }}</p>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-md-6">Created By</div>
+                            <div class="col-md-6 text-primary">{{ result.created_by }}</div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-md-6">Last Modified By</div>
+                            <div class="col-md-6 text-primary">{{ result.last_modified_by }}</div>
+                        </div>
+                    </li>
+                </ul>
             </div>
         </div>
     </div>

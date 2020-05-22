@@ -101,16 +101,39 @@
 
                 <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
                     <div class="card-body">
-                        <h5>GT ID</h5>
-                        <p>*****{{ profile.gtid|slice:'-4:' }}</p>
-                        <h5>Birthday</h5>
-                        <p>{{ profile.birthday }}</p>
-                        <h5>Hometown</h5>
-                        <p>{{ profile.hometown }}</p>
-                        <h5>Major</h5>
-                        <p>{{ profile.major }}</p>
-                        <h5>Bio</h5>
-                        <p>{{ profile.bio|safe }}</p>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">
+                                <div class="row">
+                                    <div class="col-xs-4 col-md-3">GT ID</div>
+                                    <div class="col-xs-8 col-md-9 text-primary">*****{{ profile.gtid|slice:'-4:' }}
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="row">
+                                    <div class="col-xs-4 col-md-3">Birthday</div>
+                                    <div class="col-xs-8 col-md-9 text-primary">{{ profile.birthday }}</div>
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="row">
+                                    <div class="col-xs-4 col-md-3">Hometown</div>
+                                    <div class="col-xs-8 col-md-9 text-primary">{{ profile.hometown }}</div>
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="row">
+                                    <div class="col-xs-4 col-md-3">Major</div>
+                                    <div class="col-xs-8 col-md-9 text-primary">{{ profile.major }}</div>
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="row">
+                                    <div class="col-xs-4 col-md-3">Bio</div>
+                                    <div class="col-xs-8 col-md-9 text-primary">{{ profile.bio|safe }}</div>
+                                </div>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>

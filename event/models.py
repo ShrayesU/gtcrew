@@ -15,7 +15,7 @@ class Event(models.Model):
     start_datetime = models.DateTimeField()
     end_datetime = models.DateTimeField(blank=True, null=True)
     event_type = models.CharField(pgettext_lazy('Type of Event', 'Type'), max_length=64, choices=EVENT_TYPES)
-    squads = models.ManyToManyField(Squad, blank=True, null=True)
+    squads = models.ManyToManyField(Squad, blank=True)
     description = models.TextField(blank=True, null=True)
     date_added = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
