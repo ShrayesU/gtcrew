@@ -38,7 +38,7 @@
             <div class="sidebar-brand-icon">
                 <img class="img-fluid" src="{% static 'private/img/logo.png' %}">
             </div>
-            <div class="sidebar-brand-text mx-2">Georgia Tech Crew</div>
+            <div class="sidebar-brand-text mx-2"><sup>G</sup><sub>T</sub> Crew</div>
         </a>
 
         <!-- Divider -->
@@ -260,9 +260,13 @@
                             </a>
                             {% if user.is_staff %}
                             <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="{% url 'team:index' %}">
+                                <i class="fas fa-globe-americas fa-sm fa-fw mr-2 text-gray-400"></i>
+                                Public Website
+                            </a>
                             <a class="dropdown-item" href="/admin">
-                                <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                                Admin Site
+                                <i class="fas fa-crown fa-sm fa-fw mr-2 text-gray-400"></i>
+                                Admin Website
                             </a>
                             {% endif %}
                         </div>
@@ -291,7 +295,7 @@
 
                 <!-- Page Heading -->
                 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                    <h1 class="h3 mb-0 text-gray-800">{% block title %}Welcome{% endblock %}</h1>
+                    <h1 class="h3 mb-0 text-gray-800">{% block title %}Member Portal<sup>beta</sup>{% endblock %}</h1>
                 </div>
 
                 <!-- Content Row -->
