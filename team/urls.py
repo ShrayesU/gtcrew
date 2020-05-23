@@ -20,7 +20,7 @@ urlpatterns = [
     path('member/register/', views.signup, name='register'),
     path('team/api/', include(v1_api.urls)),
     # Member urls
-    path('member/', login_required(TemplateView.as_view(template_name='private.html')), name='index_member'),
+    path('member/', views.PortalView.as_view(), name='index_member'),
     # Profile urls
     path('member/profile/list/', views.ProfileListView.as_view(), name='list_profile'),
     path('member/profile/list/search/', views.SearchProfileListView.as_view(), name='search_profile'),

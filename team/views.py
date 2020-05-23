@@ -8,12 +8,13 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.core.exceptions import PermissionDenied
-from django.db.models import Q
+from django.db.models import Q, Count
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
-from django.views.generic import ListView, CreateView, DetailView, UpdateView
+from django.views.generic import ListView, CreateView, DetailView, UpdateView, TemplateView
 
 from event.forms import ResultPersonalCreateForm
+from story.models import Story
 from .forms import (SignUpForm, InterestForm, ProfileUpdateForm, MembershipInlineForm, MembershipUpdateForm,
                     AwardInlineForm, ResultInlineForm)
 from .models import Profile, EmailAddress, Page, Post, Membership, AwardGiven, Award
@@ -103,6 +104,26 @@ def interest(request):
     else:
         form = InterestForm()
     return render(request, 'team/interest.html', {'form': form, 'pages': pages})
+
+
+"""
+Profile Views
+"""
+
+
+class PortalView(LoginRequiredMixin, TemplateView):
+    template_name = 'private.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['profile_count_all'] = Profile.objects.all().count()
+        context['profile_count_approved'] = Profile.objects.filter(status=APPROVED).count()
+        context['story_count_all'] = Story.objects.all().count()
+        membership_list = Membership.objects.values('year', 'semester').annotate(count=Count('profile'))
+        context['membership_list'] = membership_list
+        context['membership_count'] = [x['count'] for x in membership_list]
+        context['membership_label'] = [str('{}{}'.format(x['semester'], x['year'])) for x in membership_list]
+        return context
 
 
 """
