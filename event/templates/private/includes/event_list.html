@@ -1,57 +1,30 @@
 {% load tz %}
 
-<table class="table">
-    <thead>
-    <tr>
-        <th scope="col">Name</th>
-        <th scope="col">Type</th>
-        <th scope="col">Location</th>
-        <th scope="col">Start</th>
-        <th scope="col">End</th>
-        <th scope="col">Description</th>
-        <th scope="col"></th>
-    </tr>
-    </thead>
-    <tbody>
+
+<div class="list-group list-group-flush">
     {% for event in event_list %}
-    <tr>
-        <td><a href="{% url 'event:member_event_view' event.id %}">{{ event.name }}</a></td>
-        <td>{{ event.event_type }}</td>
-        <td>{{ event.location }}</td>
-        <td>{{ event.start_datetime }}</td>
-        <td>{{ event.end_datetime }}</td>
-        <td>{{ event.description|safe|truncatewords_html:25 }}</td>
-        <td class="nav-item dropdown no-arrow">
-            <a class="nav-link dropdown-toggle" href="#" id="resultDropdown_{{ event.pk }}" role="button"
-               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i class="fa fa-caret-square-down"></i>
-            </a>
-            <!-- Dropdown - User Information -->
-            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                 aria-labelledby="resultDropdown_{{ event.pk }}">
-                <a class="dropdown-item" href="{% url 'event:member_event_view' event.id %}">
-                    <i class="fa fa-info-circle"></i>
-                    Details
-                </a>
-                {% if user == event.created_by or user.is_staff %}
-                <a class="dropdown-item" href="{% url 'event:member_event_edit' event.id %}">
-                    <i class="fa fa-edit"></i>
-                    Edit
-                </a>
-                {% endif %}
-                {% if user.is_staff %}
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="{% url 'event:member_event_delete' event.id %}">
-                    <i class="fa fa-trash"></i>
-                    Delete
-                </a>
-                {% endif %}
+    <a href="{% url 'event:member_event_view' event.id %}"
+       class="list-group-item list-group-item-action flex-column align-items-start">
+        <div class="row">
+            <div class="col-2 bg-dark rounded text-center">
+                <h6 class="text-light mt-1">{{ event.start_datetime|date:"F" }}</h6>
+                <h6 class="text-light">{{ event.start_datetime|date:"Y" }}</h6>
+                <h4 class="text-warning mb-1">{{ event.start_datetime|date:"d" }}</h4>
             </div>
-        </td>
-    </tr>
+            <div class="col-10">
+                <div class="d-flex w-100 justify-content-between">
+                    <p class="mb-1"></p>
+                    <span class="my-1 badge badge-pill badge-warning">{{ event.event_type }}</span>
+                </div>
+                <h5 class="mb-1">{{ event.name }}</h5>
+                <div class="d-flex w-100 justify-content-between">
+                    <small>{{ event.description|safe|truncatewords_html:15 }}</small>
+                </div>
+            </div>
+        </div>
+    </a>
     {% endfor %}
-    </tbody>
-</table>
+</div>
 
 {% if is_paginated %}
 <nav aria-label="...">

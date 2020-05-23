@@ -130,6 +130,14 @@ class ResultUpdateViewPrivate(LoginRequiredMixin, UpdateView):
         else:
             return super(ResultUpdateViewPrivate, self).get_form_class(**kwargs)
 
+    def get_success_url(self):
+        result = self.object
+        if result.personal_record:
+            # self.success_url = reverse_lazy('event:member_result_view', kwargs={'pk': result.pk})
+            profile = result.rowers.first()
+            self.success_url = reverse_lazy('team:view_profile', kwargs={'pk': profile.pk})
+        return super(ResultUpdateViewPrivate, self).get_success_url()
+
     def get_context_data(self, **kwargs):
         context = super(ResultUpdateViewPrivate, self).get_context_data(**kwargs)
 
@@ -154,7 +162,7 @@ class ResultDeleteViewPrivate(LoginRequiredMixin, DeleteView):
 
 
 @login_required
-def view_leader_board(request):
+def view_leaderboard(request):
     template_name = 'private/leader_board.html'
     distance = int(request.GET.get('distance', 2000))
     lightweight = bool(request.GET.get('lightweight', False))

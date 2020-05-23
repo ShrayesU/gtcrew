@@ -12,7 +12,7 @@
                 </div>
             </div>
             <div class="card-body table-responsive">
-                {% include "includes/story_list.html" %}
+                {% include "includes/story_table.html" %}
             </div>
         </div>
     </div>
@@ -48,7 +48,7 @@
                 </div>
             </div>
             <div class="card-body table-responsive">
-                {% include "includes/story_custom_list.html" with story_list=popular_stories%}
+                {% include "includes/story_list.html" with story_list=popular_stories%}
             </div>
         </div>
         <div class="card shadow mb-4">
@@ -58,7 +58,7 @@
                 </div>
             </div>
             <div class="card-body table-responsive">
-                {% include "includes/story_custom_list.html" with story_list=newest_stories %}
+                {% include "includes/story_list.html" with story_list=newest_stories %}
             </div>
         </div>
     </div>

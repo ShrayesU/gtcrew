@@ -4,6 +4,100 @@
 
 {% block body %}
 <div class="row">
+    <div class="col-lg-3">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Actions</h6>
+                <div class="dropdown no-arrow">
+                </div>
+            </div>
+            <div class="card-body">
+                {% if user == event.created_by or user.is_staff %}
+                <p>
+                    <a type="button" class="btn btn-outline-primary btn-block"
+                       href="{% url 'event:member_event_edit' event.id %}">
+                        Edit Event
+                    </a>
+                </p>
+                {% else %}
+                <p>
+                    <a type="button" class="btn btn-outline-primary btn-block disabled"
+                       href="">
+                        Edit Event
+                    </a>
+                </p>
+                {% endif %}
+                {% if user.is_staff %}
+                <p>
+                    <a type="button" class="btn btn-outline-primary btn-block"
+                       href="{% url 'event:member_event_delete' event.id %}">
+                        Delete Event
+                    </a>
+                </p>
+                {% else %}
+                <p>
+                    <a type="button" class="btn btn-outline-primary btn-block disabled"
+                       href="">
+                        Delete Event
+                    </a>
+                </p>
+                {% endif %}
+                {% if event.event_type == 'Race' %}
+                {% if user.profile %}
+                <p>
+                    <a type="button" class="btn btn-outline-primary btn-block"
+                       href="{% url 'event:member_result_create' %}">
+                        Add Result
+                    </a>
+                </p>
+                {% else %}
+                <h6 class="font-weight-bold text-primary text-center">You must first claim a Profile before adding.</h6>
+                <p>
+                    <a type="button" class="btn btn-outline-primary btn-block disabled" href="">
+                        Add Result
+                    </a>
+                </p>
+                {% endif %}
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="card shadow mb-4">
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Details</h6>
+                <div class="dropdown no-arrow">
+                </div>
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-md-6">Created By</div>
+                            <div class="col-md-6 text-primary">{{ event.created_by }}</div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-md-6">Added</div>
+                            <div class="col-md-6 text-primary">{{ event.date_added }}</div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-md-6">Last Modified By</div>
+                            <div class="col-md-6 text-primary">{{ event.last_modified_by }}</div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-md-6">Updated</div>
+                            <div class="col-md-6 text-primary">{{ event.date_updated }}</div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
     <div class="col-lg-9">
         <div class="card shadow mb-4">
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
@@ -55,69 +149,6 @@
             </div>
         </div>
         {% endif %}
-    </div>
-    <div class="col-lg-3">
-        {% if event.event_type == 'Race' %}
-        <div class="card shadow mb-4">
-            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                <h6 class="m-0 font-weight-bold text-primary">Actions</h6>
-                <div class="dropdown no-arrow">
-                </div>
-            </div>
-            <div class="card-body">
-                {% if user.profile %}
-                <p>
-                    <a type="button" class="btn btn-outline-primary btn-block"
-                       href="{% url 'event:member_result_create' %}">
-                        Add Result
-                    </a>
-                </p>
-                {% else %}
-                <h6 class="font-weight-bold text-primary text-center">You must first claim a Profile before adding.</h6>
-                <p>
-                    <a type="button" class="btn btn-outline-primary btn-block disabled" href="">
-                        Add Result
-                    </a>
-                </p>
-                {% endif %}
-            </div>
-        </div>
-        {% endif %}
-        <div class="card shadow mb-4">
-            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                <h6 class="m-0 font-weight-bold text-primary">Details</h6>
-                <div class="dropdown no-arrow">
-                </div>
-            </div>
-            <div class="card-body">
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item">
-                        <div class="row">
-                            <div class="col-md-6">Created By</div>
-                            <div class="col-md-6 text-primary">{{ event.created_by }}</div>
-                        </div>
-                    </li>
-                    <li class="list-group-item">
-                        <div class="row">
-                            <div class="col-md-6">Added</div>
-                            <div class="col-md-6 text-primary">{{ event.date_added }}</div>
-                        </div>
-                    </li>
-                    <li class="list-group-item">
-                        <div class="row">
-                            <div class="col-md-6">Last Modified By</div>
-                            <div class="col-md-6 text-primary">{{ event.last_modified_by }}</div>
-                        </div>
-                    </li>
-                    <li class="list-group-item">
-                        <div class="row">
-                            <div class="col-md-6">Updated</div>
-                            <div class="col-md-6 text-primary">{{ event.date_updated }}</div>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-        </div>
     </div>
 </div>
 
