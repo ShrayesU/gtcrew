@@ -2,7 +2,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
-from django.db.models import Min
+from django.db.models import Min, Q
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
@@ -35,6 +35,18 @@ class ResultDataTable(BaseDatatableView):
 
     def get_initial_queryset(self):
         return Result.objects.filter(event__isnull=False)
+
+    def filter_queryset(self, qs):
+        search = self.request.GET.get('search[value]', None)
+        qs_params = None
+        if search:
+            parts = search.split(' ')
+            for part in parts:
+                q = Q(name__istartswith=part) | Q(event__name__istartswith=part)
+                qs_params = qs_params | q if qs_params else q
+            qs = qs.filter(qs_params)
+
+        return qs
 
 
 # Private Member Views: Event
