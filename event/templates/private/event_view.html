@@ -30,9 +30,10 @@
                 {% if user.is_staff %}
                 <p>
                     <a type="button" class="btn btn-outline-primary btn-block"
-                       href="{% url 'event:member_event_delete' event.id %}">
+                       href="" data-toggle="modal" data-target="#deleteModal">
                         Delete Event
                     </a>
+                    {% include "private/includes/event_delete_modal.html" with event=event %}
                 </p>
                 {% else %}
                 <p>
@@ -63,38 +64,39 @@
         </div>
 
         <div class="card shadow mb-4">
-            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+            <a href="#detailCollapseCard" class="d-block card-header py-3" data-toggle="collapse" role="button"
+               aria-expanded="true" aria-controls="collapseCardExample">
                 <h6 class="m-0 font-weight-bold text-primary">Details</h6>
-                <div class="dropdown no-arrow">
+            </a>
+            <div class="collapse" id="detailCollapseCard">
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <div class="row">
+                                <div class="col-md-6">Created By</div>
+                                <div class="col-md-6 text-primary">{{ event.created_by }}</div>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="row">
+                                <div class="col-md-6">Added</div>
+                                <div class="col-md-6 text-primary">{{ event.date_added }}</div>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="row">
+                                <div class="col-md-6">Last Modified By</div>
+                                <div class="col-md-6 text-primary">{{ event.last_modified_by }}</div>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="row">
+                                <div class="col-md-6">Updated</div>
+                                <div class="col-md-6 text-primary">{{ event.date_updated }}</div>
+                            </div>
+                        </li>
+                    </ul>
                 </div>
-            </div>
-            <div class="card-body">
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item">
-                        <div class="row">
-                            <div class="col-md-6">Created By</div>
-                            <div class="col-md-6 text-primary">{{ event.created_by }}</div>
-                        </div>
-                    </li>
-                    <li class="list-group-item">
-                        <div class="row">
-                            <div class="col-md-6">Added</div>
-                            <div class="col-md-6 text-primary">{{ event.date_added }}</div>
-                        </div>
-                    </li>
-                    <li class="list-group-item">
-                        <div class="row">
-                            <div class="col-md-6">Last Modified By</div>
-                            <div class="col-md-6 text-primary">{{ event.last_modified_by }}</div>
-                        </div>
-                    </li>
-                    <li class="list-group-item">
-                        <div class="row">
-                            <div class="col-md-6">Updated</div>
-                            <div class="col-md-6 text-primary">{{ event.date_updated }}</div>
-                        </div>
-                    </li>
-                </ul>
             </div>
         </div>
     </div>
