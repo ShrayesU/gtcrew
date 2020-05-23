@@ -1,5 +1,5 @@
 from cuser.middleware import CuserMiddleware
-from django.core.validators import RegexValidator, MinValueValidator, MaxValueValidator
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from django.utils.translation import pgettext_lazy
 
@@ -54,6 +54,11 @@ class Event(models.Model):
 
         super(Event, self).save(*args, **kwargs)
 
+    @property
+    def start_date_string(self):
+        """Returns string of start date"""
+        return self.start_datetime.strftime("%Y-%m-%d")
+
 
 class Result(models.Model):
     name = models.CharField(max_length=64, help_text='Name of Result')
@@ -61,9 +66,6 @@ class Result(models.Model):
     event = models.ForeignKey(Event, on_delete=models.CASCADE, null=True, blank=True,
                               limit_choices_to={'event_type': RACE})
     squad = models.ForeignKey(Squad, on_delete=models.SET_NULL, null=True, blank=True)
-    time = models.CharField(pgettext_lazy('Official Time', 'Time'), blank=True, null=True,
-                            max_length=9, help_text='MM:SS.mmm',
-                            validators=[RegexValidator(r'^(\d){2}:(\d){2}.(\d){3}$')])
     distance = models.PositiveIntegerField(help_text='meters')
     minutes = models.PositiveIntegerField(default=0)
     seconds = models.DecimalField(max_digits=5, decimal_places=3, default=0,
@@ -123,6 +125,7 @@ class Result(models.Model):
 
         super(Result, self).save(*args, **kwargs)
 
+    @property
     def total_time_string(self):
         """Returns string of total time"""
         return '{:02d}:{:06.3f}'.format(self.minutes, self.seconds)
@@ -133,6 +136,7 @@ class Result(models.Model):
         five_hundred = float(self.distance) / 500
         return seconds / five_hundred
 
+    @property
     def pace_string(self):
         """Returns pace in string format of MM:SS.mmm/Meters"""
         pace = self.get_pace()

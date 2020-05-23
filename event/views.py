@@ -31,10 +31,10 @@ class ResultView(TemplateView):
 
 class ResultDataTable(BaseDatatableView):
     model = Result
-    columns = ['event.start_datetime', 'event.name', 'name', 'squad.squad', 'time', 'distance']
+    columns = ['event.start_date_string', 'event.name', 'name', 'total_time_string', 'distance']
 
     def get_initial_queryset(self):
-        return Result.objects.filter(event_isnull=False)
+        return Result.objects.filter(event__isnull=False)
 
 
 # Private Member Views: Event
