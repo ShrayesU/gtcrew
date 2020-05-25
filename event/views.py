@@ -11,6 +11,7 @@ from django.views.generic import ListView, CreateView, DetailView, UpdateView, D
 from django.views.generic import TemplateView
 from django_datatables_view.base_datatable_view import BaseDatatableView
 
+from common.views import PagesListView
 from event.models import Event, Result
 from team.models import Profile
 from .forms import EventCreateForm, EventUpdateForm, ResultCreateForm, ResultUpdateForm, ResultPersonalCreateForm
@@ -54,7 +55,7 @@ class ResultDataTable(BaseDatatableView):
 # Private Member Views: Event
 
 
-class EventListViewPrivate(LoginRequiredMixin, ListView):
+class EventListViewPrivate(LoginRequiredMixin, PagesListView):
     model = Event
     template_name = 'private/events.html'
     paginate_by = 3
@@ -71,24 +72,6 @@ class EventListViewPrivate(LoginRequiredMixin, ListView):
         upcoming_events = Event.objects.filter(start_datetime__gte=today).order_by('start_datetime')[:3]
         context.update({'upcoming_events': upcoming_events})
 
-        # custom pagination numbers/pages
-        if not context.get('is_paginated', False):
-            return context
-
-        paginator = context.get('paginator')
-        num_pages = paginator.num_pages
-        current_page = context.get('page_obj')
-        page_no = current_page.number
-        max_shown = 7  # odd number
-
-        if num_pages <= max_shown or page_no <= (max_shown // 2 + 1):
-            pages = [x for x in range(1, min(num_pages + 1, max_shown + 1))]
-        elif page_no > num_pages - (max_shown // 2 + 1):
-            pages = [x for x in range(num_pages - max_shown + 1, num_pages + 1)]
-        else:
-            pages = [x for x in range(page_no - max_shown // 2, page_no + max_shown // 2 + 1)]
-
-        context.update({'pages': pages})
         return context
 
 

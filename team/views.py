@@ -13,6 +13,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, TemplateView
 
+from common.views import PagesListView
 from event.forms import ResultPersonalCreateForm
 from story.models import Story
 from .forms import (SignUpForm, InterestForm, ProfileUpdateForm, MembershipInlineForm, MembershipUpdateForm,
@@ -131,31 +132,10 @@ Profile Views
 """
 
 
-class ProfileListView(LoginRequiredMixin, ListView):
+class ProfileListView(LoginRequiredMixin, PagesListView):
     model = Profile
     template_name = 'profile/profiles.html'
     paginate_by = 10
-
-    def get_context_data(self, **kwargs):
-        context = super(ProfileListView, self).get_context_data(**kwargs)
-        if not context.get('is_paginated', False):
-            return context
-
-        paginator = context.get('paginator')
-        num_pages = paginator.num_pages
-        current_page = context.get('page_obj')
-        page_no = current_page.number
-        max_shown = 7  # odd number
-
-        if num_pages <= max_shown or page_no <= (max_shown // 2 + 1):
-            pages = [x for x in range(1, min(num_pages + 1, max_shown + 1))]
-        elif page_no > num_pages - (max_shown // 2 + 1):
-            pages = [x for x in range(num_pages - max_shown + 1, num_pages + 1)]
-        else:
-            pages = [x for x in range(page_no - max_shown // 2, page_no + max_shown // 2 + 1)]
-
-        context.update({'pages': pages})
-        return context
 
 
 class SearchProfileListView(ProfileListView):

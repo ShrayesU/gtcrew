@@ -3,14 +3,15 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.db.models import F
 from django.urls import reverse_lazy
-from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
+from django.views.generic import CreateView, DetailView, UpdateView, DeleteView
 
+from common.views import PagesListView
 from story.forms import StoryCreateForm, StoryUpdateForm
 from story.models import Story
 from team.models import Profile
 
 
-class StoryListView(LoginRequiredMixin, ListView):
+class StoryListView(LoginRequiredMixin, PagesListView):
     model = Story
     template_name = 'stories.html'
     paginate_by = 10
@@ -24,24 +25,6 @@ class StoryListView(LoginRequiredMixin, ListView):
         newest_stories = Story.objects.all().order_by('-date_added')[:3]
         context.update({'popular_stories': popular_stories, 'newest_stories': newest_stories})
 
-        # custom pagination numbers/pages
-        if not context.get('is_paginated', False):
-            return context
-
-        paginator = context.get('paginator')
-        num_pages = paginator.num_pages
-        current_page = context.get('page_obj')
-        page_no = current_page.number
-        max_shown = 7  # odd number
-
-        if num_pages <= max_shown or page_no <= (max_shown // 2 + 1):
-            pages = [x for x in range(1, min(num_pages + 1, max_shown + 1))]
-        elif page_no > num_pages - (max_shown // 2 + 1):
-            pages = [x for x in range(num_pages - max_shown + 1, num_pages + 1)]
-        else:
-            pages = [x for x in range(page_no - max_shown // 2, page_no + max_shown // 2 + 1)]
-
-        context.update({'pages': pages})
         return context
 
 
