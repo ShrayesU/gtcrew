@@ -5,17 +5,34 @@
 {% block body %}
 <div class="row">
     <div class="col-sm-8">
-        <div class="card shadow mb-5">
+        <div class="card shadow mb-4">
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                <h6 class="m-0 font-weight-bold text-primary">Events</h6>
+                <h6 class="m-0 font-weight-bold text-primary">Upcoming Events</h6>
                 <div class="dropdown no-arrow">
                 </div>
             </div>
-            <div class="card-body table-responsive">
+            <div class="card-body">
+                {% include "private/includes/event_list.html" with event_list=upcoming_events %}
+            </div>
+        </div>
+        <div class="card shadow mb-4">
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Recent Events</h6>
+                <div class="dropdown no-arrow">
+                </div>
+<!--                <a type="button" class="btn btn-outline-secondary btn-sm disasbled" href="">-->
+<!--                    View All-->
+<!--                </a>-->
+            </div>
+            <div class="card-body">
                 {% include "private/includes/event_list.html" %}
+                <div class="mt-4">
+                    {% include "includes/pagination.html" %}
+                </div>
             </div>
         </div>
     </div>
+
     <div class="col-sm-4">
         <div class="card shadow mb-4">
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">

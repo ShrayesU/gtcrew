@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -55,11 +57,19 @@ class ResultDataTable(BaseDatatableView):
 class EventListViewPrivate(LoginRequiredMixin, ListView):
     model = Event
     template_name = 'private/events.html'
-    paginate_by = 10
-    ordering = ['-date_added', ]
+    paginate_by = 3
+
+    def get_queryset(self):
+        today = datetime.today()
+        return Event.objects.filter(start_datetime__lte=today).order_by('-start_datetime')
 
     def get_context_data(self, **kwargs):
         context = super(EventListViewPrivate, self).get_context_data(**kwargs)
+
+        # upcoming events
+        today = datetime.today()
+        upcoming_events = Event.objects.filter(start_datetime__gte=today).order_by('start_datetime')[:3]
+        context.update({'upcoming_events': upcoming_events})
 
         # custom pagination numbers/pages
         if not context.get('is_paginated', False):
