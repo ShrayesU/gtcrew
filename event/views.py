@@ -82,8 +82,9 @@ class EventTemplateViewPrivate(LoginRequiredMixin, TemplateView):
         for event in all_events:
             prepared = {'title': event.name,
                         'url': reverse_lazy('event:member_event_view', kwargs={'pk': event.pk}),
-                        'start': event.start_datetime.strftime("%Y-%m-%dT%H:%M:%S"),
-                        'end': event.end_datetime.strftime("%Y-%m-%d"), }
+                        'start': event.start_datetime.strftime("%Y-%m-%dT%H:%M:%S"), }
+            if event.end_datetime:
+                prepared.update({'end': event.end_datetime.strftime("%Y-%m-%d"), })
             api_event.append(prepared)
         context.update({'api_event': api_event})
 
