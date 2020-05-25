@@ -1,28 +1,89 @@
 {% extends 'private.html' %}
 
+{% block css %}
+<link href='https://unpkg.com/@fullcalendar/core@4.4.0/main.min.css' rel='stylesheet'/>
+<link href='https://unpkg.com/@fullcalendar/daygrid@4.4.0/main.min.css' rel='stylesheet'/>
+<link href='https://unpkg.com/@fullcalendar/timegrid@4.4.0/main.min.css' rel='stylesheet'/>
+<link href='https://unpkg.com/@fullcalendar/bootstrap@4.4.0/main.min.css' rel='stylesheet' />
+{% endblock %}
+
 {% block title %}Events{% endblock %}
 
 {% block body %}
 <div class="row">
-    <div class="col-sm-8">
+
+    <div class="col-lg-6">
+        {% if show_calendar %}
+        <div class="card shadow mb-4">
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Calendar</h6>
+                <div class="dropdown no-arrow"></div>
+                {% if user.profile %}
+                <a type="button" class="btn btn-outline-secondary btn-sm"
+                   href="{% url 'event:member_event_create' %}">
+                    Add Event
+                </a>
+                {% else %}
+                <a type="button" class="btn btn-outline-secondary btn-sm disabled"
+                   href="">
+                    Add Event
+                </a>
+                {% endif %}
+            </div>
+            <div class="card-body">
+                <div id="calendar"></div>
+            </div>
+        </div>
+        {% endif %}
+
+<!--        <div class="card shadow mb-4">-->
+<!--            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">-->
+<!--                <h6 class="m-0 font-weight-bold text-primary">Actions</h6>-->
+<!--                <div class="dropdown no-arrow">-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="card-body">-->
+<!--                {% if user.profile %}-->
+<!--                <p>-->
+<!--                    <a type="button" class="btn btn-outline-primary btn-block"-->
+<!--                       href="{% url 'event:member_event_create' %}">-->
+<!--                        Add Event-->
+<!--                    </a>-->
+<!--                </p>-->
+<!--                {% else %}-->
+<!--                <h6 class="font-weight-bold text-primary text-center">You must first claim a Profile before adding.</h6>-->
+<!--                <p>-->
+<!--                    <a type="button" class="btn btn-outline-primary btn-block disabled" href="">-->
+<!--                        Add Event-->
+<!--                    </a>-->
+<!--                </p>-->
+<!--                {% endif %}-->
+<!--            </div>-->
+<!--        </div>-->
+    </div>
+
+    <div class="col-lg-6">
+        {% if show_calendar %}
         <div class="card shadow mb-4">
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                 <h6 class="m-0 font-weight-bold text-primary">Upcoming Events</h6>
-                <div class="dropdown no-arrow">
-                </div>
+                <div class="dropdown no-arrow"></div>
             </div>
             <div class="card-body">
                 {% include "private/includes/event_list.html" with event_list=upcoming_events %}
             </div>
         </div>
+        {% endif %}
+
         <div class="card shadow mb-4">
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                {% if show_calendar %}
                 <h6 class="m-0 font-weight-bold text-primary">Recent Events</h6>
-                <div class="dropdown no-arrow">
-                </div>
-<!--                <a type="button" class="btn btn-outline-secondary btn-sm disasbled" href="">-->
-<!--                    View All-->
-<!--                </a>-->
+                <div class="dropdown no-arrow"></div>
+                {% else %}
+                <h6 class="m-0 font-weight-bold text-primary">All Events</h6>
+                <div class="dropdown no-arrow"></div>
+                {% endif %}
             </div>
             <div class="card-body">
                 {% include "private/includes/event_list.html" %}
@@ -32,32 +93,39 @@
             </div>
         </div>
     </div>
-
-    <div class="col-sm-4">
-        <div class="card shadow mb-4">
-            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                <h6 class="m-0 font-weight-bold text-primary">Actions</h6>
-                <div class="dropdown no-arrow">
-                </div>
-            </div>
-            <div class="card-body">
-                {% if user.profile %}
-                <p>
-                    <a type="button" class="btn btn-outline-primary btn-block"
-                       href="{% url 'event:member_event_create' %}">
-                        Add Event
-                    </a>
-                </p>
-                {% else %}
-                <h6 class="font-weight-bold text-primary text-center">You must first claim a Profile before adding.</h6>
-                <p>
-                    <a type="button" class="btn btn-outline-primary btn-block disabled" href="">
-                        Add Event
-                    </a>
-                </p>
-                {% endif %}
-            </div>
-        </div>
-    </div>
 </div>
+{% endblock %}
+
+{% block javascript %}
+<script src='https://unpkg.com/@fullcalendar/core@4.4.0/main.min.js'></script>
+<script src='https://unpkg.com/@fullcalendar/interaction@4.4.0/main.min.js'></script>
+<script src='https://unpkg.com/@fullcalendar/daygrid@4.4.0/main.min.js'></script>
+<script src='https://unpkg.com/@fullcalendar/timegrid@4.4.0/main.min.js'></script>
+<script src='https://unpkg.com/@fullcalendar/list@4.4.0/main.min.js'></script>
+<script src='https://unpkg.com/@fullcalendar/bootstrap@4.4.0/main.min.js'></script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var calendarEl = document.getElementById('calendar');
+
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+      plugins: [ 'interaction', 'dayGrid', 'timeGrid', 'list', 'bootstrap' ],
+      defaultView: 'dayGridMonth',
+      timeZone: 'America/New_York',
+      themeSystem: 'bootstrap',
+      header: {
+        left: '',
+        center: 'title',
+        right: 'dayGridMonth,timeGridWeek,listYear'  //,timeGridDay'
+      },
+      footer: {
+        center: 'prev,prevYear,today,nextYear,next',
+      },
+
+      events: {{ api_event|safe }}  // data from view
+    });
+
+    calendar.render();
+  });
+</script>
 {% endblock %}

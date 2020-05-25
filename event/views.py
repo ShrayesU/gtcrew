@@ -58,19 +58,34 @@ class ResultDataTable(BaseDatatableView):
 class EventListViewPrivate(LoginRequiredMixin, PagesListView):
     model = Event
     template_name = 'private/events.html'
-    paginate_by = 3
+    paginate_by = 5
 
-    def get_queryset(self):
-        today = datetime.today()
-        return Event.objects.filter(start_datetime__lte=today).order_by('-start_datetime')
+
+class EventTemplateViewPrivate(LoginRequiredMixin, TemplateView):
+    model = Event
+    template_name = 'private/events.html'
 
     def get_context_data(self, **kwargs):
-        context = super(EventListViewPrivate, self).get_context_data(**kwargs)
+        context = super(EventTemplateViewPrivate, self).get_context_data(**kwargs)
 
-        # upcoming events
+        # upcoming and recent events
         today = datetime.today()
+        show_calendar = True
         upcoming_events = Event.objects.filter(start_datetime__gte=today).order_by('start_datetime')[:3]
-        context.update({'upcoming_events': upcoming_events})
+        recent_events = Event.objects.filter(start_datetime__lte=today).order_by('-start_datetime')[:3]
+        context.update({'show_calendar': show_calendar, 'upcoming_events': upcoming_events,
+                        'event_list': recent_events})
+
+        # all events as json for calendar
+        all_events = Event.objects.all()
+        api_event = []
+        for event in all_events:
+            prepared = {'title': event.name,
+                        'url': reverse_lazy('event:member_event_view', kwargs={'pk': event.pk}),
+                        'start': event.start_datetime.strftime("%Y-%m-%dT%H:%M:%S"),
+                        'end': event.end_datetime.strftime("%Y-%m-%d"), }
+            api_event.append(prepared)
+        context.update({'api_event': api_event})
 
         return context
 
@@ -79,7 +94,7 @@ class CreateEventViewPrivate(LoginRequiredMixin, CreateView):
     model = Event
     template_name = 'private/event_create.html'
     form_class = EventCreateForm
-    success_url = reverse_lazy('event:member_event_list')
+    success_url = reverse_lazy('event:member_event')
 
 
 class EventDetailViewPrivate(LoginRequiredMixin, DetailView):
@@ -98,13 +113,13 @@ class EventUpdateViewPrivate(LoginRequiredMixin, UpdateView):
     model = Event
     template_name = 'private/event_create.html'
     form_class = EventUpdateForm
-    success_url = reverse_lazy('event:member_event_list')
+    success_url = reverse_lazy('event:member_event')
 
 
 class EventDeleteViewPrivate(LoginRequiredMixin, DeleteView):
     model = Event
     template_name = 'private/event_delete.html'
-    success_url = reverse_lazy('event:member_event_list')
+    success_url = reverse_lazy('event:member_event')
 
 
 # Private Member Views: Result
@@ -114,7 +129,7 @@ class CreateResultViewPrivate(LoginRequiredMixin, CreateView):
     model = Result
     template_name = 'private/result_create.html'
     form_class = ResultCreateForm
-    success_url = reverse_lazy('event:member_event_list')
+    success_url = reverse_lazy('event:member_event')
 
 
 class ResultDetailViewPrivate(LoginRequiredMixin, DetailView):
@@ -126,7 +141,7 @@ class ResultUpdateViewPrivate(LoginRequiredMixin, UpdateView):
     model = Result
     template_name = 'private/result_create.html'
     form_class = ResultUpdateForm
-    success_url = reverse_lazy('event:member_event_list')
+    success_url = reverse_lazy('event:member_event')
 
     def get_form_class(self, **kwargs):
         result = self.object
@@ -163,7 +178,7 @@ class ResultUpdateViewPrivate(LoginRequiredMixin, UpdateView):
 class ResultDeleteViewPrivate(LoginRequiredMixin, DeleteView):
     model = Result
     template_name = 'private/result_delete.html'
-    success_url = reverse_lazy('event:member_event_list')
+    success_url = reverse_lazy('event:member_event')
 
 
 @login_required

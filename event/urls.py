@@ -3,7 +3,8 @@ from django.urls import path
 from event.views import (
     EventListView, EventDetailView, ResultView, ResultDataTable, EventListViewPrivate, CreateEventViewPrivate,
     EventDetailViewPrivate, EventUpdateViewPrivate, EventDeleteViewPrivate, CreateResultViewPrivate,
-    ResultDetailViewPrivate, ResultUpdateViewPrivate, ResultDeleteViewPrivate, view_leaderboard
+    ResultDetailViewPrivate, ResultUpdateViewPrivate, ResultDeleteViewPrivate, view_leaderboard,
+    EventTemplateViewPrivate
 )
 
 app_name = 'event'
@@ -14,6 +15,7 @@ urlpatterns = [
     path('data/', ResultDataTable.as_view(), name='resultdatatable'),
     path('<int:pk>/view/', EventDetailView.as_view(), name="event_view"),
     # Private Member urls: Event
+    path('member/', EventTemplateViewPrivate.as_view(), name='member_event'),
     path('member/list/', EventListViewPrivate.as_view(), name='member_event_list'),
     path('member/create/', CreateEventViewPrivate.as_view(), name='member_event_create'),
     path('member/<int:pk>/view/', EventDetailViewPrivate.as_view(), name='member_event_view'),

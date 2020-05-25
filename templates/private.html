@@ -98,7 +98,7 @@
                 <span>Awards</span></a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="{% url 'event:member_event_list' %}">
+            <a class="nav-link" href="{% url 'event:member_event' %}">
                 <i class="fas fa-fw fa-calendar-alt"></i>
                 <span>Events</span></a>
         </li>
@@ -508,43 +508,10 @@
 <script src="{% static 'private/js/sb-admin-2.min.js' %}"></script>
 <!-- ChartJS -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
-
+<!--Custom scripts for the page-->
+{% block javascript %}
 <script>
-// remember state of accordions
-/*
-    $(".collapse").on("hidden.bs.collapse", function() {
-      localStorage.setItem("coll_" + this.id, false);
-    });
-
-    $(".collapse").on("shown.bs.collapse", function() {
-      localStorage.setItem("coll_" + this.id, true);
-    });
-
-    $(".collapse").each(function() {
-      if (localStorage.getItem("coll_" + this.id) == "true") {
-        $(this).collapse("show");
-      }
-    });
-*/
-
-/** Set local storage **/
-$("#sidebarToggle, #sidebarToggleTop").on("click", function(e){
-    if (document.getElementById("page-top").className == 'sidebar-toggled') {
-        localStorage.setItem("accordionSidebar","expanded");
-    } else {
-        localStorage.setItem("accordionSidebar","false");
-    }
-});
-
-
-/** Retrieve local storage value and change class of body **/
-if(localStorage.getItem("accordionSidebar") !== null) {
-    if(localStorage.getItem("accordionSidebar") == 'expanded') {
-        document.getElementById("sidebarToggle").click();
-    }
-}
-
-
+/** Chart.js scripts **/
 // Set new default font family and font color to mimic Bootstrap's default styling
 Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
 Chart.defaults.global.defaultFontColor = '#858796';
@@ -662,6 +629,43 @@ var myLineChart = new Chart(ctx, {
     }
   }
 });
+</script>
+{% endblock %}
+
+<script>
+// remember state of accordions
+/*
+    $(".collapse").on("hidden.bs.collapse", function() {
+      localStorage.setItem("coll_" + this.id, false);
+    });
+
+    $(".collapse").on("shown.bs.collapse", function() {
+      localStorage.setItem("coll_" + this.id, true);
+    });
+
+    $(".collapse").each(function() {
+      if (localStorage.getItem("coll_" + this.id) == "true") {
+        $(this).collapse("show");
+      }
+    });
+*/
+
+/** Set local storage **/
+$("#sidebarToggle, #sidebarToggleTop").on("click", function(e){
+    if (document.getElementById("page-top").className == 'sidebar-toggled') {
+        localStorage.setItem("accordionSidebar","expanded");
+    } else {
+        localStorage.setItem("accordionSidebar","false");
+    }
+});
+
+
+/** Retrieve local storage value and change class of body **/
+if(localStorage.getItem("accordionSidebar") !== null) {
+    if(localStorage.getItem("accordionSidebar") == 'expanded') {
+        document.getElementById("sidebarToggle").click();
+    }
+}
 
 </script>
 </body>
