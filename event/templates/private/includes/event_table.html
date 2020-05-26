@@ -33,13 +33,13 @@
                     <i class="fa fa-info-circle"></i>
                     Details
                 </a>
-                {% if user == event.created_by or user.is_staff %}
+                {% if allowed_to_edit %}
                 <a class="dropdown-item" href="{% url 'event:member_event_edit' event.id %}">
                     <i class="fa fa-edit"></i>
                     Edit
                 </a>
                 {% endif %}
-                {% if user.is_staff %}
+                {% if user == event.created_by or user.is_staff %}
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="{% url 'event:member_event_delete' event.id %}">
                     <i class="fa fa-trash"></i>

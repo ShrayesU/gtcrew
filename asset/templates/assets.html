@@ -24,7 +24,7 @@
                 </div>
             </div>
             <div class="card-body">
-                {% if user.profile %}
+                {% if allowed_to_edit %}
                 <p>
                     <a type="button" class="btn btn-outline-primary btn-block" href="{% url 'asset:create' %}">
                         Add an Asset

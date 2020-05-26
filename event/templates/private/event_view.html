@@ -12,7 +12,7 @@
                 </div>
             </div>
             <div class="card-body">
-                {% if user == event.created_by or user.is_staff %}
+                {% if allowed_to_edit %}
                 <p>
                     <a type="button" class="btn btn-outline-primary btn-block"
                        href="{% url 'event:member_event_edit' event.id %}">
@@ -27,7 +27,7 @@
                     </a>
                 </p>
                 {% endif %}
-                {% if user.is_staff %}
+                {% if user == event.created_by or user.is_staff %}
                 <p>
                     <a type="button" class="btn btn-outline-primary btn-block"
                        href="" data-toggle="modal" data-target="#deleteModal">
@@ -44,7 +44,7 @@
                 </p>
                 {% endif %}
                 {% if event.event_type == 'Race' %}
-                {% if user.profile %}
+                {% if allowed_to_edit %}
                 <p>
                     <a type="button" class="btn btn-outline-primary btn-block"
                        href="{% url 'event:member_result_create' event.id%}">

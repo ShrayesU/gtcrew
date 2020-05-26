@@ -29,13 +29,13 @@
                     <i class="fa fa-info-circle"></i>
                     Details
                 </a>
-                {% if user == asset.created_by or user.is_staff %}
+                {% if allowed_to_edit %}
                 <a class="dropdown-item" href="{% url 'asset:edit' asset.id %}">
                     <i class="fa fa-edit"></i>
                     Edit
                 </a>
                 {% endif %}
-                {% if user.is_staff %}
+                {% if user == asset.created_by or user.is_staff %}
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="{% url 'asset:delete' asset.id %}">
                     <i class="fa fa-trash"></i>

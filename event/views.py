@@ -1,9 +1,7 @@
 from datetime import datetime
 
-from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.core.exceptions import PermissionDenied
 from django.db.models import Min, Q
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
@@ -11,7 +9,7 @@ from django.views.generic import ListView, CreateView, DetailView, UpdateView, D
 from django.views.generic import TemplateView
 from django_datatables_view.base_datatable_view import BaseDatatableView
 
-from common.views import PagesListView
+from common.views import PagesListView, RequireProfileExistsMixin, RequireProfileExistsUpdateView
 from event.models import Event, Result
 from team.models import Profile
 from .forms import EventCreateForm, EventUpdateForm, ResultCreateForm, ResultUpdateForm, ResultPersonalCreateForm
@@ -61,7 +59,7 @@ class EventListViewPrivate(LoginRequiredMixin, PagesListView):
     paginate_by = 5
 
 
-class EventTemplateViewPrivate(LoginRequiredMixin, TemplateView):
+class EventTemplateViewPrivate(LoginRequiredMixin, RequireProfileExistsMixin, TemplateView):
     model = Event
     template_name = 'private/events.html'
 
@@ -98,7 +96,7 @@ class CreateEventViewPrivate(LoginRequiredMixin, CreateView):
     success_url = reverse_lazy('event:member_event')
 
 
-class EventDetailViewPrivate(LoginRequiredMixin, DetailView):
+class EventDetailViewPrivate(LoginRequiredMixin, RequireProfileExistsMixin, DetailView):
     model = Event
     template_name = 'private/event_view.html'
 
@@ -110,7 +108,7 @@ class EventDetailViewPrivate(LoginRequiredMixin, DetailView):
         return context
 
 
-class EventUpdateViewPrivate(LoginRequiredMixin, UpdateView):
+class EventUpdateViewPrivate(LoginRequiredMixin, RequireProfileExistsUpdateView):
     model = Event
     template_name = 'private/event_create.html'
     form_class = EventUpdateForm
@@ -126,7 +124,7 @@ class EventDeleteViewPrivate(LoginRequiredMixin, DeleteView):
 # Private Member Views: Result
 
 
-class CreateResultViewPrivate(LoginRequiredMixin, CreateView):
+class CreateResultViewPrivate(LoginRequiredMixin, RequireProfileExistsMixin, CreateView):
     model = Result
     template_name = 'private/result_create.html'
     form_class = ResultCreateForm
@@ -150,12 +148,12 @@ class CreateResultViewPrivate(LoginRequiredMixin, CreateView):
         return super(CreateResultViewPrivate, self).get_success_url()
 
 
-class ResultDetailViewPrivate(LoginRequiredMixin, DetailView):
+class ResultDetailViewPrivate(LoginRequiredMixin, RequireProfileExistsMixin, DetailView):
     model = Result
     template_name = 'private/result_view.html'
 
 
-class ResultUpdateViewPrivate(LoginRequiredMixin, UpdateView):
+class ResultUpdateViewPrivate(LoginRequiredMixin, RequireProfileExistsUpdateView):
     model = Result
     template_name = 'private/result_create.html'
     form_class = ResultUpdateForm
@@ -175,23 +173,6 @@ class ResultUpdateViewPrivate(LoginRequiredMixin, UpdateView):
             profile = result.rowers.first()
             self.success_url = reverse_lazy('team:view_profile', kwargs={'pk': profile.pk})
         return super(ResultUpdateViewPrivate, self).get_success_url()
-
-    def get_context_data(self, **kwargs):
-        context = super(ResultUpdateViewPrivate, self).get_context_data(**kwargs)
-
-        # permissions
-        allowed_to_edit = False
-        if self.request.user.is_staff:
-            allowed_to_edit = True
-        elif Profile.objects.filter(owner=self.request.user).exists():
-            user_owns_profile = self.request.user.profile == self.object.created_by
-            # profile_approved = self.object.created_by.status == APPROVED
-            allowed_to_edit = user_owns_profile  # and profile_approved
-        if not allowed_to_edit:
-            messages.warning(self.request, 'You do not have permission to edit %s' % self.object)
-            raise PermissionDenied
-
-        return context
 
 
 class ResultDeleteViewPrivate(LoginRequiredMixin, DeleteView):
