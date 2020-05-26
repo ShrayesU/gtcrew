@@ -143,6 +143,12 @@ class CreateResultViewPrivate(LoginRequiredMixin, CreateView):
 
         return context
 
+    def get_success_url(self):
+        result = self.object
+        if result.event:
+            self.success_url = reverse_lazy('event:member_event_view', kwargs={'pk': result.event.pk})
+        return super(CreateResultViewPrivate, self).get_success_url()
+
 
 class ResultDetailViewPrivate(LoginRequiredMixin, DetailView):
     model = Result
