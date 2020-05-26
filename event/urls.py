@@ -25,6 +25,7 @@ urlpatterns = [
     # path('member/result/list/', ResultListViewPrivate.as_view(), name='member_result_list'),
     path('member/result/leaderboard/', view_leaderboard, name='member_result_leader_board'),
     path('member/result/create/', CreateResultViewPrivate.as_view(), name='member_result_create'),
+    path('member/<int:event_pk>/result/create/', CreateResultViewPrivate.as_view(), name='member_result_create'),
     path('member/result/<int:pk>/view/', ResultDetailViewPrivate.as_view(), name='member_result_view'),
     path('member/result/<int:pk>/edit/', ResultUpdateViewPrivate.as_view(), name='member_result_edit'),
     path('member/result/<int:pk>/delete/', ResultDeleteViewPrivate.as_view(), name='member_result_delete'),

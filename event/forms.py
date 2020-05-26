@@ -46,13 +46,14 @@ class ResultCreateForm(BaseForm, forms.ModelForm):
             'coxswain': autocomplete.ModelSelect2(url='team:profile_autocomplete'),
             'rowers': autocomplete.ModelSelect2Multiple(url='team:profile_autocomplete'),
             'date': DatePicker(),
+            'event': forms.HiddenInput(),
         }
 
 
 class ResultUpdateForm(BaseForm, forms.ModelForm):
     class Meta:
         model = Result
-        exclude = ('created_by', 'last_modified_by', 'public', 'personal_record', 'pace')
+        exclude = ('created_by', 'last_modified_by', 'public', 'personal_record', 'pace', 'event')
         widgets = {
             'coxswain': autocomplete.ModelSelect2(url='team:profile_autocomplete'),
             'rowers': autocomplete.ModelSelect2Multiple(url='team:profile_autocomplete'),

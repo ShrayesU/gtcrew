@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.db.models import Min, Q
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
 from django.views.generic import TemplateView
@@ -84,7 +84,7 @@ class EventTemplateViewPrivate(LoginRequiredMixin, TemplateView):
                         'url': reverse_lazy('event:member_event_view', kwargs={'pk': event.pk}),
                         'start': event.start_datetime.strftime("%Y-%m-%dT%H:%M:%S"), }
             if event.end_datetime:
-                prepared.update({'end': event.end_datetime.strftime("%Y-%m-%d"), })
+                prepared.update({'end': event.end_datetime.strftime("%Y-%m-%dT%H:%M:%S"), })
             api_event.append(prepared)
         context.update({'api_event': api_event})
 
@@ -132,6 +132,17 @@ class CreateResultViewPrivate(LoginRequiredMixin, CreateView):
     form_class = ResultCreateForm
     success_url = reverse_lazy('event:member_event')
 
+    def get_context_data(self, **kwargs):
+        context = super(CreateResultViewPrivate, self).get_context_data(**kwargs)
+
+        # initial set of event_pk in form
+        if ('form' in context) and ('event_pk' in self.kwargs):
+            event = get_object_or_404(Event, id=self.kwargs['event_pk'])
+            form = context['form']
+            form.initial['event'] = event
+
+        return context
+
 
 class ResultDetailViewPrivate(LoginRequiredMixin, DetailView):
     model = Result
@@ -162,6 +173,7 @@ class ResultUpdateViewPrivate(LoginRequiredMixin, UpdateView):
     def get_context_data(self, **kwargs):
         context = super(ResultUpdateViewPrivate, self).get_context_data(**kwargs)
 
+        # permissions
         allowed_to_edit = False
         if self.request.user.is_staff:
             allowed_to_edit = True

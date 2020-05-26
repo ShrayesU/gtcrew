@@ -47,7 +47,7 @@
                 {% if user.profile %}
                 <p>
                     <a type="button" class="btn btn-outline-primary btn-block"
-                       href="{% url 'event:member_result_create' %}">
+                       href="{% url 'event:member_result_create' event.id%}">
                         Add Result
                     </a>
                 </p>
