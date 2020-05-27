@@ -33,6 +33,8 @@ class RequireProfileExistsUpdateView(RequireProfileExistsMixin, UpdateView):
             messages.warning(self.request, 'You do not have permission to edit %s' % self.object)
             raise PermissionDenied
 
+        return context
+
 
 class PagesListView(ListView):
 
