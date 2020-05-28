@@ -41,8 +41,8 @@ class StoryDetailView(LoginRequiredMixin, DetailView):
 
     def get_object(self, queryset=None):
         story = super().get_object(queryset)
-        story.page_views = F('page_views') + 1
-        story.save()
+        # increments page_views without altering last_modified
+        Story.objects.filter(pk=story.pk).update(page_views=F('page_views') + 1)
         return super().get_object(queryset)
 
 
