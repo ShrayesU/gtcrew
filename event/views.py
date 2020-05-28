@@ -1,5 +1,6 @@
 from datetime import datetime
 
+from actstream import action
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Min, Q
@@ -95,6 +96,10 @@ class CreateEventViewPrivate(LoginRequiredMixin, CreateView):
     form_class = EventCreateForm
     success_url = reverse_lazy('event:member_event')
 
+    def get_success_url(self):
+        action.send(self.request.user.profile, verb='created event', target=self.object)
+        return super(CreateEventViewPrivate, self).get_success_url()
+
 
 class EventDetailViewPrivate(LoginRequiredMixin, RequireProfileExistsMixin, DetailView):
     model = Event
@@ -113,6 +118,10 @@ class EventUpdateViewPrivate(LoginRequiredMixin, RequireProfileExistsUpdateView)
     template_name = 'private/event_create.html'
     form_class = EventUpdateForm
     success_url = reverse_lazy('event:member_event')
+
+    def get_success_url(self):
+        action.send(self.request.user.profile, verb='updated event', target=self.object)
+        return super(EventUpdateViewPrivate, self).get_success_url()
 
 
 class EventDeleteViewPrivate(LoginRequiredMixin, DeleteView):
@@ -144,6 +153,7 @@ class CreateResultViewPrivate(LoginRequiredMixin, RequireProfileExistsMixin, Cre
     def get_success_url(self):
         result = self.object
         if result.event:
+            action.send(self.request.user.profile, verb='created result', action_object=result, target=result.event)
             self.success_url = reverse_lazy('event:member_event_view', kwargs={'pk': result.event.pk})
         return super(CreateResultViewPrivate, self).get_success_url()
 
@@ -170,8 +180,10 @@ class ResultUpdateViewPrivate(LoginRequiredMixin, RequireProfileExistsUpdateView
         result = self.object
         if result.personal_record:
             # self.success_url = reverse_lazy('event:member_result_view', kwargs={'pk': result.pk})
+            action.send(self.request.user.profile, verb='updated result', action_object=result)
             profile = result.rowers.first()
             self.success_url = reverse_lazy('team:view_profile', kwargs={'pk': profile.pk})
+        action.send(self.request.user.profile, verb='updated result', action_object=result, target=result.event)
         return super(ResultUpdateViewPrivate, self).get_success_url()
 
 

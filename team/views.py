@@ -1,6 +1,7 @@
 import operator
 from functools import reduce
 
+from actstream import action
 from dal import autocomplete
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
@@ -124,6 +125,7 @@ class PortalView(LoginRequiredMixin, TemplateView):
         context['membership_list'] = membership_list
         context['membership_count'] = [x['count'] for x in membership_list]
         context['membership_label'] = [str('{}{}'.format(x['semester'], x['year'])) for x in membership_list]
+        context['profile_model'] = Profile
         return context
 
 
@@ -327,6 +329,7 @@ def manage_results(request, profile_id):
             r.personal_record = True
             r.save()
             r.rowers.add(profile)
+            action.send(request.user.profile, verb='created', action_object=r)
             return redirect(success_url)
     else:
         form = form()

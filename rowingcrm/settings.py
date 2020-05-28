@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'dal_select2',
     'django.contrib.admin',
     'django.contrib.auth',
+    'django.contrib.sites',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
@@ -52,6 +53,7 @@ INSTALLED_APPS = [
     'cuser',
     'django_summernote',
     'tempus_dominus',
+    'actstream.apps.ActstreamConfig',
 ]
 
 MIDDLEWARE = [
@@ -159,6 +161,9 @@ SUMMERNOTE_CONFIG = {
     'iframe': False,
     'attachment_require_authentication': True,
 }
+
+# Activity Stream
+SITE_ID = 1
 
 # Import local_settings if local
 try:
