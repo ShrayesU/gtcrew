@@ -1,4 +1,5 @@
 from cuser.middleware import CuserMiddleware
+from django.urls import reverse_lazy
 from django_resized import ResizedImageField
 from django.core.validators import RegexValidator
 from django.db import models
@@ -52,14 +53,21 @@ class Profile(models.Model):
             self.public = True
         super(Profile, self).save(*args, **kwargs)
 
+    @property
     def full_name(self):
         return '%s %s' % (self.first_name, self.last_name)
 
+    @property
     def latest_year_active(self):
         return self.membership_set.latest('year').year
 
+    @property
     def latest_email(self):
         return self.emailaddress_set.latest().email
+
+    @property
+    def absolute_url(self):
+        return reverse_lazy('team:view_profile', kwargs={'pk': self.pk})
 
 
 class EmailAddress(models.Model):

@@ -1,13 +1,11 @@
-{% load i18n %}{% if action.actor.get_absolute_url %}<a href="{{ action.actor.get_absolute_url }}">{{ action.actor }}</a>
-{% else %}<a href="{% url 'team:view_profile' action.actor.id %}">{{ action.actor }}</a>{% endif %}
+{% load i18n %}
+<a href="{{ action.actor.absolute_url }}">{{ action.actor }}</a>
 {{ action.verb }}
 {% if action.action_object %}
-    {% if action.action_object.get_absolute_url %}<a href="{{ action.action_object.get_absolute_url }}">{{ action.action_object }}</a>
-    {% else %}<a href="{% url 'event:member_result_view' action.action_object.id %}">{{ action.action_object }}</a>{% endif %}
+    <a href="{{ action.action_object.absolute_url }}">{{ action.action_object }}</a>
 {% endif %}
-{% if action.action_object and action.target %}to{% endif %}
+{% if action.action_object and action.target %}on{% endif %}
 {% if action.target %}
-    {% if action.target.get_absolute_url %}<a href="{{ action.target.get_absolute_url }}">{{ action.target }}</a>
-    {% else %}<a href="{% url 'event:member_event_view' action.target.id %}">{{ action.target }}</a>{% endif %}
+    <a href="{{ action.target.absolute_url }}">{{ action.target }}</a>
 {% endif %}
 {{ action.timestamp|timesince }} {% trans "ago" %}

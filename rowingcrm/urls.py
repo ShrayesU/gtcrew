@@ -24,6 +24,7 @@ urlpatterns = [
     path('asset/', include('asset.urls')),
     path('feedback/', include('feedback.urls')),
     path('summernote/', include('django_summernote.urls')),
+    path('activity/', include('actstream.urls')),
     path('admin/', admin.site.urls),
     path('login/', LoginView.as_view(template_name='login.html'),
          name='login'),

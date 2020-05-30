@@ -1,6 +1,7 @@
 from cuser.middleware import CuserMiddleware
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
+from django.urls import reverse_lazy
 from django.utils.translation import pgettext_lazy
 
 from asset.models import Asset
@@ -58,6 +59,10 @@ class Event(models.Model):
     def start_date_string(self):
         """Returns string of start date"""
         return self.start_datetime.strftime("%Y-%m-%d")
+
+    @property
+    def absolute_url(self):
+        return reverse_lazy('event:member_event_view', kwargs={'pk': self.pk})
 
 
 class Result(models.Model):
@@ -147,3 +152,7 @@ class Result(models.Model):
         """Returns the power in watts based on average pace per 500 meters."""
         pace = self.get_pace()
         return 2.80 / (pace ** 3)
+
+    @property
+    def absolute_url(self):
+        return reverse_lazy('event:member_result_view', kwargs={'pk': self.pk})

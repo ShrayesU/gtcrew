@@ -1,5 +1,6 @@
 from cuser.middleware import CuserMiddleware
 from django.db import models
+from django.urls import reverse_lazy
 
 from asset.utils import ASSET_TYPE_CHOICES, SHELL
 from team.models import Profile
@@ -44,3 +45,7 @@ class Asset(models.Model):
             self.created_by = user.profile
         self.last_modified_by = user.profile
         super(Asset, self).save(*args, **kwargs)
+
+    @property
+    def absolute_url(self):
+        return reverse_lazy('asset:view', kwargs={'pk': self.pk})
