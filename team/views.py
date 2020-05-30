@@ -330,7 +330,7 @@ def manage_results(request, profile_id):
         form = form(request.POST)
         if form.is_valid():
             r = form.save(commit=False)
-            r.name = 'Personal Record: %s' % profile.full_name()
+            r.name = 'Personal Record: %s' % profile.full_name
             r.personal_record = True
             r.save()
             r.rowers.add(profile)
