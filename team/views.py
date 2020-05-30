@@ -184,6 +184,10 @@ class CreateProfileView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     success_message = "%(object)s was created successfully"
 
     def get_success_message(self, cleaned_data):
+        if Profile.objects.filter(owner=self.request.user).exists():
+            action.send(self.request.user.profile, verb='created profile', action_object=self.object)
+        else:
+            action.send(self.object, verb='profile was created')
         return self.success_message % dict(
             cleaned_data,
             object=self.object,
@@ -223,6 +227,7 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
     success_url = reverse_lazy('team:list_profile')
 
     def get_success_url(self):
+        action.send(self.request.user.profile, verb='updated profile', action_object=self.object)
         return reverse_lazy('team:view_profile', kwargs={'pk': self.object.pk})
 
     def get_context_data(self, **kwargs):
