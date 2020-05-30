@@ -1,6 +1,7 @@
 from cuser.middleware import CuserMiddleware
 from django.contrib.auth import get_user_model
 from django.db import models
+from django.urls import reverse_lazy
 from django.utils.text import slugify
 
 from team.models import Profile
@@ -47,3 +48,7 @@ class Story(models.Model):
         if not self.slug:
             self.slug = slugify(self.title)
         super(Story, self).save(*args, **kwargs)
+
+    @property
+    def absolute_url(self):
+        return reverse_lazy('story:view', kwargs={'slug': self.slug})
