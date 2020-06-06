@@ -78,7 +78,8 @@ class EmailAddressInline(admin.TabularInline):
 
 
 @admin.register(Profile)
-class ProfileAdmin(admin.ModelAdmin):
+class ProfileAdmin(SummernoteModelAdminMixin, admin.ModelAdmin):
+    summernote_fields = '__all__'
     fieldsets = [
         (None, {'fields': ['first_name', 'last_name', 'gtid', 'status', 'public', 'owner', 'bio', 'photo', ]}),
         ('Personal', {'fields': ['birthday', 'major', 'hometown'], 'classes': ['collapse']}),
@@ -197,7 +198,7 @@ class PostInline(SummernoteModelAdminMixin, admin.StackedInline):
     model = Post
     summernote_fields = '__all__'
     fieldsets = [
-        (None, {'fields': ['header1', 'header2', 'photo', 'text', ]}),
+        (None, {'fields': ['header1', 'header2', 'photo', 'text', 'public', ]}),
         ('Optional Link', {'fields': ['additional_link', 'additional_link_text'], 'classes': ['collapse']}),
         ('Optional Attachment', {'fields': ['document', 'document_name'], 'classes': ['collapse']}),
         ('Date information', {'fields': ['date_created', 'date_updated'], 'classes': ['collapse']}),
@@ -210,9 +211,9 @@ class PostInline(SummernoteModelAdminMixin, admin.StackedInline):
 @admin.register(Page)
 class PageAdmin(admin.ModelAdmin):
     fieldsets = [
-        (None, {'fields': ['page', 'template', 'sequence', ]}),
+        (None, {'fields': ['page', 'template', 'sequence', 'public', ]}),
     ]
     inlines = [PostInline, ]
-    list_display = ('page', 'sequence',)
-    list_editable = ('sequence',)
+    list_display = ('page', 'public', 'sequence',)
+    list_editable = ('public', 'sequence',)
     ordering = ['sequence', ]

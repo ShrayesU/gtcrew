@@ -187,7 +187,7 @@ class Membership(models.Model):
 
 
 class TextGroup(models.Model):
-    text = models.TextField(max_length=500, blank=True)
+    text = models.TextField(blank=True)
     header1 = models.CharField('small header', max_length=64, blank=True)
     header2 = models.CharField('large header', max_length=64, blank=True)
 
@@ -197,6 +197,7 @@ class TextGroup(models.Model):
 
 class Page(models.Model):
     page = models.CharField(max_length=64, unique=True)
+    public = models.BooleanField(default=True)
     slug = models.SlugField(max_length=64, unique=True, null=True)
     sequence = models.PositiveIntegerField(unique=True)
     template = models.CharField(
@@ -216,6 +217,7 @@ class Page(models.Model):
 
 class Post(TextGroup):
     photo = models.ImageField(blank=True, null=True)
+    public = models.BooleanField(default=True)
     additional_link = models.URLField(blank=True)
     additional_link_text = models.CharField(max_length=30, blank=True)
     document = models.FileField(blank=True, validators=[validate_file_extension])

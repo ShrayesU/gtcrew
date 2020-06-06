@@ -1,108 +1,111 @@
 {% if coaches %}
 {% for coach in coaches %}
 <section class="page-section">
-  <div class="container">
-    <div class="product-item">
-      <div class="product-item-title d-flex">
-        <div class="bg-faded p-5 d-flex ml-auto rounded">
-          <h2 class="section-heading mb-0">
-            <span class="section-heading-upper">{{ coach.squad }}'s {{ coach.title.title }}</span>
-            <span class="section-heading-lower">{{ coach.profile.first_name }} {{ coach.profile.last_name }}</span>
-          </h2>
-        </div>
-      </div>
-      {% if coach.profile.photo %}
-      <img class="product-item-img mx-auto d-flex rounded img-fluid mb-3 mb-lg-0 img-thumbnail"
-           src="{{ coach.profile.photo.url }}" alt="">
-      {% endif %}
-      <div class="product-item-description d-flex mr-auto">
-        <div class="bg-faded p-5 rounded">
-          <p class="mb-0">{{ coach.profile.bio|safe }}</p>
-          {% if coach.profile.latest_email %}
-            <div class="intro-button mx-auto">
-              <center>
-              <br><a class="btn btn-primary btn-xl" href="mailto:{{ coach.profile.latest_email }}">Contact</a>
-              </center>
+    <div class="container">
+        <div class="product-item">
+            <div class="product-item-title d-flex">
+                <div class="bg-faded p-5 d-flex ml-auto rounded">
+                    <h2 class="section-heading mb-0">
+                        <span class="section-heading-upper">{{ coach.squad }}'s {{ coach.title.title }}</span>
+                        <span class="section-heading-lower">
+                            {{ coach.profile.first_name }} {{ coach.profile.last_name }}
+                        </span>
+                    </h2>
+                </div>
             </div>
-          {% endif %}
+            {% if coach.profile.photo %}
+            <img class="product-item-img mx-auto d-flex rounded img-fluid mb-3 mb-lg-0 img-thumbnail"
+                 src="{{ coach.profile.photo.url }}" alt="">
+            {% endif %}
+            <div class="product-item-description d-flex mr-auto">
+                <div class="bg-faded p-5 rounded">
+                    <p class="mb-0">{{ coach.profile.bio|safe }}</p>
+                    {% if coach.profile.latest_email %}
+                    <div class="intro-button mx-auto mt-3">
+                        <a class="btn btn-primary btn-block text-dark" href="mailto:{{ coach.profile.latest_email }}">
+                            Contact
+                        </a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
 </section>
 {% endfor %}
 {% endif %}
 
 {% if officers %}
 <section class="page-section cta">
-  <div class="container">
-    <div class="row">
-      <div class="col-xl-9 mx-auto">
-        <div class="cta-inner text-center rounded">
-          <!--
-          <h2 class="section-heading mb-5">
-            <span class="section-heading-upper">Practice</span>
-            <span class="section-heading-lower">Schedule</span>
-          </h2>
-          -->
-          <p class="address mb-5">
-            <em>
-              <strong>Officer Board</strong>
-            </em>
-          </p>
-          <ul class="list-unstyled list-hours mb-5 text-left mx-auto">
-          {% for officer in officers %}
-            <li class="list-unstyled-item list-hours-item d-flex">
-              {{ officer.profile.first_name }} {{ officer.profile.last_name }}
-              <span class="ml-auto" style="font-weight:bold; color:#EEB211;">{{ officer.title.title }}</span>
-            </li>
-          {% endfor %}
-          </ul>
-          <!--
-          <div class="intro-button mx-auto">
-              <center>
-              <a class="btn btn-primary btn-xl" href="mailto:president@gtcrew.com">Contact</a>
-              </center>
-          </div>
-          
-          <p class="mb-0">
-            <small>
-              <em>Call Anytime</em>
-            </small>
-            <br>
-            (555) 555-5555
-          </p>
-          -->
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-9 mx-auto">
+                <div class="cta-inner text-center rounded">
+                    <!--
+                    <h2 class="section-heading mb-5">
+                      <span class="section-heading-upper">Practice</span>
+                      <span class="section-heading-lower">Schedule</span>
+                    </h2>
+                    -->
+                    <p class="address mb-5">
+                        <em>
+                            <strong>Officer Board</strong>
+                        </em>
+                    </p>
+                    <ul class="list-unstyled list-hours mb-5 text-left mx-auto">
+                        {% for officer in officers %}
+                        <li class="list-unstyled-item list-hours-item d-flex">
+                            {{ officer.profile.first_name }} {{ officer.profile.last_name }}
+                            <span class="ml-auto"
+                                  style="font-weight:bold; color:#EEB211;">{{ officer.title.title }}</span>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    <!--
+                    <div class="intro-button mx-auto">
+                        <center>
+                        <a class="btn btn-primary btn-xl" href="mailto:president@gtcrew.com">Contact</a>
+                        </center>
+                    </div>
+
+                    <p class="mb-0">
+                      <small>
+                        <em>Call Anytime</em>
+                      </small>
+                      <br>
+                      (555) 555-5555
+                    </p>
+                    -->
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
 </section>
 {% endif %}
 
 {% if students %}
 <br>
 <section class="page-section about-heading">
-  <div class="container">
-    <div class="about-heading-content">
-      <div class="row">
-        <div class="col-xl-9 col-lg-10 mx-auto">
-          <div class="bg-faded rounded p-5">
-            <h2 class="section-heading mb-4">
-              <span class="section-heading-upper">Team</span>
-              <span class="section-heading-lower">Roster</span>
-            </h2>
-            <p class="mb-3">We are one of the largest competitive sport clubs at Georgia Tech.
-            To view all the Rowers & Coxswains, please click below.</p>
-            <div class="intro-button mx-auto">
-              <center>
-              <a class="btn btn-primary btn-xl" href="{% url 'team:member_index' %}">View Roster</a>
-              </center>
+    <div class="container">
+        <div class="about-heading-content">
+            <div class="row">
+                <div class="col-xl-9 col-lg-10 mx-auto">
+                    <div class="bg-faded rounded p-5">
+                        <h2 class="section-heading mb-4">
+                            <span class="section-heading-upper">Team</span>
+                            <span class="section-heading-lower">Roster</span>
+                        </h2>
+                        <p class="mb-3">We are one of the largest competitive sport clubs at Georgia Tech.
+                            To view all the Rowers & Coxswains, please click below.</p>
+                        <div class="intro-button mx-auto">
+                            <a class="btn btn-primary btn-block text-dark" href="{% url 'team:member_index' %}">
+                                View Roster
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>  
         </div>
-      </div>
     </div>
-  </div>
 </section>
 {% endif %}

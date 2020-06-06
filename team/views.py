@@ -25,8 +25,8 @@ from .utils import APPROVED, UNCLAIMED, PENDING
 
 def page_view(request, slug):
     page = get_object_or_404(Page, slug=slug)
-    pages = Page.objects.all().order_by('sequence')
-    posts = Post.objects.filter(page=page).order_by('date_created')
+    pages = Page.objects.filter(public=True).order_by('sequence')
+    posts = Post.objects.filter(page=page, public=True).order_by('date_created')
     form = interest(request)
     payload = {
         'page': page,
@@ -47,7 +47,7 @@ def page_view(request, slug):
 
 
 def home_view(request):
-    slug = Page.objects.all().order_by('sequence')[0].slug
+    slug = Page.objects.filter(public=True).order_by('sequence')[0].slug
     return page_view(request, slug)
 
 
@@ -84,7 +84,7 @@ def signup(request):
 
 
 def interest(request):
-    pages = Page.objects.all().order_by('sequence')
+    pages = Page.objects.filter(public=True).order_by('sequence')
     if request.method == 'POST':
         form = InterestForm(request.POST)
         if form.is_valid():
