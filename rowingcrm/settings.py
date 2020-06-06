@@ -158,7 +158,7 @@ AWS_DEFAULT_ACL = 'public-read'
 X_FRAME_OPTIONS = 'SAMEORIGIN'
 SUMMERNOTE_THEME = 'bs4'
 SUMMERNOTE_CONFIG = {
-    'iframe': False,
+    # 'iframe': False,
     'attachment_require_authentication': True,
 }
 
