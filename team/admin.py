@@ -5,6 +5,7 @@ from django.contrib import admin
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.urls import path
+from django_summernote.admin import SummernoteModelAdminMixin
 
 from .forms import CsvImportForm, ProfileForm
 from .models import Profile, EmailAddress, Membership, Squad, Title, Award, AwardGiven, Post, Page
@@ -192,8 +193,9 @@ class ProfileAdmin(admin.ModelAdmin):
         )
 
 
-class PostInline(admin.StackedInline):
+class PostInline(SummernoteModelAdminMixin, admin.StackedInline):
     model = Post
+    summernote_fields = '__all__'
     fieldsets = [
         (None, {'fields': ['header1', 'header2', 'photo', 'text', ]}),
         ('Optional Link', {'fields': ['additional_link', 'additional_link_text'], 'classes': ['collapse']}),

@@ -13,6 +13,7 @@ app_name = 'team'
 urlpatterns = [
     # Public urls
     path('', views.home_view, name='index'),
+    path('page/<slug:slug>/', views.page_view, name='page'),
     path('team/membership/', views.IndexView.as_view(), name='member_index'),
     path('team/membership/<int:pk>/', views.MembershipDetail.as_view(), name='member_detail'),
     path('form/interest/', views.interest, name='interest'),
@@ -40,6 +41,4 @@ urlpatterns = [
     path('member/award/list/', views.AwardListView.as_view(), name='list_award'),
     path('member/award/<int:pk>/view/', views.AwardDetailView.as_view(), name='view_award'),
     path('member/award/given/<int:pk>/view/', views.AwardGivenDetailView.as_view(), name='view_awardgiven'),
-    # Public Pages urls
-    path('<slug:slug>/', views.page_view, name='page'),
 ]
