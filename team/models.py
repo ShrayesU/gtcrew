@@ -1,5 +1,6 @@
 from cuser.middleware import CuserMiddleware
 from django.urls import reverse_lazy
+from django.utils.text import slugify
 from django_resized import ResizedImageField
 from django.core.validators import RegexValidator
 from django.db import models
@@ -196,6 +197,7 @@ class TextGroup(models.Model):
 
 class Page(models.Model):
     page = models.CharField(max_length=64, unique=True)
+    slug = models.SlugField(max_length=64, unique=True, null=True)
     sequence = models.PositiveIntegerField(unique=True)
     template = models.CharField(
         max_length=5,
@@ -205,6 +207,11 @@ class Page(models.Model):
 
     def __str__(self):
         return '%s' % self.page
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.page)
+        super(Page, self).save(*args, **kwargs)
 
 
 class Post(TextGroup):

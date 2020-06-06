@@ -4,7 +4,7 @@
     {% else %}
 <li class="nav-item px-lg-4">
     {% endif %}
-    <a class="nav-link text-uppercase text-expanded" href="{% url 'team:page' navpage.page %}">
+    <a class="nav-link text-uppercase text-expanded" href="{% url 'team:page' navpage.slug %}">
         {{ navpage.page }}
     </a>
 </li>

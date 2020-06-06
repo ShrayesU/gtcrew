@@ -23,8 +23,8 @@ from .models import Profile, EmailAddress, Page, Post, Membership, AwardGiven, A
 from .utils import APPROVED, UNCLAIMED, PENDING
 
 
-def page_view(request, page_name):
-    page = get_object_or_404(Page, page=page_name)
+def page_view(request, slug):
+    page = get_object_or_404(Page, slug=slug)
     pages = Page.objects.all().order_by('sequence')
     posts = Post.objects.filter(page=page).order_by('date_created')
     form = interest(request)
@@ -47,8 +47,8 @@ def page_view(request, page_name):
 
 
 def home_view(request):
-    page_name = Page.objects.all().order_by('sequence')[0].page
-    return page_view(request, page_name)
+    slug = Page.objects.all().order_by('sequence')[0].slug
+    return page_view(request, slug)
 
 
 class IndexView(ListView):
