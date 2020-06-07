@@ -39,6 +39,23 @@ INSTALLED_APPS = [
     'story.apps.StoryConfig',
     'asset.apps.AssetConfig',
     'feedback.apps.FeedbackConfig',
+    # 'campaign.apps.CampaignConfig',
+
+    'wagtail.contrib.forms',
+    'wagtail.contrib.redirects',
+    'wagtail.embeds',
+    'wagtail.sites',
+    'wagtail.users',
+    'wagtail.snippets',
+    'wagtail.documents',
+    'wagtail.images',
+    'wagtail.search',
+    'wagtail.admin',
+    'wagtail.core',
+
+    'taggit',
+    'modelcluster',
+
     'dal',
     'dal_select2',
     'django.contrib.admin',
@@ -55,19 +72,6 @@ INSTALLED_APPS = [
     'django_summernote',
     'tempus_dominus',
     'actstream.apps.ActstreamConfig',
-    'wagtail.contrib.forms',
-    'wagtail.contrib.redirects',
-    'wagtail.embeds',
-    'wagtail.sites',
-    'wagtail.users',
-    'wagtail.snippets',
-    'wagtail.documents',
-    'wagtail.images',
-    'wagtail.search',
-    'wagtail.admin',
-    'wagtail.core',
-    'modelcluster',
-    'taggit',
 ]
 
 MIDDLEWARE = [
