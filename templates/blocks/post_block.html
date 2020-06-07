@@ -1,0 +1,36 @@
+{% load wagtailimages_tags %}
+
+<section class="page-section about-heading">
+    <div class="container">
+        {% image value.photo width-800 class="img-fluid rounded about-heading-img mb-3 mb-lg-0" %}
+        <div class="about-heading-content">
+            <div class="row">
+                <div class="col-xl-9 col-lg-10 mx-auto">
+                    <div class="bg-faded rounded p-5">
+                        <h2 class="section-heading mb-4">
+                            <span class="section-heading-upper">{{ value.heading_small }}</span>
+                            <span class="section-heading-lower">{{ value.heading_large }}</span>
+                        </h2>
+                        <p class="mb-3">{{ value.paragraph }}</p>
+                        <div class="row">
+                            {% if value.document %}
+                            <div class="col intro-button mx-auto">
+                                <a class="btn btn-primary btn-block text-dark" href="{{ value.document.url }}">
+                                    {{ value.document }}
+                                </a>
+                            </div>
+                            {% endif %}
+                            {% if value.page %}
+                            <div class="col intro-button mx-auto">
+                                <a class="btn btn-primary btn-block text-dark" href="{{ value.page.url }}">
+                                    {{ value.page }}
+                                </a>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

@@ -33,6 +33,7 @@ ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'gtcrew-staging.herokuapp.com',
 # Application definition
 
 INSTALLED_APPS = [
+    'gtcrew',  # location of the Wagtail Page models
     'team.apps.TeamConfig',
     'event.apps.EventConfig',
     'story.apps.StoryConfig',
@@ -54,6 +55,19 @@ INSTALLED_APPS = [
     'django_summernote',
     'tempus_dominus',
     'actstream.apps.ActstreamConfig',
+    'wagtail.contrib.forms',
+    'wagtail.contrib.redirects',
+    'wagtail.embeds',
+    'wagtail.sites',
+    'wagtail.users',
+    'wagtail.snippets',
+    'wagtail.documents',
+    'wagtail.images',
+    'wagtail.search',
+    'wagtail.admin',
+    'wagtail.core',
+    'modelcluster',
+    'taggit',
 ]
 
 MIDDLEWARE = [
@@ -65,6 +79,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'cuser.middleware.CuserMiddleware',
+    'wagtail.contrib.redirects.middleware.RedirectMiddleware',
 ]
 
 ROOT_URLCONF = 'rowingcrm.urls'
@@ -164,6 +179,10 @@ SUMMERNOTE_CONFIG = {
 
 # Activity Stream
 SITE_ID = 1
+
+# Wagtail
+WAGTAIL_SITE_NAME = 'Georgia Tech Rowing'
+WAGTAILEMBEDS_RESPONSIVE_HTML = True
 
 # Import local_settings if local
 try:
