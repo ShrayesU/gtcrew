@@ -21,10 +21,9 @@ from wagtail.core import urls as wagtail_urls
 from wagtail.documents import urls as wagtaildocs_urls
 
 urlpatterns = [
-    path('', include('team.urls')),
+    path('team/', include('team.urls')),
     re_path(r'^cms/', include(wagtailadmin_urls)),
     re_path(r'^documents/', include(wagtaildocs_urls)),
-    re_path(r'^pages/', include(wagtail_urls)),
     path('event/', include('event.urls')),
     path('story/', include('story.urls')),
     path('asset/', include('asset.urls')),
@@ -36,4 +35,5 @@ urlpatterns = [
          name='login'),
     path('logout/', LogoutView.as_view(next_page='team:index'),
          name='logout'),
+    re_path(r'', include(wagtail_urls)),
 ]
