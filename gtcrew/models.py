@@ -21,7 +21,8 @@ class PostBlock(blocks.StructBlock):
 
 class GenericPage(Page):
     body = StreamField([
-        ('post', PostBlock())
+        ('post', PostBlock()),
+        ('html', blocks.RawHTMLBlock()),
     ])
 
     content_panels = Page.content_panels + [
