@@ -46,7 +46,8 @@
 <!-- Navigation -->
 <nav class="navbar navbar-expand-lg navbar-dark py-lg-4 sticky-top" id="mainNav">
     <div class="container">
-        <a class="navbar-brand text-uppercase text-expanded font-weight-bold d-lg-none" href="{% url 'team:index' %}">
+        <a class="navbar-brand text-uppercase text-expanded font-weight-bold d-lg-none"
+           href="{{ page.get_site.root_page.url }}">
             GT Crew
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
@@ -56,17 +57,15 @@
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav mx-auto">
                 {% block navigation %}
-                <li class="nav-item px-lg-4">
+                <li class="nav-item px-lg-4 {% if page.get_site.root_page.title == page.title %}active{% endif %}">
                     <a class="nav-link text-uppercase text-expanded" href="{{ page.get_site.root_page.url }}">
                         {{ page.get_site.root_page.title }}
                     </a>
                 </li>
                 {% for item in page.get_site.root_page.get_children %}
-                <!--                {# if navpage.page == current #}-->
-                <!--                <li class="nav-item active px-lg-4">-->
-                <!--                    {# else #}-->
-                <li class="nav-item px-lg-4">
-                    <!--                    {# endif #}-->
+                {% if item.title == page.title %}
+                <li class="nav-item active px-lg-4">{% else %}
+                <li class="nav-item px-lg-4">{% endif %}
                     <a class="nav-link text-uppercase text-expanded" href="{{ item.url }}">
                         {{ item.title }}
                     </a>
