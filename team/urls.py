@@ -12,7 +12,7 @@ v1_api.register(ProfileResource())
 app_name = 'team'
 urlpatterns = [
     # Public urls
-    path('', views.home_view, name='index'),
+    # path('', views.home_view, name='index'),
     path('page/<slug:slug>/', views.page_view, name='page'),
     path('team/membership/', views.IndexView.as_view(), name='member_index'),
     path('team/membership/<int:pk>/', views.MembershipDetail.as_view(), name='member_detail'),
