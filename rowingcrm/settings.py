@@ -34,6 +34,7 @@ ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'gtcrew-staging.herokuapp.com',
 
 INSTALLED_APPS = [
     'gtcrew',  # location of the Wagtail Page models
+    'roster',
     'team.apps.TeamConfig',
     'event.apps.EventConfig',
     'story.apps.StoryConfig',

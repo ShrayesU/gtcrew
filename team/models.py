@@ -6,6 +6,11 @@ from django.core.validators import RegexValidator
 from django.db import models
 from django.utils.timezone import now
 from django.contrib.auth import get_user_model
+from wagtail.admin.edit_handlers import FieldPanel
+from wagtail.core.fields import RichTextField
+from wagtail.images.edit_handlers import ImageChooserPanel
+from wagtail.snippets.models import register_snippet
+from wagtail.search import index
 
 from .managers import StudentManager, CoachManager
 from .utils import HELD_BY_CHOICES, STUDENT, SEMESTER_CHOICES, FALL, TEMPLATE_CHOICES, DEFAULT, TEAM_FOUNDED, \
@@ -17,7 +22,8 @@ def get_default_year():
     return now().year
 
 
-class Profile(models.Model):
+@register_snippet
+class Profile(index.Indexed, models.Model):
     first_name = models.CharField(max_length=64, blank=False)
     last_name = models.CharField(max_length=64, blank=False)
     gtid = models.CharField("GT ID", max_length=9, blank=True,
@@ -25,7 +31,7 @@ class Profile(models.Model):
     birthday = models.DateField(null=True, blank=True)
     major = models.CharField(max_length=64, blank=True)
     hometown = models.CharField(max_length=64, blank=True)
-    bio = models.TextField(max_length=1500, blank=True)
+    bio = RichTextField(max_length=1500, blank=True)
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
     public = models.BooleanField(default=False)
@@ -44,6 +50,18 @@ class Profile(models.Model):
 
     class Meta:
         ordering = ['last_name']
+
+    panel = [
+        FieldPanel('first_name', classname='full'),
+        FieldPanel('last_name'),
+        ImageChooserPanel('image'),
+    ]
+    search_fields = [
+        index.SearchField('first_name', partial_match=True),
+        index.SearchField('last_name', partial_match=True),
+        index.SearchField('gtid', partial_match=True),
+        index.FilterField('status'),
+    ]
 
     def __str__(self):
         return '%s %s' % (self.first_name, self.last_name)
@@ -85,6 +103,7 @@ class EmailAddress(models.Model):
         return '%s' % self.email
 
 
+@register_snippet
 class Title(models.Model):
     title = models.CharField(max_length=64)
     sequence = models.PositiveSmallIntegerField(default=0)
@@ -103,6 +122,7 @@ class Title(models.Model):
         return '%s: %s' % (self.held_by, self.title)
 
 
+@register_snippet
 class Squad(models.Model):
     squad = models.CharField(max_length=64)
     profiles = models.ManyToManyField(
@@ -115,9 +135,10 @@ class Squad(models.Model):
         return '%s' % self.squad
 
 
+@register_snippet
 class Award(models.Model):
     award = models.CharField(max_length=64, unique=True)
-    description = models.TextField()
+    description = RichTextField()
     profiles = models.ManyToManyField(
         Profile,
         through='AwardGiven',
@@ -128,6 +149,7 @@ class Award(models.Model):
         return '%s' % self.award
 
 
+@register_snippet
 class AwardGiven(models.Model):
     award = models.ForeignKey(Award, on_delete=models.CASCADE)
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
