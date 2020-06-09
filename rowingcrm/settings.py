@@ -44,6 +44,8 @@ INSTALLED_APPS = [
 
     'wagtail.contrib.forms',
     'wagtail.contrib.redirects',
+    'wagtail.contrib.modeladmin',
+    'wagtail.contrib.styleguide',
     'wagtail.embeds',
     'wagtail.sites',
     'wagtail.users',
@@ -188,6 +190,19 @@ SITE_ID = 1
 # Wagtail
 WAGTAIL_SITE_NAME = 'Georgia Tech Rowing'
 WAGTAILEMBEDS_RESPONSIVE_HTML = True
+WAGTAILADMIN_GLOBAL_PAGE_EDIT_LOCK = True
+WAGTAIL_AUTO_UPDATE_PREVIEW = False
+WAGTAIL_FRONTEND_LOGIN_URL = '/login'
+WAGTAILADMIN_RICH_TEXT_EDITORS = {
+    'default': {
+        'WIDGET': 'wagtail.admin.rich_text.DraftailRichTextArea',
+        'OPTIONS': {
+            'features': ['h1', 'h2', 'h3', 'h4', 'bold', 'italic',
+                         'strikethrough', 'ol', 'ul', 'hr',
+                         'link', 'document-link', 'image', 'embed']
+        }
+    },
+}
 
 # Import local_settings if local
 try:
@@ -195,7 +210,7 @@ try:
 except ImportError:
     pass
 
-LOGIN_URL = '/login'
+LOGIN_URL = WAGTAIL_FRONTEND_LOGIN_URL
 LOGIN_REDIRECT_URL = 'team:index'
 
 # Activate Django-Heroku.
