@@ -4,12 +4,12 @@
 {% block content %}
 {{ block.super }}
 
-<section class="page-section cta">
+<section class="page-section about-heading">
     <div class="container">
-        <div class="row">
-            <div class="col-xl-9 mx-auto">
-                <div class="cta-inner text-center rounded">
-                    <div class="col">
+        <div class="about-heading-content my-2">
+            <div class="row">
+                <div class="col-xl-9 col-lg-10 mx-auto">
+                    <div class="bg-faded rounded p-5">
                         <form action="{% pageurl page %}" method="POST" role="form">
                             {% csrf_token %}
                             {% if form.subject.errors %}

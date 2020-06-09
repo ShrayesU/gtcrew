@@ -6,9 +6,10 @@ from django.core.validators import RegexValidator
 from django.db import models
 from django.utils.timezone import now
 from django.contrib.auth import get_user_model
-from wagtail.admin.edit_handlers import FieldPanel
+from wagtail.admin.edit_handlers import FieldPanel, MultiFieldPanel, FieldRowPanel
 from wagtail.core.fields import RichTextField
 from wagtail.images.edit_handlers import ImageChooserPanel
+from wagtail.snippets.edit_handlers import SnippetChooserPanel
 from wagtail.snippets.models import register_snippet
 from wagtail.search import index
 
@@ -36,6 +37,13 @@ class Profile(index.Indexed, models.Model):
     date_updated = models.DateTimeField(auto_now=True)
     public = models.BooleanField(default=False)
     photo = ResizedImageField(size=[700, 700], crop=['middle', 'center'], null=True, blank=True)
+    image = models.ForeignKey(
+        'wagtailimages.Image',
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name='+'
+    )
     status = models.CharField(
         max_length=10,
         choices=PROFILE_STATUS_CHOICES,
@@ -51,10 +59,30 @@ class Profile(index.Indexed, models.Model):
     class Meta:
         ordering = ['last_name']
 
-    panel = [
-        FieldPanel('first_name', classname='full'),
-        FieldPanel('last_name'),
+    panels = [
+        MultiFieldPanel([
+            FieldRowPanel([
+                FieldPanel('first_name', classname="col6"),
+                FieldPanel('last_name', classname="col6"),
+            ])
+        ], "Name"),
         ImageChooserPanel('image'),
+        MultiFieldPanel([
+            FieldPanel('owner'),
+            FieldPanel('status'),
+            FieldPanel('public'),
+        ], "Administrative",
+            classname="collapsible collapsed"
+        ),
+        MultiFieldPanel([
+            FieldRowPanel([
+                FieldPanel('birthday', classname="col6"),
+                FieldPanel('hometown', classname="col6"),
+                FieldPanel('gtid', classname="col6"),
+                FieldPanel('major', classname="col6"),
+            ])
+        ], "Details"),
+        FieldPanel('bio'),
     ]
     search_fields = [
         index.SearchField('first_name', partial_match=True),
@@ -115,11 +143,18 @@ class Title(models.Model):
     profiles = models.ManyToManyField(
         Profile,
         through='Membership',
-        through_fields=('title', 'profile')
+        through_fields=('title', 'profile'),
+        blank=True,
     )
 
     def __str__(self):
         return '%s: %s' % (self.held_by, self.title)
+
+    panels = [
+        FieldPanel('title'),
+        FieldPanel('held_by'),
+        FieldPanel('sequence'),
+    ]
 
 
 @register_snippet
@@ -128,11 +163,16 @@ class Squad(models.Model):
     profiles = models.ManyToManyField(
         Profile,
         through='Membership',
-        through_fields=('squad', 'profile',)
+        through_fields=('squad', 'profile',),
+        blank=True,
     )
 
     def __str__(self):
         return '%s' % self.squad
+
+    panels = [
+        FieldPanel('squad'),
+    ]
 
 
 @register_snippet
@@ -142,11 +182,17 @@ class Award(models.Model):
     profiles = models.ManyToManyField(
         Profile,
         through='AwardGiven',
-        through_fields=('award', 'profile')
+        through_fields=('award', 'profile'),
+        blank=True,
     )
 
     def __str__(self):
         return '%s' % self.award
+
+    panels = [
+        FieldPanel('award'),
+        FieldPanel('description'),
+    ]
 
 
 @register_snippet
@@ -162,6 +208,12 @@ class AwardGiven(models.Model):
 
     def __str__(self):
         return '%s - %s' % (self.year, self.award)
+
+    panels = [
+        SnippetChooserPanel('award'),
+        SnippetChooserPanel('profile'),
+        FieldPanel('year'),
+    ]
 
 
 class Membership(models.Model):

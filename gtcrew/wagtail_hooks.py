@@ -1,7 +1,7 @@
 from wagtail.contrib.modeladmin.options import (
     ModelAdmin, ModelAdminGroup, modeladmin_register)
 
-from team.models import Profile, Award, Title, Squad
+from team.models import Profile, Award, Title, Squad, AwardGiven
 
 
 class AwardModelAdmin(ModelAdmin):
@@ -9,9 +9,16 @@ class AwardModelAdmin(ModelAdmin):
     search_fields = ('award',)
 
 
+class AwardGivenModelAdmin(ModelAdmin):
+    model = AwardGiven
+    search_fields = ('award__award',)
+    list_filter = ('year',)
+
+
 class TitleModelAdmin(ModelAdmin):
     model = Title
     search_fields = ('title',)
+    list_filter = ('held_by',)
 
 
 class SquadModelAdmin(ModelAdmin):
@@ -23,7 +30,7 @@ class TeamDetailAdminGroup(ModelAdminGroup):
     menu_label = 'Team Details'
     menu_icon = 'fa-suitcase'
     menu_order = 200  # will put in 3rd place (000 being 1st, 100 2nd)
-    items = (AwardModelAdmin, TitleModelAdmin, SquadModelAdmin)
+    items = (AwardModelAdmin, AwardGivenModelAdmin, TitleModelAdmin, SquadModelAdmin)
 
 
 class ProfileModelAdmin(ModelAdmin):
