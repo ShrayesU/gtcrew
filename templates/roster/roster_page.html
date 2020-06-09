@@ -1,6 +1,7 @@
 {% extends "base_page.html" %}
 
 {% block content %}
+
 {% if coaches %}
 {% for coach in coaches %}
 <section class="page-section">
@@ -86,30 +87,4 @@
 </section>
 {% endif %}
 
-{% if students %}
-<br>
-<section class="page-section about-heading">
-    <div class="container">
-        <div class="about-heading-content">
-            <div class="row">
-                <div class="col-xl-9 col-lg-10 mx-auto">
-                    <div class="bg-faded rounded p-5">
-                        <h2 class="section-heading mb-4">
-                            <span class="section-heading-upper">Team</span>
-                            <span class="section-heading-lower">Roster</span>
-                        </h2>
-                        <p class="mb-3">We are one of the largest competitive sport clubs at Georgia Tech.
-                            To view all the Rowers & Coxswains, please click below.</p>
-                        <div class="intro-button mx-auto">
-                            <a class="btn btn-primary btn-block text-dark" href="{% url 'team:member_index' %}">
-                                View Roster
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-{% endif %}
 {% endblock %}
