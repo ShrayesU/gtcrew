@@ -1,0 +1,42 @@
+{% extends "gtcrew/generic_page.html" %}
+{% load wagtailcore_tags wagtailimages_tags %}
+
+{% block content %}
+{{ block.super }}
+
+<section class="page-section cta">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-9 mx-auto">
+                <div class="cta-inner text-center rounded">
+                    <div class="col">
+                        <form action="{% pageurl page %}" method="POST" role="form">
+                            {% csrf_token %}
+                            {% if form.subject.errors %}
+                            <ol role="alertdialog">
+                                {% for error in form.subject.errors %}
+                                <li role="alert"><strong>{{ error|escape }}</strong></li>
+                                {% endfor %}
+                            </ol>
+                            {% endif %}
+
+                            {% for field in form %}
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="{{ field.id_for_label }}">
+                                        {{ field.label_tag }}
+                                    </span>
+                                </div>
+                                {{ field }}
+                            </div>
+                            {% endfor %}
+                            <input class="btn btn-warning btn-block" value="Submit" type="submit">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock content %}
