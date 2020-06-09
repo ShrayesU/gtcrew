@@ -1,86 +1,17 @@
-<!DOCTYPE html>
-{% load static %}
-{% load wagtailuserbar %}
-<html lang="en">
+{% load navigation_tags static wagtailuserbar %}
 
-<head>
-
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="Alec">
-
-    <title>{{ page.get_site.site_name }}: {{ self.title }}</title>
-
-    <!-- Bootstrap core CSS -->
-    <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
-    <link href='https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css' rel='stylesheet'
-          type='text/css'>
-
-    <!-- Custom fonts for this template -->
-    <link href="https://fonts.googleapis.com/css?family=Raleway:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i"
-          rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i" rel="stylesheet">
-
-    <!-- Custom styles for this template -->
-    <link href="{% static 'css/business-casual.min.css' %}" rel="stylesheet">
-
-    <!-- Bootstrap core JavaScript -->
-    <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
-    <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
-
-    <!-- ChartJS -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
-
-</head>
+{% block head %}
+    {% include "includes/head.html" %}
+{% endblock head %}
 
 <body>
 
 {% wagtailuserbar %}
 
-<h1 class="site-heading text-center text-white d-none d-lg-block">
-    <span class="site-heading-upper text-primary mb-3">Georgia Tech</span>
-    <span class="site-heading-lower">Rowing</span>
-</h1>
-
-<!-- Navigation -->
-<nav class="navbar navbar-expand-lg navbar-dark py-lg-4 sticky-top" id="mainNav">
-    <div class="container">
-        <a class="navbar-brand text-uppercase text-expanded font-weight-bold d-lg-none"
-           href="{{ page.get_site.root_page.url }}">
-            GT Crew
-        </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
-                aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarResponsive">
-            <ul class="navbar-nav mx-auto">
-                {% block navigation %}
-                <li class="nav-item px-lg-4 {% if page.get_site.root_page.title == page.title %}active{% endif %}">
-                    <a class="nav-link text-uppercase text-expanded" href="{{ page.get_site.root_page.url }}">
-                        {{ page.get_site.root_page.title }}
-                    </a>
-                </li>
-                {% for item in page.get_site.root_page.get_children %}
-                {% if item.title == page.title %}
-                <li class="nav-item active px-lg-4">{% else %}
-                <li class="nav-item px-lg-4">{% endif %}
-                    <a class="nav-link text-uppercase text-expanded" href="{{ item.url }}">
-                        {{ item.title }}
-                    </a>
-                </li>
-                {% endfor %}
-                <li class="nav-item px-lg-4">
-                    <a class="nav-link text-uppercase text-expanded" href="{% url 'team:index_member' %}">
-                        Portal<sup>beta</sup>
-                    </a>
-                </li>
-                {% endblock %}
-            </ul>
-        </div>
-    </div>
-</nav>
+{% block header %}
+    {# Header contains the main_navigation block #}
+    {% include "includes/header.html" with parent=site_root calling_page=self %}
+{% endblock %}
 
 {% block title %}{% endblock %}
 
