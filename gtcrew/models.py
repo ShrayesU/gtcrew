@@ -7,6 +7,7 @@ from wagtail.core import blocks
 from wagtail.core.fields import StreamField, RichTextField
 from wagtail.core.models import Page
 from wagtail.images.edit_handlers import ImageChooserPanel
+from wagtailcaptcha.models import WagtailCaptchaEmailForm
 
 from gtcrew.blocks import PostBlock
 
@@ -26,7 +27,7 @@ class FormField(AbstractFormField):
     page = ParentalKey('FormPage', related_name='form_fields', on_delete=models.CASCADE)
 
 
-class FormPage(AbstractEmailForm):
+class FormPage(WagtailCaptchaEmailForm):
     image = models.ForeignKey(
         'wagtailimages.Image',
         null=True,
