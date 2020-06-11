@@ -105,6 +105,7 @@ class TermPage(Page):
     ]
 
     parent_page_types = ['roster.RosterIndexPage']
+    subpage_types = []
 
 
 class RosterIndexPage(Page):
