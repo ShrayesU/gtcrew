@@ -56,7 +56,9 @@ INSTALLED_APPS = [
     'wagtail.search',
     'wagtail.admin',
     'wagtail.core',
+
     'wagtailcaptcha',
+    'wagtailautocomplete',
 
     'taggit',
     'modelcluster',

@@ -28,6 +28,20 @@ class PersonPage(Page):
     class Meta:
         verbose_name_plural = 'People'
 
+    @classmethod
+    def autocomplete_create(cls: type, value: str):
+        person_index_page = PersonIndexPage.objects.first()
+        title = value
+        if ' ' in value:
+            first_name, last_name = value.split(' ')
+        else:
+            first_name, last_name = value, value
+
+        new = cls(title=title, first_name=first_name, last_name=last_name)
+        person_index_page.add_child(instance=new)
+        person_index_page.save()
+        return new
+
     def clean(self):
         """Override the values of title and slug before saving."""
         # super(MatchPage, self).clean() # Python 2.X syntax
@@ -65,6 +79,7 @@ class PersonPage(Page):
 
 
 class PersonIndexPage(Page):
+    max_count = 1
     subpage_types = ['PersonPage']
 
     def get_people(self):

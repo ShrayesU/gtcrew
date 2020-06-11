@@ -4,6 +4,7 @@ from modelcluster.fields import ParentalKey
 from wagtail.admin.edit_handlers import InlinePanel, PageChooserPanel, MultiFieldPanel, FieldRowPanel, FieldPanel
 from wagtail.core.models import Page, Orderable
 from wagtail.snippets.edit_handlers import SnippetChooserPanel
+from wagtailautocomplete.edit_handlers import AutocompletePanel
 
 from team.models import Membership
 from team.utils import COACH, STUDENT
@@ -38,7 +39,7 @@ class Coach(Orderable):
         return '%s %s' % (self.person_page.specific.first_name, self.person_page.specific.last_name)
 
     panels = [
-        PageChooserPanel('person_page', 'person.PersonPage'),
+        AutocompletePanel('person_page', 'person.PersonPage'),
         SnippetChooserPanel('position'),
         SnippetChooserPanel('squad'),
     ]
@@ -67,7 +68,7 @@ class Officers(Orderable):
         return '%s %s' % (self.person_page.specific.first_name, self.person_page.specific.last_name)
 
     panels = [
-        PageChooserPanel('person_page', 'person.PersonPage'),
+        AutocompletePanel('person_page', 'person.PersonPage'),
         SnippetChooserPanel('position'),
     ]
 

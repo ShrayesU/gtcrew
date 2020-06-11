@@ -19,10 +19,12 @@ from django.urls import include, path, re_path
 from wagtail.admin import urls as wagtailadmin_urls
 from wagtail.core import urls as wagtail_urls
 from wagtail.documents import urls as wagtaildocs_urls
+from wagtailautocomplete.urls.admin import urlpatterns as autocomplete_admin_urls
 
 urlpatterns = [
     path('team/', include('team.urls')),
-    re_path(r'^cms/', include(wagtailadmin_urls)),
+    re_path(r'^admin/autocomplete/', include(autocomplete_admin_urls)),
+    re_path(r'^admin/', include(wagtailadmin_urls)),
     re_path(r'^documents/', include(wagtaildocs_urls)),
     path('event/', include('event.urls')),
     path('story/', include('story.urls')),
@@ -30,7 +32,7 @@ urlpatterns = [
     path('feedback/', include('feedback.urls')),
     path('summernote/', include('django_summernote.urls')),
     # path('activity/', include('actstream.urls')),
-    path('admin/', admin.site.urls),
+    path('django_admin/', admin.site.urls),
     path('login/', LoginView.as_view(template_name='login.html'),
          name='login'),
     path('logout/', LogoutView.as_view(next_page='team:index'),
