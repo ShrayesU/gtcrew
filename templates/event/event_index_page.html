@@ -1,6 +1,14 @@
 {% extends "base_page.html" %}
 {% load wagtailcore_tags %}
 
+{% block head %}
+{{ block.super }}
+<link href='https://unpkg.com/@fullcalendar/core@4.4.0/main.min.css' rel='stylesheet'/>
+<link href='https://unpkg.com/@fullcalendar/daygrid@4.4.0/main.min.css' rel='stylesheet'/>
+<link href='https://unpkg.com/@fullcalendar/timegrid@4.4.0/main.min.css' rel='stylesheet'/>
+<link href='https://unpkg.com/@fullcalendar/bootstrap@4.4.0/main.min.css' rel='stylesheet' />
+{% endblock %}
+
 {% block content %}
 
 <section class="page-section cta">
@@ -8,23 +16,60 @@
         <div class="row">
             <div class="col-xl-9 mx-auto">
                 <div class="cta-inner text-center rounded">
-                    <h2 class="section-heading mb-5">
+                    <h2 class="section-heading mb-2">
                         <span class="section-heading-upper">All</span>
                         <span class="section-heading-lower">Events</span>
                     </h2>
-                    <ul class="list-unstyled list-hours mb-5 text-left mx-auto">
-                        <div class="row text-center">
-                            {% for event in events %}
-                            <div class="col-6 col-lg-4 my-2">
-                                <a href="{% pageurl event %}">{{ event.title }}</a>
-                            </div>
-                            {% endfor %}
-                        </div>
-                    </ul>
+                    <div class="card-body">
+                        <div id="calendar"></div>
+                    </div>
+<!--                    <ul class="list-unstyled list-hours mb-5 text-left mx-auto">-->
+<!--                        <div class="row text-center">-->
+<!--                            {# for event in events #}-->
+<!--                            <div class="col-6 col-lg-4 my-2">-->
+<!--                                <a href="{# pageurl event #}">{{ event.title }}</a>-->
+<!--                            </div>-->
+<!--                            {# endfor %}-->
+<!--                        </div>-->
+<!--                    </ul>-->
                 </div>
             </div>
         </div>
     </div>
 </section>
 
+{% endblock %}
+
+{% block javascript %}
+<script src='https://unpkg.com/@fullcalendar/core@4.4.0/main.min.js'></script>
+<script src='https://unpkg.com/@fullcalendar/interaction@4.4.0/main.min.js'></script>
+<script src='https://unpkg.com/@fullcalendar/daygrid@4.4.0/main.min.js'></script>
+<script src='https://unpkg.com/@fullcalendar/timegrid@4.4.0/main.min.js'></script>
+<script src='https://unpkg.com/@fullcalendar/list@4.4.0/main.min.js'></script>
+<script src='https://unpkg.com/@fullcalendar/bootstrap@4.4.0/main.min.js'></script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var calendarEl = document.getElementById('calendar');
+
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+      plugins: [ 'interaction', 'dayGrid', 'timeGrid', 'list', 'bootstrap' ],
+      defaultView: 'dayGridMonth',
+      timeZone: 'America/New_York',
+      themeSystem: 'bootstrap',
+      header: {
+        left: '',
+        center: 'title',
+        right: 'dayGridMonth,timeGridWeek,listYear'  //,timeGridDay'
+      },
+      footer: {
+        center: 'prev,prevYear,today,nextYear,next',
+      },
+
+      events: {{ api_event|safe }}  // data from view
+    });
+
+    calendar.render();
+  });
+</script>
 {% endblock %}

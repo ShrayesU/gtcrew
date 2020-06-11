@@ -171,8 +171,19 @@ class EventIndexPage(Page):
     def get_context(self, request, *args, **kwargs):
         context = super(EventIndexPage, self).get_context(request)
 
-        # EventPage objects (get_events) are passed through pagination
-        events = self.paginate(request, self.get_events())
+        events = self.get_events()
+        api_event = []
+        for event in events:
+            prepared = {'title': event.title,
+                        'url': event.url,
+                        'start': event.start_datetime.strftime("%Y-%m-%dT%H:%M:%S"), }
+            if event.end_datetime:
+                prepared.update({'end': event.end_datetime.strftime("%Y-%m-%dT%H:%M:%S"), })
+            api_event.append(prepared)
+        context.update({'api_event': api_event})
+
+        # # EventPage objects (get_events) are passed through pagination
+        # events = self.paginate(request, self.get_events())
 
         context['events'] = events
 

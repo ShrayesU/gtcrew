@@ -1,8 +1,14 @@
+<!DOCTYPE html>
+
 {% load navigation_tags static wagtailuserbar %}
 
+<html lang="en">
+
+<head>
 {% block head %}
     {% include "includes/head.html" %}
 {% endblock head %}
+</head>
 
 <body>
 
@@ -48,6 +54,8 @@
         <p class="m-0 small">Copyright &copy; gtcrew 2018</p>
     </div>
 </footer>
+
+{% block javascript %}{% endblock %}
 
 </body>
 
