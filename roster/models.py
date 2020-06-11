@@ -34,6 +34,9 @@ class Coach(Orderable):
         related_name='+',
     )
 
+    def __str__(self):
+        return '%s %s' % (self.person_page.specific.first_name, self.person_page.specific.last_name)
+
     panels = [
         PageChooserPanel('person_page', 'person.PersonPage'),
         SnippetChooserPanel('position'),
@@ -60,6 +63,9 @@ class Officers(Orderable):
         limit_choices_to={'held_by': STUDENT},
     )
 
+    def __str__(self):
+        return '%s %s' % (self.person_page.specific.first_name, self.person_page.specific.last_name)
+
     panels = [
         PageChooserPanel('person_page', 'person.PersonPage'),
         SnippetChooserPanel('position'),
@@ -75,6 +81,9 @@ class Member(models.Model):
         on_delete=models.PROTECT,
         related_name='+',
     )
+
+    def __str__(self):
+        return '%s %s' % (self.person_page.specific.first_name, self.person_page.specific.last_name)
 
     panels = [PageChooserPanel('person_page', 'person.PersonPage')]
 

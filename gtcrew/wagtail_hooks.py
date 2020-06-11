@@ -1,6 +1,11 @@
+from django.conf.urls import url
+from django.urls import reverse
+from wagtail.admin.menu import AdminOnlyMenuItem
 from wagtail.contrib.modeladmin.options import (
     ModelAdmin, ModelAdminGroup, modeladmin_register)
+from wagtail.core import hooks
 
+from gtcrew.views import PeopleReportView
 from team.models import Profile, Award, Title, Squad, AwardGiven, Membership
 
 
@@ -17,8 +22,8 @@ class MembershipModelAdmin(ModelAdmin):
     model = Membership
     menu_icon = 'users'
     menu_order = 300
-    list_display = ('year', 'semester', 'profile', )  # 'profile__first_name', 'profile__last_name')
-    list_filter = ('title', 'public', )
+    list_display = ('year', 'semester', 'profile',)  # 'profile__first_name', 'profile__last_name')
+    list_filter = ('title', 'public',)
     search_fields = ('profile__first_name', 'profile__last_name', 'profile__gtid')
 
 
@@ -54,3 +59,16 @@ class TeamDetailAdminGroup(ModelAdminGroup):
 modeladmin_register(ProfileModelAdmin)
 modeladmin_register(MembershipModelAdmin)
 modeladmin_register(TeamDetailAdminGroup)
+
+
+@hooks.register('register_reports_menu_item')
+def register_people_report_menu_item():
+    return AdminOnlyMenuItem("Term Pages with people list", reverse('people_report'),
+                             classnames='icon icon-' + PeopleReportView.header_icon, order=700)
+
+
+@hooks.register('register_admin_urls')
+def register_people_report_url():
+    return [
+        url(r'^reports/people/$', PeopleReportView.as_view(), name='people_report'),
+    ]

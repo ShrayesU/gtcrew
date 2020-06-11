@@ -1,0 +1,19 @@
+{% extends 'wagtailadmin/reports/listing/_list_page_report.html' %}
+
+{% block extra_columns %}
+<th>Coaches</th>
+<th>Officers</th>
+<th>Members</th>
+{% endblock %}
+
+{% block extra_page_data %}
+<td valign="top">
+    {{ page.coaches.all.count }}
+</td>
+<td valign="top">
+    {{ page.officers.all.count }}
+</td>
+<td valign="top">
+    {{ page.members.all.count }}
+</td>
+{% endblock %}
