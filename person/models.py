@@ -28,12 +28,13 @@ class PersonPage(Page):
     class Meta:
         verbose_name_plural = 'People'
 
-    # def clean(self):
-    #     """Override the values of title and slug before saving."""
-    #     # super(MatchPage, self).clean() # Python 2.X syntax
-    #     super().clean()
-    #     self.title = '%s %s' % (self.first_name, self.last_name)
-    #     self.slug = slugify(self.title)
+    def clean(self):
+        """Override the values of title and slug before saving."""
+        # super(MatchPage, self).clean() # Python 2.X syntax
+        super().clean()
+        self.title = '%s %s' % (self.first_name, self.last_name)
+        if not self.slug:
+            self.slug = slugify(self.title)
 
     content_panels = [
         MultiFieldPanel([
