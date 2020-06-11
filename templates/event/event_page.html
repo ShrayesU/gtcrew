@@ -1,0 +1,65 @@
+{% extends "base_page.html" %}
+{% load wagtailcore_tags %}
+
+{% block content %}
+
+<section class="page-section about-heading">
+    <div class="container">
+        <div class="about-heading-content my-5">
+            <div class="row">
+                <div class="col-xl-9 col-lg-10 mx-auto">
+                    <div class="bg-faded rounded p-5">
+                        <h2 class="section-heading mb-5 text-center">
+                            <span class="section-heading-upper">Event</span>
+                            <span class="section-heading-lower">{{ self.title }}</span>
+                        </h2>
+                        <div class="col text-center mb-2">
+                            {{ self.start_datetime }} {% if self.end_datetime %} to {{ self.end_datetime }}{% endif %}
+                        </div>
+                        <table>
+                            <div class="row text-center">
+                                <div class="col-6 col-lg-4 my-2">
+                                    {{ self.event_type }}
+                                </div>
+                                <div class="col-6 col-lg-4 my-2">
+                                    {{ self.location }}
+                                </div>
+                                <div class="col-6 col-lg-4 my-2">
+                                    {{ self.description|safe }}
+                                </div>
+                            </div>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% if results %}
+<section class="page-section cta">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-9 mx-auto">
+                <div class="cta-inner text-center rounded">
+                    <h2 class="section-heading mb-5">
+                        <span class="section-heading-upper">All</span>
+                        <span class="section-heading-lower">Results</span>
+                    </h2>
+                    <ul class="list-unstyled list-hours mb-5 text-left mx-auto">
+                        <div class="row text-center">
+                            {% for result in results %}
+                            <div class="col-12 my-2">
+                                <a href="{% pageurl result %}">{{ result.title }}</a>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+{% endblock %}

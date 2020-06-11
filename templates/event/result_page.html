@@ -1,0 +1,38 @@
+{% extends "base_page.html" %}
+{% load wagtailcore_tags %}
+
+{% block content %}
+
+<section class="page-section cta">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-9 mx-auto">
+                <div class="cta-inner text-center rounded">
+                    <ul class="list-unstyled list-hours text-left mx-auto">
+                        <div class="row">
+                            <div class="col-12">
+                                <span class="text-primary font-weight-bold">Event: </span>{{ self.entry }}
+                            </div>
+                            <div class="col-12">
+                                <span class="text-primary font-weight-bold">Distance: </span>{{ self.distance }}
+                            </div>
+                            <div class="col-12">
+                                <span class="text-primary font-weight-bold">Time: </span>{{ self.total_time_string }}
+                            </div>
+                            <div class="col-12">
+                                <span class="text-primary font-weight-bold">Pace: </span>{{ self.pace_string }}
+                            </div>
+                        </div>
+                    </ul>
+                    <div class="row">
+                        <div class="col-12 text-right">
+                            <a href="{% pageurl self.get_parent %}">Return to Event Page</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
