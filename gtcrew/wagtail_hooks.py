@@ -1,7 +1,25 @@
 from wagtail.contrib.modeladmin.options import (
     ModelAdmin, ModelAdminGroup, modeladmin_register)
 
-from team.models import Profile, Award, Title, Squad, AwardGiven
+from team.models import Profile, Award, Title, Squad, AwardGiven, Membership
+
+
+class ProfileModelAdmin(ModelAdmin):
+    model = Profile
+    menu_icon = 'user'
+    menu_order = 200  # will put in 3rd place (000 being 1st, 100 2nd)
+    list_display = ('first_name', 'last_name', 'status')
+    list_filter = ('status',)
+    search_fields = ('first_name', 'last_name', 'gtid')
+
+
+class MembershipModelAdmin(ModelAdmin):
+    model = Membership
+    menu_icon = 'users'
+    menu_order = 300
+    list_display = ('year', 'semester', 'profile', )  # 'profile__first_name', 'profile__last_name')
+    list_filter = ('title', 'public', )
+    search_fields = ('profile__first_name', 'profile__last_name', 'profile__gtid')
 
 
 class AwardModelAdmin(ModelAdmin):
@@ -29,18 +47,10 @@ class SquadModelAdmin(ModelAdmin):
 class TeamDetailAdminGroup(ModelAdminGroup):
     menu_label = 'Team Details'
     menu_icon = 'fa-suitcase'
-    menu_order = 200  # will put in 3rd place (000 being 1st, 100 2nd)
+    menu_order = 300
     items = (AwardModelAdmin, AwardGivenModelAdmin, TitleModelAdmin, SquadModelAdmin)
 
 
-class ProfileModelAdmin(ModelAdmin):
-    model = Profile
-    menu_icon = 'user'
-    menu_order = 300
-    list_display = ('first_name', 'last_name', 'status')
-    list_filter = ('status',)
-    search_fields = ('first_name', 'last_name', 'gtid')
-
-
-modeladmin_register(TeamDetailAdminGroup)
 modeladmin_register(ProfileModelAdmin)
+modeladmin_register(MembershipModelAdmin)
+modeladmin_register(TeamDetailAdminGroup)

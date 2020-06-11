@@ -1,0 +1,30 @@
+{% extends "base_page.html" %}
+{% load wagtailcore_tags %}
+
+{% block content %}
+
+<section class="page-section cta">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-9 mx-auto">
+                <div class="cta-inner text-center rounded">
+                    <h2 class="section-heading mb-5">
+                        <span class="section-heading-upper">Racing</span>
+                        <span class="section-heading-lower">Seasons</span>
+                    </h2>
+                    <ul class="list-unstyled list-hours mb-5 text-left mx-auto">
+                        {% for term in terms %}
+                        <li class="list-unstyled-item list-hours-item d-flex">
+                            <a href="{% pageurl term %}">{{ term }}</a>
+                            <span class="ml-auto"
+                                  style="font-weight:bold; color:#EEB211;">{{ term.start_date }}</span>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

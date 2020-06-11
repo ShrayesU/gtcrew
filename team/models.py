@@ -216,6 +216,7 @@ class AwardGiven(models.Model):
     ]
 
 
+@register_snippet
 class Membership(models.Model):
     semester = models.CharField(
         max_length=6,
@@ -237,12 +238,32 @@ class Membership(models.Model):
         null=True,
     )
     public = models.BooleanField(default=False)
+
     objects = models.Manager()
     students = StudentManager()
     coaches = CoachManager()
 
     class Meta:
         ordering = ['year', '-semester']
+
+    panels = [
+        MultiFieldPanel([
+            FieldRowPanel([
+                FieldPanel('semester', classname="col6"),
+                FieldPanel('year', classname="col6"),
+            ])
+        ], "Semester"),
+        SnippetChooserPanel('profile'),
+        SnippetChooserPanel('squad'),
+        SnippetChooserPanel('title'),
+        FieldPanel('public'),
+    ]
+    search_fields = [
+        index.SearchField('profile__first_name', partial_match=True),
+        index.SearchField('profile__last_name', partial_match=True),
+        index.SearchField('profile__gtid', partial_match=True),
+        index.FilterField('title'),
+    ]
 
     def __str__(self):
         return '%s%s: %s' % (self.semester, self.year, self.profile)

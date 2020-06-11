@@ -1,0 +1,81 @@
+{% extends "base_page.html" %}
+{% load wagtailcore_tags %}
+
+{% block content %}
+
+<section class="page-section cta">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-9 mx-auto">
+                <div class="cta-inner text-center rounded">
+                    <h2 class="section-heading">
+                        <span class="section-heading-upper">{{ self.start_date }}</span>
+                        <span class="section-heading-lower">{{ self.title }}</span>
+                    </h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% for coach in self.coaches.all %}
+{% if coach.person_page.live %}
+{% include "person/includes/coaches.html" with coach=coach %}
+{% endif %}
+{% endfor %}
+
+<section class="page-section cta">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-9 mx-auto">
+                <div class="cta-inner text-center rounded">
+                    <h2 class="section-heading mb-5">
+                        <span class="section-heading-upper">Student</span>
+                        <span class="section-heading-lower">Officers</span>
+                    </h2>
+                    <ul class="list-unstyled list-hours mb-5 text-left mx-auto">
+                        {% for officer in self.officers.all %}
+                        {% if officer.person_page.live %}
+                        <li class="list-unstyled-item list-hours-item d-flex">
+                            <a href="{% pageurl officer.person_page %}">{{ officer.person_page.title }}</a>
+                            <span class="ml-auto"
+                                  style="font-weight:bold; color:#EEB211;">{{ officer.position.title }}</span>
+                        </li>
+                        {% endif %}
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="page-section about-heading">
+    <div class="container">
+        <div class="about-heading-content my-5">
+            <div class="row">
+                <div class="col-xl-9 col-lg-10 mx-auto">
+                    <div class="bg-faded rounded p-5">
+                        <h2 class="section-heading mb-5 text-center">
+                            <span class="section-heading-upper">Rowers & Coxswain</span>
+                            <span class="section-heading-lower">Members</span>
+                        </h2>
+                        <table>
+                            <div class="row text-center">
+                                {% for member in self.members.all %}
+                                {% if member.person_page.live %}
+                                <div class="col-6 col-lg-4 my-2">
+                                    <a href="{% pageurl member.person_page %}">{{ member.person_page.title }}</a>
+                                </div>
+                                {% endif %}
+                                {% endfor %}
+                            </div>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
