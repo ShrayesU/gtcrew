@@ -1,0 +1,10 @@
+{% extends "wagtailadmin/login.html" %}
+
+{% load i18n %}
+
+{% block branding_login %}Sign in to GT Crew{% endblock %}
+
+{% block submit_buttons %}
+    {{ block.super }}
+    <a href="{% url 'team:register' %}"><button type="button" class="button">{% trans 'Sign up' %}</button></a>
+{% endblock %}
