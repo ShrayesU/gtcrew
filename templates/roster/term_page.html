@@ -62,12 +62,10 @@
                         </h2>
                         <table>
                             <div class="row text-center">
-                                {% for member in self.members.all %}
-                                {% if member.person_page.live %}
+                                {% for member in members %}
                                 <div class="col-6 col-lg-4 my-2">
-                                    <a href="{% pageurl member.person_page %}">{{ member.person_page.title }}</a>
+                                    <a href="{% pageurl member %}">{{ member.title }}</a>
                                 </div>
-                                {% endif %}
                                 {% endfor %}
                             </div>
                         </table>

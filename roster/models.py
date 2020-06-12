@@ -6,6 +6,7 @@ from wagtail.core.models import Page, Orderable
 from wagtail.snippets.edit_handlers import SnippetChooserPanel
 from wagtailautocomplete.edit_handlers import AutocompletePanel
 
+from person.models import PersonPage
 from team.utils import COACH, STUDENT
 
 
@@ -118,6 +119,17 @@ class TermPage(Page):
 
     parent_page_types = ['roster.RosterIndexPage']
     subpage_types = []
+
+    def get_context(self, request, *args, **kwargs):
+        context = super(TermPage, self).get_context(request)
+
+        members = PersonPage.objects.live().filter(
+            id__in=self.members.all().values('person_page_id')
+        ).order_by('last_name')
+        print(members)
+        context['members'] = members
+
+        return context
 
 
 class RosterIndexPage(Page):
