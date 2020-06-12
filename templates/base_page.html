@@ -19,6 +19,10 @@
     {% include "includes/header.html" with parent=site_root calling_page=self %}
 {% endblock %}
 
+{% block messages %}
+    {% include "includes/messages.html" %}
+{% endblock messages %}
+
 {% block title %}{% endblock %}
 
 {% block content %}{% endblock %}

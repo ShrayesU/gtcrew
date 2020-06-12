@@ -6,7 +6,6 @@ from wagtail.core.models import Page, Orderable
 from wagtail.snippets.edit_handlers import SnippetChooserPanel
 from wagtailautocomplete.edit_handlers import AutocompletePanel
 
-from team.models import Membership
 from team.utils import COACH, STUDENT
 
 
@@ -35,11 +34,14 @@ class Coach(Orderable):
         related_name='+',
     )
 
+    class Meta:
+        verbose_name_plural = 'Coaches'
+
     def __str__(self):
         return '%s %s' % (self.person_page.specific.first_name, self.person_page.specific.last_name)
 
     panels = [
-        AutocompletePanel('person_page', 'person.PersonPage'),
+        PageChooserPanel('person_page', 'person.PersonPage'),
         SnippetChooserPanel('position'),
         SnippetChooserPanel('squad'),
     ]
@@ -86,7 +88,7 @@ class Member(models.Model):
     def __str__(self):
         return '%s %s' % (self.person_page.specific.first_name, self.person_page.specific.last_name)
 
-    panels = [PageChooserPanel('person_page', 'person.PersonPage')]
+    panels = [AutocompletePanel('person_page', 'person.PersonPage')]
 
 
 class TermPage(Page):
@@ -119,7 +121,6 @@ class TermPage(Page):
 
 
 class RosterIndexPage(Page):
-
     subpage_types = ['TermPage']
 
     def get_terms(self):
