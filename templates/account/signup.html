@@ -1,0 +1,67 @@
+{% extends "account/base.html" %}
+
+{% load i18n %}
+
+{% block titletag %}{% trans "Sign Up" %}{% endblock %}
+
+{% block furniture %}
+<main class="content-wrapper" role="main">
+    {% if messages or form.errors %}
+    <div class="messages">
+        <ul>
+            {% if form.errors %}
+            {% for field in form %}
+            {% if field.errors %}
+            <li class="error">
+                {{ field.label }}: {{ field.errors }}
+            </li>
+            {% endif %}
+            {% endfor %}
+            {% endif %}
+            {% for message in messages %}
+            <li class="{{ message.tags }}">{{ message }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+
+    <form action="{% url 'account_signup' %}" method="post" autocomplete="off" novalidate>
+        {% csrf_token %}
+
+        {% if redirect_field_value %}
+        <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+        {% endif %}
+
+        <h1>{% block branding_login %}{% trans "Sign up to GT Crew" %}{% endblock %}</h1>
+
+        <ul class="fields">
+            {% for field in form %}
+            <li class="full">
+                {{ field.label_tag }}
+                <div class="field iconfield">
+                    {{ field }}
+                </div>
+            </li>
+            {% endfor %}
+
+            <li class="submit">
+                {% block submit_buttons %}
+                <button type="submit" class="button button-longrunning" data-clicked-text="{% trans 'Signing up…' %}">
+                    <span class="icon icon-spinner"></span><em>{% trans 'Sign up' %}</em></button>
+                {% endblock %}
+            </li>
+        </ul>
+
+    </form>
+
+</main>
+{% endblock %}
+
+{% block extra_js %}
+{{ block.super }}
+<script>
+    $(function(){
+        $('form input[name=email]').trigger('focus');
+    })
+</script>
+{% endblock %}

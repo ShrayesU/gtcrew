@@ -14,7 +14,6 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import include, path, re_path
 from wagtail.admin import urls as wagtailadmin_urls
 from wagtail.core import urls as wagtail_urls
@@ -24,6 +23,7 @@ from wagtailautocomplete.urls.admin import urlpatterns as autocomplete_admin_url
 urlpatterns = [
     path('team/', include('team.urls')),
     re_path(r'^admin/autocomplete/', include(autocomplete_admin_urls)),
+    path('admin/', include('allauth.urls')),
     re_path(r'^admin/', include(wagtailadmin_urls)),
     re_path(r'^documents/', include(wagtaildocs_urls)),
     path('event/', include('event.urls')),
@@ -33,9 +33,5 @@ urlpatterns = [
     path('summernote/', include('django_summernote.urls')),
     # path('activity/', include('actstream.urls')),
     path('django_admin/', admin.site.urls),
-    path('login/', LoginView.as_view(template_name='login.html'),
-         name='login'),
-    path('logout/', LogoutView.as_view(next_page='team:index'),
-         name='logout'),
     re_path(r'', include(wagtail_urls)),
 ]

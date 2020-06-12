@@ -1,0 +1,75 @@
+{% extends "account/base.html" %}
+
+{% load i18n %}
+
+{% block titletag %}{% trans "Login" %}{% endblock %}
+
+{% block furniture %}
+<main class="content-wrapper" role="main">
+    {% if messages or form.errors %}
+    <div class="messages">
+        <ul>
+            {% if form.errors %}
+            <li class="error">
+                {% blocktrans %}Your {{ username_field }} and password didn't match.
+                Please try again.{% endblocktrans %}
+            </li>
+            {% endif %}
+            {% for message in messages %}
+            <li class="{{ message.tags }}">{{ message }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+
+    {% block above_login %}{% endblock %}
+
+    <form action="{% url 'account_login' %}" method="post" autocomplete="off" novalidate>
+        {% block login_form %}
+        {% csrf_token %}
+
+        {% url 'wagtailadmin_home' as home_url %}
+        <input type="hidden" name="next" value="{{ next|default:home_url }}"/>
+
+        <h1>{% block branding_login %}{% trans "Sign in to GT Crew" %}{% endblock %}</h1>
+
+        <ul class="fields">
+            {% for field in form %}
+            <li class="full">
+                {{ field.label_tag }}
+                <div class="field iconfield">
+                    {{ field }}
+                </div>
+            </li>
+            {% endfor %}
+
+            {% endblock %}
+            <li class="submit">
+                {% block submit_buttons %}
+                <button type="submit" class="button button-longrunning" data-clicked-text="{% trans 'Signing in…' %}">
+                    <span class="icon icon-spinner"></span><em>{% trans 'Sign in' %}</em></button>
+                <a href="{{ signup_url }}">
+                    <button type="button" class="button button-secondary">{% trans 'Register' %}</button>
+                </a>
+                {% endblock %}
+            </li>
+        </ul>
+
+        <p class="help"><a href="{% url 'account_reset_password' %}"
+                           aria-label="{% trans 'Reset your password' %}">{% trans "Forgotten it?" %}</a></p>
+        {% endblock %}
+    </form>
+
+    {% block below_login %}{% endblock %}
+
+</main>
+
+{% block extra_js %}
+{{ block.super }}
+<script>
+    $(function(){
+        $('form input[name=username]').trigger('focus');
+    })
+
+</script>
+{% endblock %}

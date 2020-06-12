@@ -1,0 +1,16 @@
+{% extends "wagtailadmin/admin_base.html" %}
+{% load wagtailadmin_tags i18n %}
+{% block titletag %}{% endblock %}
+{% block bodyclass %}login{% endblock %}
+
+{% block extra_css %}
+{{ block.super }}
+
+<link rel="stylesheet" href="{% versioned_static 'wagtailadmin/css/layouts/login.css' %}" type="text/css"/>
+{% endblock %}
+
+{% block furniture %}{% endblock %}
+
+{% block extra_js %}
+{{ block.super }}
+{% endblock %}

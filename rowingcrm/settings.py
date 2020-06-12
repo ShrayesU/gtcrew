@@ -79,6 +79,10 @@ INSTALLED_APPS = [
     'django_summernote',
     'tempus_dominus',
     'actstream.apps.ActstreamConfig',
+
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
 ]
 
 MIDDLEWARE = [
@@ -135,6 +139,15 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+# Authentication Backends
+AUTHENTICATION_BACKENDS = (
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+
+    # `allauth` specific authentication methods, such as login by e-mail
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.0/topics/i18n/
@@ -196,7 +209,7 @@ WAGTAIL_SITE_NAME = 'Georgia Tech Rowing'
 WAGTAILEMBEDS_RESPONSIVE_HTML = True
 WAGTAILADMIN_GLOBAL_PAGE_EDIT_LOCK = True
 WAGTAIL_AUTO_UPDATE_PREVIEW = False
-WAGTAIL_FRONTEND_LOGIN_URL = '/login'
+WAGTAIL_FRONTEND_LOGIN_URL = '/admin/login'
 WAGTAILADMIN_RICH_TEXT_EDITORS = {
     'default': {
         'WIDGET': 'wagtail.admin.rich_text.DraftailRichTextArea',
@@ -215,7 +228,22 @@ except ImportError:
     pass
 
 LOGIN_URL = WAGTAIL_FRONTEND_LOGIN_URL
-LOGIN_REDIRECT_URL = 'team:index'
+LOGIN_REDIRECT_URL = 'wagtailadmin_home'
+
+PUBLIC_GROUP_ID = 2  # editors
+
+# Allauth settings
+ACCOUNT_AUTHENTICATION_METHOD = "username_email"
+# ACCOUNT_CONFIRM_EMAIL_ON_GET = True
+ACCOUNT_EMAIL_REQUIRED = True
+# ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+# ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True
+ACCOUNT_LOGIN_ON_PASSWORD_RESET = True
+ACCOUNT_LOGOUT_REDIRECT_URL = '/'
+ACCOUNT_PRESERVE_USERNAME_CASING = False
+ACCOUNT_SESSION_REMEMBER = True
+ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = True
+ACCOUNT_USERNAME_BLACKLIST = ["admin", "god", "gtcrew"]
 
 # Activate Django-Heroku.
 if not DEBUG:
