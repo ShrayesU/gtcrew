@@ -204,6 +204,13 @@ SUMMERNOTE_CONFIG = {
 # Activity Stream
 SITE_ID = 1
 
+# SendGrid
+EMAIL_HOST_USER = config('SENDGRID_USERNAME', '')
+EMAIL_HOST = 'smtp.sendgrid.net'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_PASSWORD = config('SENDGRID_PASSWORD', '')
+
 # Wagtail
 WAGTAIL_SITE_NAME = 'Georgia Tech Rowing'
 WAGTAILEMBEDS_RESPONSIVE_HTML = True
