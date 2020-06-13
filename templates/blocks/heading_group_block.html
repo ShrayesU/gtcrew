@@ -1,0 +1,7 @@
+{% load wagtailcore_tags %}
+
+<h2 class="section-heading mb-4">
+    {% for block in self %}
+    {% include_block block %}
+    {% endfor %}
+</h2>

@@ -56,6 +56,8 @@ class Officers(Orderable):
         blank=True,
         on_delete=models.PROTECT,
         related_name='+',
+        help_text='You can only search for a Published person page. '
+                  '"Create New" only works if you have Publish permissions.'
         # limit_choices_to={'live': True},
     )
     position = models.ForeignKey(
@@ -84,6 +86,8 @@ class Member(models.Model):
         blank=True,
         on_delete=models.PROTECT,
         related_name='+',
+        help_text='You can only search for a Published person page. '
+                  '"Create New" only works if you have Publish permissions.'
     )
 
     def __str__(self):

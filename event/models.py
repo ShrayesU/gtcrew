@@ -9,6 +9,7 @@ from wagtail.core.fields import RichTextField
 from wagtail.core.models import Page
 from wagtail.snippets.edit_handlers import SnippetChooserPanel
 from wagtail.snippets.models import register_snippet
+from wagtailautocomplete.edit_handlers import AutocompletePanel
 
 from asset.models import Asset
 from asset.utils import SHELL
@@ -83,10 +84,14 @@ class ResultPage(Page):
 
 @register_snippet
 class Regatta(models.Model):
-    name = models.CharField(max_length=255)
+    title = models.CharField(max_length=255)
 
     def __str__(self):
-        return self.name
+        return self.title
+
+    @classmethod
+    def autocomplete_create(cls: type, value: str):
+        return cls.objects.create(title=value)
 
 
 class EventPage(Page):
@@ -106,7 +111,7 @@ class EventPage(Page):
 
     content_panels = Page.content_panels + [
         FieldPanel('location'),
-        SnippetChooserPanel('regatta'),
+        AutocompletePanel('regatta'),
         FieldPanel('event_type'),
         FieldPanel('description'),
         MultiFieldPanel([

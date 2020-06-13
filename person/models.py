@@ -32,10 +32,13 @@ class PersonPage(Page):
     def autocomplete_create(cls: type, value: str):
         person_index_page = PersonIndexPage.objects.first()
         title = value
-        if ' ' in value:
-            first_name, last_name = value.split(' ')
-        else:
+        split_value = value.split(' ')
+        if len(split_value) == 1:
             first_name, last_name = value, value
+        elif len(split_value) == 2:
+            first_name, last_name = split_value
+        else:
+            first_name, last_name = split_value[0], ' '.join(split_value[1:])
 
         new = cls(title=title, first_name=first_name, last_name=last_name)
         person_index_page.add_child(instance=new)

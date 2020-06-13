@@ -9,12 +9,13 @@ from wagtail.core.models import Page
 from wagtail.images.edit_handlers import ImageChooserPanel
 from wagtailcaptcha.models import WagtailCaptchaEmailForm
 
-from gtcrew.blocks import PostBlock
+from gtcrew.blocks import PostBlock, BaseStreamBlock
 
 
 class GenericPage(Page):
     body = StreamField([
         ('post', PostBlock()),
+        ('section', BaseStreamBlock()),
         ('html', blocks.RawHTMLBlock()),
     ])
 
@@ -37,6 +38,7 @@ class FormPage(WagtailCaptchaEmailForm):
     )
     body = StreamField([
         ('post', PostBlock()),
+        ('section',  BaseStreamBlock())
     ])
     thank_you_text = RichTextField(blank=True)
 
