@@ -1,8 +1,9 @@
 {% extends "account/base.html" %}
 
 {% load i18n %}
+{% load account %}
 
-{% block titletag %}{% trans "Change Password" %}{% endblock %}
+{% block titletag %}{% trans "Confirm E-mail" %}{% endblock %}
 
 {% block furniture %}
 <main class="content-wrapper" role="main">
@@ -24,14 +25,17 @@
         </ul>
     </div>
     {% endif %}
-    <h1>{% if token_fail %}{% trans "Bad Token" %}{% else %}{% trans "Change Password" %}{% endif %}</h1>
-    {% if token_fail %}
-    {% url 'account_reset_password' as passwd_reset_url %}
-    <p>{% blocktrans %}The password reset link was invalid, possibly because it has already been used. Please request a
-        <a href="{{ passwd_reset_url }}">new password reset</a>.{% endblocktrans %}</p>
-    {% else %}
-    {% if form %}
-    <form action="{{ action_url }}" method="post" autocomplete="off" novalidate>
+
+    <h1>{% block branding_login %}{% trans "Confirm E-mail Address" %}{% endblock %}</h1>
+
+    {% if confirmation %}
+
+    {% user_display confirmation.email_address.user as user_display %}
+
+    <p>{% blocktrans with confirmation.email_address.email as email %}
+        Please confirm that <a href="mailto:{{ email }}">{{ email }}</a> is an e-mail address for {{ user_display }}.
+        {% endblocktrans %}</p>
+    <form action="{% url 'account_confirm_email' confirmation.key %}" method="post" autocomplete="off" novalidate>
         {% csrf_token %}
 
         {% if redirect_field_value %}
@@ -50,25 +54,21 @@
 
             <li class="submit">
                 {% block submit_buttons %}
-                <button type="submit" class="button button-longrunning" data-clicked-text="{% trans 'Signing up…' %}">
-                    <span class="icon icon-spinner"></span><em>{% trans 'Change Password' %}</em></button>
+                <button type="submit" class="button button-longrunning" data-clicked-text="{% trans 'Confirming…' %}">
+                    <span class="icon icon-spinner"></span><em>{% trans 'Confirm' %}</em></button>
                 {% endblock %}
             </li>
         </ul>
 
     </form>
     {% else %}
-    <p>{% trans 'Your password is now changed.' %}</p>
-    {% endif %}
-{% endif %}
-</main>
-{% endblock %}
 
-{% block extra_js %}
-{{ block.super }}
-<script>
-    $(function(){
-        $('form input[name=password]').trigger('focus');
-    })
-</script>
+    {% url 'account_email' as email_url %}
+
+    <p>{% blocktrans %}This e-mail confirmation link expired or is invalid. Please <a href="{{ email_url }}">issue a new
+        e-mail confirmation request</a>.{% endblocktrans %}</p>
+
+    {% endif %}
+
+</main>
 {% endblock %}
