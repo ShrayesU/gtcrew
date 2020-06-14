@@ -1,6 +1,6 @@
 from django import template
 
-from wagtail.core.models import Site
+from wagtail.core.models import Site, Page
 
 register = template.Library()
 
@@ -68,5 +68,20 @@ def top_menu_children(context, parent, calling_page=None):
         'parent': parent,
         'menuitems_children': menuitems_children,
         # required by the pageurl tag that we want to use within this template
+        'request': context['request'],
+    }
+
+
+@register.inclusion_tag('tags/breadcrumbs.html', takes_context=True)
+def breadcrumbs(context):
+    self = context.get('self')
+    if self is None or self.depth <= 2:
+        # When on the home page, displaying breadcrumbs is irrelevant.
+        ancestors = ()
+    else:
+        ancestors = Page.objects.ancestor_of(
+            self, inclusive=True).filter(depth__gt=1)
+    return {
+        'ancestors': ancestors,
         'request': context['request'],
     }

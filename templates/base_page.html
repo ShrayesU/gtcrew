@@ -23,6 +23,11 @@
     {% include "includes/messages.html" %}
 {% endblock messages %}
 
+{% block breadcrumbs %}
+    {# breadcrumbs is defined in base/templatetags/navigation_tags.py #}
+    {% breadcrumbs %}
+{% endblock breadcrumbs %}
+
 {% block title %}{% endblock %}
 
 {% block content %}{% endblock %}
