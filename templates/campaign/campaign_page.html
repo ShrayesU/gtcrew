@@ -1,0 +1,40 @@
+{% extends "base_page.html" %}
+{% load wagtailcore_tags humanize %}
+
+{% block content %}
+<section class="page-section about-heading">
+    <div class="container">
+        <div class="about-heading-content my-5">
+            <div class="row">
+                <div class="col-xl-9 col-lg-10 mx-auto">
+                    <div class="bg-faded rounded p-5">
+                        <h2 class="section-heading mb-5 text-center">
+                            <span class="section-heading-upper">Campaign</span>
+                            <span class="section-heading-lower">{{ self.title }}</span>
+                        </h2>
+                        <div class="row pt-2">
+                            <div class="col">
+                                <p class="text-center">
+                                    <em class="text-muted">
+                                        {{ self.end_date|timeuntil }} to reach the goal of ${{ self.goal|intcomma }}
+                                    </em>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="row pb-2">
+                            <div class="col">
+                                {% include "campaign/includes/infographic.html" with this=self %}
+                            </div>
+
+                            <div class="col">
+                                <p class="mb-0">{{ self.description|safe }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

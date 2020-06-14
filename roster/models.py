@@ -130,7 +130,6 @@ class TermPage(Page):
         members = PersonPage.objects.live().filter(
             id__in=self.members.all().values('person_page_id')
         ).order_by('last_name')
-        print(members)
         context['members'] = members
 
         return context

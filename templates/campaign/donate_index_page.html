@@ -1,0 +1,73 @@
+{% extends "base_page.html" %}
+{% load wagtailcore_tags %}
+
+{% block content %}
+
+{% include_block self.body %}
+
+{% if self.featured_section %}
+<section class="page-section cta">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-9 mx-auto">
+                <div class="cta-inner text-center rounded">
+                    {% with feature=self.featured_section %}
+                    <h2 class="section-heading mb-2">
+                        <span class="section-heading-upper">Featured Campaign</span>
+                        <span class="section-heading-lower">{{ feature }}</span>
+                    </h2>
+                    <div class="row pb-2">
+                        <div class="col">
+                            <p class="mb-0">{{ feature.specific.description|safe|truncatewords_html:20 }}</p>
+                        </div>
+                        <div class="col">
+                            {% include "campaign/includes/infographic.html" with this=feature.specific %}
+                        </div>
+                    </div>
+                    <div>
+                        <div class="col intro-button mx-auto my-2">
+                            <a class="btn btn-primary btn-block text-dark"
+                               href="{% pageurl feature %}">
+                                Go to Campaign
+                            </a>
+                        </div>
+                    </div>
+                    {% endwith %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!--{% if campaigns %}-->
+<!--<section class="page-section about-heading">-->
+<!--    <div class="container">-->
+<!--        <div class="about-heading-content my-5">-->
+<!--            <div class="row">-->
+<!--                <div class="col-xl-9 col-lg-10 mx-auto">-->
+<!--                    <div class="bg-faded rounded p-5">-->
+<!--                        <h2 class="section-heading mb-5 text-center">-->
+<!--                            <span class="section-heading-upper">All</span>-->
+<!--                            <span class="section-heading-lower">Campaigns</span>-->
+<!--                        </h2>-->
+<!--                        <div class="row pt-2">-->
+<!--                            <ul class="list-unstyled list-hours mb-5 text-left mx-auto">-->
+<!--                                <div class="row text-center">-->
+<!--                                    {% for campaign in campaigns %}-->
+<!--                                    <div class="col-6 col-lg-4 my-2">-->
+<!--                                        <a href="{% pageurl campaign %}">{{ campaign.title }}</a>-->
+<!--                                    </div>-->
+<!--                                    {% endfor %}-->
+<!--                                </div>-->
+<!--                            </ul>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</section>-->
+<!--{% endif %}-->
+
+{% endblock %}

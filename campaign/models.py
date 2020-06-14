@@ -1,10 +1,120 @@
 from cuser.middleware import CuserMiddleware
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db import models
 # from django.urls import reverse_lazy
 from django.db.models import Sum
 from django.utils.text import slugify
+from modelcluster.fields import ParentalKey
+from wagtail.admin.edit_handlers import StreamFieldPanel, PageChooserPanel, FieldPanel, MultiFieldPanel, InlinePanel
+from wagtail.core.fields import StreamField, RichTextField
+from wagtail.core.models import Page
+from wagtailautocomplete.edit_handlers import AutocompletePanel
 
+from gtcrew.blocks import PostBlock, BaseStreamBlock
 from team.models import Profile
+
+
+class Donor(models.Model):
+    page = ParentalKey("campaign.CampaignPage", related_name="donors")
+    person_page = models.ForeignKey(
+        'wagtailcore.Page',
+        null=True,
+        blank=True,
+        on_delete=models.PROTECT,
+        related_name='+',
+        help_text='You can only search for a Published person page. '
+                  '"Create New" only works if you have Publish permissions.'
+    )
+    amount = models.DecimalField(max_digits=9, decimal_places=2)
+    date_donated = models.DateField()
+    anonymous = models.BooleanField(default=False)
+
+    def __str__(self):
+        return '%s %s' % (self.person_page.specific.first_name, self.person_page.specific.last_name)
+
+    panels = [
+        AutocompletePanel('person_page', 'person.PersonPage'),
+        FieldPanel('amount'),
+        FieldPanel('date_donated'),
+    ]
+
+
+class CampaignPage(Page):
+    goal = models.PositiveIntegerField()
+    end_date = models.DateField()
+    description = RichTextField()
+
+    content_panels = Page.content_panels + [
+        FieldPanel('goal'),
+        FieldPanel('end_date'),
+        FieldPanel('description'),
+        MultiFieldPanel(
+            [InlinePanel("donors", label="Person")],
+            heading="Donors", classname="collapsible"
+        ),
+    ]
+
+    parent_page_types = ['campaign.DonateIndexPage']
+    subpage_types = []
+
+    @property
+    def donation_total(self):
+        if self.donors.exists():
+            return sum(donor.amount for donor in self.donors.all())
+        else:
+            return 0
+
+    @property
+    def goal_remaining(self):
+        goal = int(self.goal)
+        return max(0, goal - self.donation_total)
+
+
+class DonateIndexPage(Page):
+    body = StreamField([
+        ('post', PostBlock()),
+        ('section', BaseStreamBlock()),
+    ])
+    featured_section = models.ForeignKey(
+        'wagtailcore.Page',
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name='+',
+        help_text='Featured section for the donation page. Will display the beginning '
+                  'of the campaign description, as well as an infographic.',
+    )
+
+    content_panels = Page.content_panels + [
+        StreamFieldPanel('body'),
+        PageChooserPanel('featured_section', 'campaign.CampaignPage')
+    ]
+
+    subpage_types = ['campaign.CampaignPage']
+
+    def get_campaigns(self):
+        return CampaignPage.objects.live().descendant_of(
+            self).order_by('-end_date')
+
+    def paginate(self, request, *args):
+        page = request.GET.get('page')
+        paginator = Paginator(self.get_campaigns(), 12)
+        try:
+            pages = paginator.page(page)
+        except PageNotAnInteger:
+            pages = paginator.page(1)
+        except EmptyPage:
+            pages = paginator.page(paginator.num_pages)
+        return pages
+
+    def get_context(self, request, *args, **kwargs):
+        context = super(DonateIndexPage, self).get_context(request)
+
+        campaigns = self.paginate(request, self.get_campaigns())
+
+        context['campaigns'] = campaigns
+
+        return context
 
 
 class Campaign(models.Model):
@@ -54,7 +164,7 @@ class Campaign(models.Model):
     @property
     def goal_remaining(self):
         goal = int(self.goal)
-        return max(0, goal-self.donation_total)
+        return max(0, goal - self.donation_total)
 
     # @property
     # def absolute_url(self):
