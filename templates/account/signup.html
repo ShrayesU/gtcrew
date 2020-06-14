@@ -35,14 +35,43 @@
         <h1>{% block branding_login %}{% trans "Sign up to GT Crew" %}{% endblock %}</h1>
 
         <ul class="fields">
-            {% for field in form %}
             <li class="full">
-                {{ field.label_tag }}
                 <div class="field iconfield">
-                    {{ field }}
+                    {{ form.email.label_tag }}
+                    <div class="input icon-site">
+                        {{ form.email }}
+                    </div>
                 </div>
             </li>
-            {% endfor %}
+            <li class="full">
+                <div class="field iconfield">
+                    {{ form.username.label_tag }}
+                    <div class="input icon-user">
+                        {{ form.username }}
+                    </div>
+                </div>
+            </li>
+            <li class="full">
+                <div class="field iconfield">
+                    {{ form.password1.label_tag }}
+                    <div class="input icon-password">
+                        {{ form.password1 }}
+                    </div>
+                </div>
+            </li>
+            <li class="full">
+                <div class="field iconfield">
+                    {{ form.password2.label_tag }}
+                    <div class="input icon-password">
+                        {{ form.password2 }}
+                    </div>
+                </div>
+            </li>
+            <li class="full">
+                <div class="field iconfield">
+                        {{ form.captcha }}
+                </div>
+            </li>
 
             <li class="submit">
                 {% block submit_buttons %}

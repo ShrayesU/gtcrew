@@ -242,6 +242,7 @@ LOGIN_REDIRECT_URL = 'wagtailadmin_home'
 PUBLIC_GROUP_ID = 2  # editors
 
 # Allauth settings
+ACCOUNT_SIGNUP_FORM_CLASS = 'gtcrew.forms.AllauthSignupForm'
 ACCOUNT_AUTHENTICATION_METHOD = "username_email"
 # ACCOUNT_CONFIRM_EMAIL_ON_GET = True
 ACCOUNT_EMAIL_REQUIRED = True

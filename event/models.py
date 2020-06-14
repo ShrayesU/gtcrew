@@ -17,9 +17,8 @@ from event.utils import EVENT_TYPES, RACE
 from team.models import Squad, Profile
 
 
-class ResultPage(Page):
+class BaseResult(models.Model):
     date = models.DateField(null=True, blank=True)
-    entry = models.CharField(max_length=64, help_text='E.g. "Lightweight Varsity 8+"')
     squad = models.ForeignKey(
         'team.Squad',
         on_delete=models.PROTECT,
@@ -32,30 +31,26 @@ class ResultPage(Page):
     seconds = models.DecimalField(max_digits=5, decimal_places=3, default=0,
                                   validators=[MinValueValidator(0), MaxValueValidator(59.999)])
     lightweight = models.BooleanField(default=False)
-    rank = models.PositiveIntegerField(default=1, validators=[MinValueValidator(1), ])
     pace = models.FloatField(default=0, editable=False)
-    # TODO: add rowers, coxswain, and boat choosers
 
-    content_panels = Page.content_panels + [
-        FieldPanel('entry'),
-        FieldPanel('date'),
-        SnippetChooserPanel('squad'),
-        FieldPanel('distance'),
-        FieldPanel('lightweight'),
-        FieldPanel('rank'),
-        MultiFieldPanel([
-            FieldRowPanel([
-                FieldPanel('minutes', classname="col6"),
-                FieldPanel('seconds', classname="col6"),
-            ])
-        ], heading="Time"),
-    ]
+    result_panels = [
+            FieldPanel('date'),
+            SnippetChooserPanel('squad'),
+            FieldPanel('distance'),
+            FieldPanel('lightweight'),
+            MultiFieldPanel([
+                FieldRowPanel([
+                    FieldPanel('minutes', classname="col6"),
+                    FieldPanel('seconds', classname="col6"),
+                ])
+            ], heading="Time"),
+        ]
 
-    parent_page_types = ['EventPage']
-    subpage_types = []
+    class Meta:
+        abstract = True
 
     def clean(self):
-        super(ResultPage, self).clean()
+        super().clean()
         self.pace = self.get_pace()
 
     @property
@@ -80,6 +75,20 @@ class ResultPage(Page):
         """Returns the power in watts based on average pace per 500 meters."""
         pace = self.get_pace()
         return 2.80 / (pace ** 3)
+
+
+class ResultPage(Page, BaseResult):
+    entry = models.CharField(max_length=64, help_text='E.g. "Lightweight Varsity 8+"')
+    rank = models.PositiveIntegerField(default=1, validators=[MinValueValidator(1), ])
+    # TODO: add rowers, coxswain, and boat choosers
+
+    content_panels = Page.content_panels + [
+        FieldPanel('entry'),
+        FieldPanel('rank'),
+    ] + BaseResult.result_panels
+
+    parent_page_types = ['EventPage']
+    subpage_types = []
 
 
 @register_snippet

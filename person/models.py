@@ -2,10 +2,19 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.core.validators import RegexValidator
 from django.db import models
 from django.utils.text import slugify
-from wagtail.admin.edit_handlers import MultiFieldPanel, FieldRowPanel, FieldPanel
+from modelcluster.fields import ParentalKey
+from wagtail.admin.edit_handlers import MultiFieldPanel, FieldRowPanel, FieldPanel, InlinePanel
 from wagtail.core.fields import RichTextField
 from wagtail.core.models import Page
 from wagtail.images.edit_handlers import ImageChooserPanel
+
+from event.models import BaseResult
+
+
+class PersonalRecord(BaseResult):
+    page = ParentalKey("person.PersonPage", related_name="personal_records")
+
+    panels = BaseResult.result_panels
 
 
 class PersonPage(Page):
@@ -47,7 +56,6 @@ class PersonPage(Page):
 
     def clean(self):
         """Override the values of title and slug before saving."""
-        # super(MatchPage, self).clean() # Python 2.X syntax
         super().clean()
         self.title = '%s %s' % (self.first_name, self.last_name)
         if not self.slug:
@@ -70,6 +78,10 @@ class PersonPage(Page):
                 FieldPanel('major', classname="col6"),
             ])
         ], "Details"),
+        MultiFieldPanel(
+            [InlinePanel("personal_records", label="Record")],
+            heading="Person Records", classname="collapsible"
+        ),
     ]
 
     parent_page_types = ['PersonIndexPage']
