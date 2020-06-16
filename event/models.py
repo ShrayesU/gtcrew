@@ -138,24 +138,25 @@ class EventPage(Page):
         return ResultPage.objects.live().descendant_of(
             self).order_by('pace')
 
-    def paginate(self, request, *args):
-        page = request.GET.get('page')
-        paginator = Paginator(self.get_results(), 12)
-        try:
-            pages = paginator.page(page)
-        except PageNotAnInteger:
-            pages = paginator.page(1)
-        except EmptyPage:
-            pages = paginator.page(paginator.num_pages)
-        return pages
+    # def paginate(self, request, *args):
+    #     page = request.GET.get('page')
+    #     paginator = Paginator(self.get_results(), 12)
+    #     try:
+    #         pages = paginator.page(page)
+    #     except PageNotAnInteger:
+    #         pages = paginator.page(1)
+    #     except EmptyPage:
+    #         pages = paginator.page(paginator.num_pages)
+    #     return pages
 
     # Returns the above to the get_context method that is used to populate the
     # template
     def get_context(self, request, *args, **kwargs):
         context = super(EventPage, self).get_context(request)
 
-        # ResultPage objects (get_results) are passed through pagination
-        results = self.paginate(request, self.get_results())
+        # # ResultPage objects (get_results) are passed through pagination
+        # results = self.paginate(request, self.get_results())
+        results = self.get_results()
 
         context['results'] = results
 

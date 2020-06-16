@@ -142,16 +142,16 @@ class RosterIndexPage(Page):
         return TermPage.objects.live().descendant_of(
             self).order_by('-start_date')
 
-    def paginate(self, request, *args):
-        page = request.GET.get('page')
-        paginator = Paginator(self.get_terms(), 12)
-        try:
-            pages = paginator.page(page)
-        except PageNotAnInteger:
-            pages = paginator.page(1)
-        except EmptyPage:
-            pages = paginator.page(paginator.num_pages)
-        return pages
+    # def paginate(self, request, *args):
+    #     page = request.GET.get('page')
+    #     paginator = Paginator(self.get_terms(), 12)
+    #     try:
+    #         pages = paginator.page(page)
+    #     except PageNotAnInteger:
+    #         pages = paginator.page(1)
+    #     except EmptyPage:
+    #         pages = paginator.page(paginator.num_pages)
+    #     return pages
 
     # Returns the above to the get_context method that is used to populate the
     # template
@@ -159,7 +159,8 @@ class RosterIndexPage(Page):
         context = super(RosterIndexPage, self).get_context(request)
 
         # PersonPage objects (get_people) are passed through pagination
-        terms = self.paginate(request, self.get_terms())
+        # terms = self.paginate(request, self.get_terms())
+        terms = self.get_terms()
 
         context['terms'] = terms
 

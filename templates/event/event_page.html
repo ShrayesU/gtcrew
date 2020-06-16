@@ -1,5 +1,15 @@
 {% extends "base_page.html" %}
-{% load wagtailcore_tags %}
+{% load wagtailcore_tags static %}
+
+{% block head %}
+{{ block.super }}
+<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" />
+<style>
+    table td, table tr, table th{
+background: transparent !important;
+}
+</style>
+{% endblock %}
 
 {% block content %}
 
@@ -46,15 +56,34 @@
                         <span class="section-heading-upper">All</span>
                         <span class="section-heading-lower">Results</span>
                     </h2>
-                    <ul class="list-unstyled list-hours mb-5 text-left mx-auto">
-                        <div class="row text-center">
+                    <div>
+                        <table class="display responsive" id="dataTable" width="100%" cellspacing="0">
+                            <thead>
+                            <tr>
+                                <th>Entry</th>
+                                <th>Time</th>
+                                <th>Placement</th>
+                            </tr>
+                            </thead>
+                            <tbody>
                             {% for result in results %}
-                            <div class="col-12 my-2">
-                                <a href="{% pageurl result %}">{{ result.title }}</a>
-                            </div>
+                                <tr>
+                                    <td>
+                                        <a href="{% pageurl result %}">
+                                            {{ result.entry }}
+                                        </a>
+                                    </td>
+                                    <td>
+                                    {{ result.total_time_string }}
+                                    </td>
+                                    <td>
+                                    {{ result.rank }}
+                                    </td>
+                                </tr>
                             {% endfor %}
-                        </div>
-                    </ul>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
@@ -62,4 +91,21 @@
 </section>
 {% endif %}
 
+{% endblock %}
+
+{% block javascript %}
+<script href="{% static 'private/vendor/datatables/dataTables.bootstrap4.min.js' %}" rel="stylesheet"></script>
+<script src="{% static 'private/vendor/datatables/jquery.dataTables.min.js' %}"></script>
+<script>
+    // Call the dataTables jQuery plugin
+    $(document).ready(function() {
+      $('#dataTable').DataTable({
+        responsive: true,
+        searching: false,
+        stripe: true,
+        "order": [],
+        "lengthChange": false
+      });
+    });
+</script>
 {% endblock %}

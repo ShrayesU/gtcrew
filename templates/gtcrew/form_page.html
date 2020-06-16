@@ -23,9 +23,8 @@
                             {% for field in form %}
                             <div class="input-group mb-3">
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text" id="{{ field.id_for_label }}">
-                                        {{ field.label_tag }}
-                                    </span>
+                                    <span class="input-group-text"
+                                          id="{{ field.id_for_label }}">{{ field.label }}</span>
                                 </div>
                                 {{ field }}
                             </div>
