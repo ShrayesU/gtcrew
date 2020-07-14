@@ -12,10 +12,12 @@ PROFILE_STATUS_CHOICES = (
 STUDENT = 'student'
 COACH = 'coach'
 ALUMNI = 'alumni'
+RACER = 'racer'
 HELD_BY_CHOICES = (
     (STUDENT, 'Student'),
     (COACH, 'Coach'),
     (ALUMNI, 'Alumni'),
+    (RACER, 'Racer'),
 )
 
 FALL = 'FALL'

@@ -4,9 +4,10 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from django.urls import reverse_lazy
 from django.utils.translation import pgettext_lazy
-from wagtail.admin.edit_handlers import FieldPanel, MultiFieldPanel, FieldRowPanel
+from modelcluster.fields import ParentalKey
+from wagtail.admin.edit_handlers import FieldPanel, MultiFieldPanel, FieldRowPanel, InlinePanel
 from wagtail.core.fields import RichTextField
-from wagtail.core.models import Page
+from wagtail.core.models import Page, Orderable
 from wagtail.snippets.edit_handlers import SnippetChooserPanel
 from wagtail.snippets.models import register_snippet
 from wagtailautocomplete.edit_handlers import AutocompletePanel
@@ -15,6 +16,36 @@ from asset.models import Asset
 from asset.utils import SHELL
 from event.utils import EVENT_TYPES, RACE
 from team.models import Squad, Profile
+from team.utils import RACER
+
+
+class Racers(Orderable):
+    page = ParentalKey("event.ResultPage", related_name="racers")
+    person_page = models.ForeignKey(
+        'wagtailcore.Page',
+        null=True,
+        blank=True,
+        on_delete=models.PROTECT,
+        related_name='+',
+        help_text='You can only search for a Published person page. '
+                  '"Create New" only works if you have Publish permissions.'
+    )
+    position = models.ForeignKey(
+        'team.Title',
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name='+',
+        limit_choices_to={'held_by': RACER},
+    )
+
+    def __str__(self):
+        return '%s %s' % (self.person_page.specific.first_name, self.person_page.specific.last_name)
+
+    panels = [
+        AutocompletePanel('person_page', 'person.PersonPage'),
+        SnippetChooserPanel('position'),
+    ]
 
 
 class BaseResult(models.Model):
@@ -34,17 +65,17 @@ class BaseResult(models.Model):
     pace = models.FloatField(default=0, editable=False)
 
     result_panels = [
-            FieldPanel('date'),
-            SnippetChooserPanel('squad'),
-            FieldPanel('distance'),
-            FieldPanel('lightweight'),
-            MultiFieldPanel([
-                FieldRowPanel([
-                    FieldPanel('minutes', classname="col6"),
-                    FieldPanel('seconds', classname="col6"),
-                ])
-            ], heading="Time"),
-        ]
+        FieldPanel('date'),
+        SnippetChooserPanel('squad'),
+        FieldPanel('distance'),
+        FieldPanel('lightweight'),
+        MultiFieldPanel([
+            FieldRowPanel([
+                FieldPanel('minutes', classname="col6"),
+                FieldPanel('seconds', classname="col6"),
+            ])
+        ], heading="Time"),
+    ]
 
     class Meta:
         abstract = True
@@ -85,7 +116,11 @@ class ResultPage(Page, BaseResult):
     content_panels = Page.content_panels + [
         FieldPanel('entry'),
         FieldPanel('rank'),
-    ] + BaseResult.result_panels
+    ] + BaseResult.result_panels + [
+                         MultiFieldPanel(
+                             [InlinePanel("racers", label="Person")],
+                             heading="Racers", classname="collapsible"
+                         ), ]
 
     parent_page_types = ['EventPage']
     subpage_types = []
