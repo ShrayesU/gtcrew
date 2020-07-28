@@ -18,7 +18,7 @@
                     </h2>
                     <div class="row pb-2">
                         <div class="col">
-                            <p class="mb-0">{{ feature.specific.description|safe|truncatewords_html:20 }}</p>
+                            <p class="mb-0">{{ feature.specific.description|safe|truncatewords_html:30 }}</p>
                         </div>
                         <div class="col">
                             {% include "campaign/includes/infographic.html" with this=feature.specific %}
