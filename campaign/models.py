@@ -6,6 +6,7 @@ from django.db.models import Sum
 from django.utils.text import slugify
 from modelcluster.fields import ParentalKey
 from wagtail.admin.edit_handlers import StreamFieldPanel, PageChooserPanel, FieldPanel, MultiFieldPanel, InlinePanel
+from wagtail.core.blocks import PageChooserBlock
 from wagtail.core.fields import StreamField, RichTextField
 from wagtail.core.models import Page
 from wagtailautocomplete.edit_handlers import AutocompletePanel
@@ -25,9 +26,10 @@ class Donor(models.Model):
         help_text='You can only search for a Published person page. '
                   '"Create New" only works if you have Publish permissions.'
     )
-    amount = models.DecimalField(max_digits=9, decimal_places=2)
+    amount = models.DecimalField(max_digits=9, decimal_places=2,
+                                 help_text="Internal use only. Amount remains hidden from the public.")
     date_donated = models.DateField()
-    anonymous = models.BooleanField(default=False)
+    anonymous = models.BooleanField(default=False, help_text='"Anonymous" will replace name of donor on campaign page.')
 
     def __str__(self):
         return '%s %s' % (self.person_page.specific.first_name, self.person_page.specific.last_name)
@@ -43,11 +45,20 @@ class CampaignPage(Page):
     goal = models.PositiveIntegerField()
     end_date = models.DateField()
     description = RichTextField()
+    interest_form = models.ForeignKey(
+        'gtcrew.FormPage',
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name='+',
+        help_text="Provide a FormPage for users to submit interest in donating."
+    )
 
     content_panels = Page.content_panels + [
         FieldPanel('goal'),
         FieldPanel('end_date'),
         FieldPanel('description'),
+        PageChooserPanel('interest_form'),
         MultiFieldPanel(
             [InlinePanel("donors", label="Person")],
             heading="Donors", classname="collapsible"
@@ -55,7 +66,7 @@ class CampaignPage(Page):
     ]
 
     parent_page_types = ['campaign.DonateIndexPage']
-    subpage_types = []
+    subpage_types = ['gtcrew.FormPage']
 
     @property
     def donation_total(self):

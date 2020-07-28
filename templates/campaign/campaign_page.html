@@ -12,24 +12,28 @@
                             <span class="section-heading-upper">Campaign</span>
                             <span class="section-heading-lower">{{ self.title }}</span>
                         </h2>
-                        <div class="row pt-2">
-                            <div class="col">
-                                <p class="text-center">
-                                    <em class="text-muted">
-                                        {{ self.end_date|timeuntil }} to reach the goal of ${{ self.goal|intcomma }}
-                                    </em>
-                                </p>
-                            </div>
-                        </div>
 
                         <div class="row pb-2">
                             <div class="col">
-                                {% include "campaign/includes/infographic.html" with this=self %}
-                            </div>
-
-                            <div class="col">
                                 <p class="mb-0">{{ self.description|safe }}</p>
                             </div>
+                        </div>
+                        <div class="row align-items-center">
+                            <div class="col-6">
+                                <p class="text-center">
+                                    <em class="text-muted font-weight-bold">
+                                        ${{ self.goal|intcomma }} Goal
+                                    </em>
+                                </p>
+                                {% include "campaign/includes/infographic.html" with this=self %}
+                            </div>
+                            {% if self.interest_form %}
+                            <div class="col-6 d-flex justify-content-center">
+                                <a class="btn btn-primary text-dark" href="{{ self.interest_form.url }}">
+                                    {{ self.interest_form }}
+                                </a>
+                            </div>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
