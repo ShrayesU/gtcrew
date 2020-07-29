@@ -1,17 +1,59 @@
 {% extends "base_page.html" %}
-{# load wagtailcore_tags #}
+{% load wagtailimages_tags %}
 
 {% block content %}
-<!--TODO: Add Person Page-->
 <section class="page-section cta">
     <div class="container">
         <div class="row">
             <div class="col-xl-9 mx-auto">
                 <div class="cta-inner text-center rounded">
                     <h2 class="section-heading">
-                        <span class="section-heading-upper">Coming</span>
-                        <span class="section-heading-lower">Soon</span>
+                        <span class="section-heading-upper">{{ self.first_name}}</span>
+                        <span class="section-heading-lower">{{ self.last_name}}</span>
                     </h2>
+                    <ul class="list-group list-group-flush text-left">
+                        {% if self.image %}
+                        <li class="list-group-item bg-transparent">
+                            <div class="row">
+                                <div class="col-xs-4 col-md-3 text-primary font-weight-bold">Profile</div>
+                                <div class="col-xs-8 col-md-9">
+                                    {% image self.image fill-200x200 class="mx-auto d-flex img-fluid img-thumbnail" %}
+                                </div>
+                            </div>
+                        </li>
+                        {% endif %}
+                        <li class="list-group-item bg-transparent">
+                            <div class="row">
+                                <div class="col-xs-4 col-md-3 text-primary font-weight-bold">Hometown</div>
+                                <div class="col-xs-8 col-md-9">{{ self.hometown }}</div>
+                            </div>
+                        </li>
+                        <li class="list-group-item bg-transparent">
+                            <div class="row">
+                                <div class="col-xs-4 col-md-3 text-primary font-weight-bold">Major</div>
+                                <div class="col-xs-8 col-md-9">{{ self.major }}</div>
+                            </div>
+                        </li>
+                        <li class="list-group-item bg-transparent">
+                            <div class="row">
+                                <div class="col-xs-4 col-md-3 text-primary font-weight-bold">Birthday</div>
+                                <div class="col-xs-8 col-md-9">
+                                    {% if self.birthday %}{{ self.birthday }}{% endif %}
+                                </div>
+                            </div>
+                        </li>
+                        <li class="list-group-item bg-transparent">
+                            <div class="row">
+                                <div class="col-xs-4 col-md-3 text-primary font-weight-bold">Biography</div>
+                                <div class="col-xs-8 col-md-9">{{ self.bio|safe }}</div>
+                            </div>
+                        </li>
+                    </ul>
+                    <div>
+                        <p class="text-center text-muted font-italic">
+                            Incomplete data? Suggest an edit after logging in.
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
