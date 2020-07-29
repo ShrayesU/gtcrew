@@ -118,7 +118,7 @@ class PersonIndexPage(Page):
         context = super(PersonIndexPage, self).get_context(request)
 
         # PersonPage objects (get_people) are passed through pagination
-        people = self.paginate(request, self.get_people())
+        people = self.get_people()  # self.paginate(request, self.get_people())
 
         context['people'] = people
 
