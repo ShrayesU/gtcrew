@@ -3,11 +3,12 @@
 
 {% block head %}
 {{ block.super }}
-<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" />
+<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css"/>
 <style>
     table td, table tr, table th{
 background: transparent !important;
 }
+
 </style>
 {% endblock %}
 
@@ -23,22 +24,37 @@ background: transparent !important;
                             <span class="section-heading-upper">Event</span>
                             <span class="section-heading-lower">{{ self.title }}</span>
                         </h2>
-                        <div class="col text-center mb-2">
-                            {{ self.start_datetime }} {% if self.end_datetime %} to {{ self.end_datetime }}{% endif %}
-                        </div>
-                        <table>
-                            <div class="row text-center">
-                                <div class="col-6 col-lg-4 my-2">
-                                    {{ self.event_type }}
+                        <ul class="list-group list-group-flush text-left">
+                            <li class="list-group-item bg-transparent">
+                                <div class="row">
+                                    <div class="col-xs-4 col-md-3 text-primary font-weight-bold">Date</div>
+                                    <div class="col-xs-8 col-md-9">
+                                        {{ self.start_datetime }}
+                                        {% if self.end_datetime %} to {{ self.end_datetime }}{% endif %}
+                                    </div>
                                 </div>
-                                <div class="col-6 col-lg-4 my-2">
-                                    {{ self.location }}
+                            </li>
+                            <li class="list-group-item bg-transparent">
+                                <div class="row">
+                                    <div class="col-xs-4 col-md-3 text-primary font-weight-bold">Location</div>
+                                    <div class="col-xs-8 col-md-9">{{ self.location }}</div>
                                 </div>
-                                <div class="col-6 col-lg-4 my-2">
-                                    {{ self.description|safe }}
+                            </li>
+                            <li class="list-group-item bg-transparent">
+                                <div class="row">
+                                    <div class="col-xs-4 col-md-3 text-primary font-weight-bold">Type</div>
+                                    <div class="col-xs-8 col-md-9">
+                                        {{ self.event_type }}
+                                    </div>
                                 </div>
-                            </div>
-                        </table>
+                            </li>
+                            <li class="list-group-item bg-transparent">
+                                <div class="row">
+                                    <div class="col-xs-4 col-md-3 text-primary font-weight-bold">Description</div>
+                                    <div class="col-xs-8 col-md-9">{{ self.description|safe }}</div>
+                                </div>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -67,19 +83,19 @@ background: transparent !important;
                             </thead>
                             <tbody>
                             {% for result in results %}
-                                <tr>
-                                    <td>
-                                        <a href="{% pageurl result %}">
-                                            {{ result.entry }}
-                                        </a>
-                                    </td>
-                                    <td>
+                            <tr>
+                                <td>
+                                    <a href="{% pageurl result %}">
+                                        {{ result.entry }}
+                                    </a>
+                                </td>
+                                <td>
                                     {{ result.total_time_string }}
-                                    </td>
-                                    <td>
+                                </td>
+                                <td>
                                     {{ result.rank }}
-                                    </td>
-                                </tr>
+                                </td>
+                            </tr>
                             {% endfor %}
                             </tbody>
                         </table>
@@ -107,5 +123,6 @@ background: transparent !important;
         "lengthChange": false
       });
     });
+
 </script>
 {% endblock %}
