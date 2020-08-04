@@ -59,6 +59,7 @@ INSTALLED_APPS = [
 
     'wagtailcaptcha',
     'wagtailautocomplete',
+    'robots',
 
     'taggit',
     'modelcluster',
