@@ -29,7 +29,8 @@ class Donor(models.Model):
     amount = models.DecimalField(max_digits=9, decimal_places=2,
                                  help_text="Internal use only. Amount remains hidden from the public.")
     date_donated = models.DateField()
-    anonymous = models.BooleanField(default=False, help_text='"Anonymous" will replace name of donor on campaign page.')
+    anonymous = models.BooleanField(default=False,
+                                    help_text='"George P. Burdell" will replace name of donor on campaign page.')
 
     def __str__(self):
         return '%s %s' % (self.person_page.specific.first_name, self.person_page.specific.last_name)
@@ -38,6 +39,7 @@ class Donor(models.Model):
         AutocompletePanel('person_page', 'person.PersonPage'),
         FieldPanel('amount'),
         FieldPanel('date_donated'),
+        FieldPanel('anonymous'),
     ]
 
 
@@ -79,6 +81,20 @@ class CampaignPage(Page):
     def goal_remaining(self):
         goal = int(self.goal)
         return max(0, goal - self.donation_total)
+
+    def get_donors(self):
+        if self.donors.exists():
+            return sorted(self.donors.all(), key=str)
+        else:
+            return None
+
+    def get_context(self, request, *args, **kwargs):
+        context = super(CampaignPage, self).get_context(request)
+
+        donors = self.get_donors()
+        context['donors'] = donors
+
+        return context
 
 
 class DonateIndexPage(Page):

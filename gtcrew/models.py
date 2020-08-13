@@ -56,6 +56,8 @@ class FormPage(WagtailCaptchaEmailForm):
         ], "Email"),
     ]
 
+    subpage_types = []
+
     def get_form(self, *args, **kwargs):
         form = super().get_form(*args, **kwargs)
         for name, field in form.fields.items():

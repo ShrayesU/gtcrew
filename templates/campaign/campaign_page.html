@@ -42,4 +42,31 @@
         </div>
     </div>
 </section>
+
+{% if donors %}
+<section class="page-section cta">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-9 mx-auto">
+                <div class="cta-inner text-center rounded">
+                    <h2 class="section-heading mb-2">
+                        <span class="section-heading-lower">Thank you to our Donors</span>
+                    </h2>
+                    <table>
+                        <div class="row text-center">
+                            {% for donor in donors %}
+                            <div class="col-6 col-lg-4 my-2">
+                                {% if donor.anonymous %}*George P. Burdell{% else %}
+                                {{ donor }}
+                                {% endif %}
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
 {% endblock %}
