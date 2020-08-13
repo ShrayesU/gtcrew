@@ -238,7 +238,7 @@ except ImportError:
     pass
 
 LOGIN_URL = WAGTAIL_FRONTEND_LOGIN_URL
-LOGIN_REDIRECT_URL = 'wagtailadmin_home'
+# LOGIN_REDIRECT_URL = 'wagtailadmin_home'
 
 PUBLIC_GROUP_ID = 2  # editors
 

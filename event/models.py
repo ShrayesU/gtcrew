@@ -5,6 +5,7 @@ from django.db import models
 from django.urls import reverse_lazy
 from django.utils.translation import pgettext_lazy
 from modelcluster.fields import ParentalKey
+from modelcluster.models import ClusterableModel
 from wagtail.admin.edit_handlers import FieldPanel, MultiFieldPanel, FieldRowPanel, InlinePanel
 from wagtail.core.fields import RichTextField
 from wagtail.core.models import Page, Orderable
@@ -19,8 +20,9 @@ from team.models import Squad, Profile
 from team.utils import RACER
 
 
-class Racers(Orderable):
-    page = ParentalKey("event.ResultPage", related_name="racers")
+class RacerInline(Orderable):
+    # TODO: rename to Racer
+    page = ParentalKey("event.ResultInline", related_name="racers")
     person_page = models.ForeignKey(
         'wagtailcore.Page',
         null=True,
@@ -66,9 +68,13 @@ class BaseResult(models.Model):
 
     result_panels = [
         FieldPanel('date'),
-        SnippetChooserPanel('squad'),
+        MultiFieldPanel([
+            FieldRowPanel([
+                SnippetChooserPanel('squad', classname="col6"),
+                FieldPanel('lightweight', classname="col6"),
+            ])
+        ], heading="Squad"),
         FieldPanel('distance'),
-        FieldPanel('lightweight'),
         MultiFieldPanel([
             FieldRowPanel([
                 FieldPanel('minutes', classname="col6"),
@@ -108,22 +114,19 @@ class BaseResult(models.Model):
         return 2.80 / (pace ** 3)
 
 
-class ResultPage(Page, BaseResult):
+class ResultInline(BaseResult, ClusterableModel):
+    # TODO: Rename to Result
+    page = ParentalKey("event.EventPage", related_name="results")
     entry = models.CharField(max_length=64, help_text='E.g. "Lightweight Varsity 8+"')
     rank = models.PositiveIntegerField(default=1, validators=[MinValueValidator(1), ])
-    # TODO: add rowers, coxswain, and boat choosers
+    # TODO: add boat choosers
 
-    content_panels = Page.content_panels + [
+    panels = [
         FieldPanel('entry'),
         FieldPanel('rank'),
-    ] + BaseResult.result_panels + [
-                         MultiFieldPanel(
-                             [InlinePanel("racers", label="Person")],
-                             heading="Racers", classname="collapsible"
-                         ), ]
-
-    parent_page_types = ['EventPage']
-    subpage_types = []
+        InlinePanel("racers", label="Racer"),
+    ]
+    panels[2:2] = BaseResult.result_panels  # insert the base result panels before inline racers
 
 
 @register_snippet
@@ -164,35 +167,22 @@ class EventPage(Page):
                 FieldPanel('end_datetime', classname="col6"),
             ])
         ], heading="Time"),
+        MultiFieldPanel(
+            [InlinePanel("results", label="Result", classname="collapsible")],
+            heading="Results", classname="collapsible"
+        ),
     ]
 
     parent_page_types = ['EventIndexPage']
-    subpage_types = ['ResultPage']
+    subpage_types = []
 
     def get_results(self):
-        return ResultPage.objects.live().descendant_of(
-            self).order_by('pace')
+        return self.results.all()
 
-    # def paginate(self, request, *args):
-    #     page = request.GET.get('page')
-    #     paginator = Paginator(self.get_results(), 12)
-    #     try:
-    #         pages = paginator.page(page)
-    #     except PageNotAnInteger:
-    #         pages = paginator.page(1)
-    #     except EmptyPage:
-    #         pages = paginator.page(paginator.num_pages)
-    #     return pages
-
-    # Returns the above to the get_context method that is used to populate the
-    # template
     def get_context(self, request, *args, **kwargs):
         context = super(EventPage, self).get_context(request)
 
-        # # ResultPage objects (get_results) are passed through pagination
-        # results = self.paginate(request, self.get_results())
         results = self.get_results()
-
         context['results'] = results
 
         return context
@@ -205,19 +195,6 @@ class EventIndexPage(Page):
         return EventPage.objects.live().descendant_of(
             self).order_by('-start_datetime')
 
-    def paginate(self, request, *args):
-        page = request.GET.get('page')
-        paginator = Paginator(self.get_events(), 12)
-        try:
-            pages = paginator.page(page)
-        except PageNotAnInteger:
-            pages = paginator.page(1)
-        except EmptyPage:
-            pages = paginator.page(paginator.num_pages)
-        return pages
-
-    # Returns the above to the get_context method that is used to populate the
-    # template
     def get_context(self, request, *args, **kwargs):
         context = super(EventIndexPage, self).get_context(request)
 
@@ -232,15 +209,13 @@ class EventIndexPage(Page):
             api_event.append(prepared)
         context.update({'api_event': api_event})
 
-        # # EventPage objects (get_events) are passed through pagination
-        # events = self.paginate(request, self.get_events())
-
         context['events'] = events
 
         return context
 
 
 class Event(models.Model):
+    # TODO: delete
     name = models.CharField(pgettext_lazy('Name of Event', 'Name'), max_length=64)
     location = models.CharField(pgettext_lazy('Location of Event', 'Location'), max_length=64)
     start_datetime = models.DateTimeField()
@@ -296,6 +271,7 @@ class Event(models.Model):
 
 
 class Result(models.Model):
+    # TODO: delete
     name = models.CharField(max_length=64, help_text='Name of Result')
     date = models.DateField(null=True, blank=True)
     event = models.ForeignKey(Event, on_delete=models.CASCADE, null=True, blank=True,

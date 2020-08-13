@@ -13,7 +13,7 @@ background: transparent !important;
 {% endblock %}
 
 {% block content %}
-
+<!-- Event Details -->
 <section class="page-section about-heading">
     <div class="container">
         <div class="about-heading-content my-5">
@@ -63,13 +63,14 @@ background: transparent !important;
 </section>
 
 {% if results %}
+<!-- Results table -->
 <section class="page-section cta">
     <div class="container">
         <div class="row">
             <div class="col-xl-9 mx-auto">
                 <div class="cta-inner text-center rounded">
                     <h2 class="section-heading mb-5">
-                        <span class="section-heading-upper">All</span>
+                        <span class="section-heading-upper">{{ self.title }}</span>
                         <span class="section-heading-lower">Results</span>
                     </h2>
                     <div>
@@ -79,21 +80,26 @@ background: transparent !important;
                                 <th>Entry</th>
                                 <th>Time</th>
                                 <th>Placement</th>
+                                <th>Detail</th>
                             </tr>
                             </thead>
                             <tbody>
                             {% for result in results %}
                             <tr>
                                 <td>
-                                    <a href="{% pageurl result %}">
-                                        {{ result.entry }}
-                                    </a>
+                                    {{ result.entry }}
                                 </td>
                                 <td>
                                     {{ result.total_time_string }}
                                 </td>
                                 <td>
                                     {{ result.rank }}
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-primary font-weight-bold" data-toggle="modal"
+                                            data-target="#result{{ forloop.counter }}">
+                                        ?
+                                    </button>
                                 </td>
                             </tr>
                             {% endfor %}
@@ -105,6 +111,80 @@ background: transparent !important;
         </div>
     </div>
 </section>
+
+<!-- Result Detail Modals -->
+{% for result in results %}
+<div class="modal fade" id="result{{ forloop.counter }}" tabindex="-1"
+     aria-labelledby="result{{ forloop.counter }}Label" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="result{{ forloop.counter }}Label">Details</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <ul class="list-group list-group-flush text-left">
+                    <li class="list-group-item bg-transparent">
+                        <div class="row">
+                            <div class="col-xs-4 col-md-3 text-primary font-weight-bold">Event</div>
+                            <div class="col-xs-8 col-md-9">{{ result.entry }}</div>
+                        </div>
+                    </li>
+                    <li class="list-group-item bg-transparent">
+                        <div class="row">
+                            <div class="col-xs-4 col-md-3 text-primary font-weight-bold">Distance</div>
+                            <div class="col-xs-8 col-md-9">{{ result.distance }}</div>
+                        </div>
+                    </li>
+                    <li class="list-group-item bg-transparent">
+                        <div class="row">
+                            <div class="col-xs-4 col-md-3 text-primary font-weight-bold">Time</div>
+                            <div class="col-xs-8 col-md-9">
+                                {{ result.total_time_string }}
+                            </div>
+                        </div>
+                    </li>
+                    <li class="list-group-item bg-transparent">
+                        <div class="row">
+                            <div class="col-xs-4 col-md-3 text-primary font-weight-bold">Pace</div>
+                            <div class="col-xs-8 col-md-9">{{ result.pace_string }}</div>
+                        </div>
+                    </li>
+                    <li class="list-group-item bg-transparent">
+                        <div class="row">
+                            <div class="col-xs-4 col-md-3 text-primary font-weight-bold">Racers</div>
+                            <div class="col-xs-8 col-md-9">
+                                <table>
+                                    {% for racer in result.racers.all %}
+                                    <tr>
+                                        <td class="text-right pr-3">{{ racer }}</td>
+                                        <td class="text-muted">
+                                            {% if racer.position %}
+                                            {{ racer.position.title }}
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </table>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+                <div>
+                    <p class="text-center text-muted font-italic">
+                        Incomplete data? Suggest an edit after logging in.
+                    </p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
 {% endif %}
 
 {% endblock %}
