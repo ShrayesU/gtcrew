@@ -33,7 +33,10 @@ class Donor(models.Model):
                                     help_text='"George P. Burdell" will replace name of donor on campaign page.')
 
     def __str__(self):
-        return '%s %s' % (self.person_page.specific.first_name, self.person_page.specific.last_name)
+        if self.person_page:
+            return '%s %s' % (self.person_page.specific.first_name, self.person_page.specific.last_name)
+        else:
+            return ''
 
     panels = [
         AutocompletePanel('person_page', 'person.PersonPage'),
