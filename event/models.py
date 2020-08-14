@@ -1,12 +1,12 @@
 from cuser.middleware import CuserMiddleware
-from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from django.urls import reverse_lazy
 from django.utils.translation import pgettext_lazy
 from modelcluster.fields import ParentalKey
 from modelcluster.models import ClusterableModel
-from wagtail.admin.edit_handlers import FieldPanel, MultiFieldPanel, FieldRowPanel, InlinePanel
+from wagtail.admin.edit_handlers import FieldPanel, MultiFieldPanel, FieldRowPanel, InlinePanel as BaseInlinePanel, \
+    HelpPanel
 from wagtail.core.fields import RichTextField
 from wagtail.core.models import Page, Orderable
 from wagtail.snippets.edit_handlers import SnippetChooserPanel
@@ -18,6 +18,17 @@ from asset.utils import SHELL
 from event.utils import EVENT_TYPES, RACE
 from team.models import Squad, Profile
 from team.utils import RACER
+
+
+class InlinePanel(BaseInlinePanel):
+    # TODO: remove this after wagtail fixes Choosers in nested inlines
+    def widget_overrides(self):
+        widgets = {}
+        child_edit_handler = self.get_child_edit_handler()
+        for handler_class in child_edit_handler.children:
+            widgets.update(handler_class.widget_overrides())
+        widget_overrides = {self.relation_name: widgets}
+        return widget_overrides
 
 
 class RacerInline(Orderable):
@@ -124,6 +135,8 @@ class ResultInline(BaseResult, ClusterableModel):
     panels = [
         FieldPanel('entry'),
         FieldPanel('rank'),
+        HelpPanel('Make sure to "Save Draft" on new Results <strong>before</strong> adding Racers',
+                  heading='Racers', classname='help-warning'),
         InlinePanel("racers", label="Racer"),
     ]
     panels[2:2] = BaseResult.result_panels  # insert the base result panels before inline racers
@@ -168,7 +181,7 @@ class EventPage(Page):
             ])
         ], heading="Time"),
         MultiFieldPanel(
-            [InlinePanel("results", label="Result", classname="collapsible")],
+            [InlinePanel("results", label="Result")],
             heading="Results", classname="collapsible"
         ),
     ]
