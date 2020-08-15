@@ -29,7 +29,7 @@
         {% csrf_token %}
 
         {% url 'wagtailadmin_home' as home_url %}
-        <input type="hidden" name="next" value="{{ next|default:home_url }}"/>
+        <input type="hidden" name="next" value="{{ redirect_field_value|default:home_url }}"/>
 
         <h1>{% block branding_login %}{% trans "Sign in to GT Crew" %}{% endblock %}</h1>
 

@@ -219,7 +219,7 @@ WAGTAILEMBEDS_RESPONSIVE_HTML = True
 WAGTAILADMIN_NOTIFICATION_FROM_EMAIL = 'webmaster@gtcrew.com'
 WAGTAILADMIN_GLOBAL_PAGE_EDIT_LOCK = True
 WAGTAIL_AUTO_UPDATE_PREVIEW = False
-WAGTAIL_FRONTEND_LOGIN_URL = '/admin/login'
+WAGTAIL_FRONTEND_LOGIN_URL = '/account/login'
 WAGTAILADMIN_RICH_TEXT_EDITORS = {
     'default': {
         'WIDGET': 'wagtail.admin.rich_text.DraftailRichTextArea',
@@ -238,12 +238,14 @@ except ImportError:
     pass
 
 LOGIN_URL = WAGTAIL_FRONTEND_LOGIN_URL
-# LOGIN_REDIRECT_URL = 'wagtailadmin_home'
+
+# where requests are redirected after login when the LoginView doesn't get a next GET parameter.
+LOGIN_REDIRECT_URL = 'wagtailadmin_home'
 
 PUBLIC_GROUP_ID = 2  # editors
 
 # Allauth settings
-ACCOUNT_SIGNUP_FORM_CLASS = 'gtcrew.forms.AllauthSignupForm'
+ACCOUNT_FORMS = {'signup': 'gtcrew.forms.AllauthSignupForm'}
 ACCOUNT_AUTHENTICATION_METHOD = "username_email"
 # ACCOUNT_CONFIRM_EMAIL_ON_GET = True
 ACCOUNT_EMAIL_REQUIRED = True
