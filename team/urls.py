@@ -31,7 +31,6 @@ urlpatterns = [
     path('member/profile/<int:pk>/claim/', views.claim_profile, name='claim_profile'),
     path('member/profile/<int:profile_id>/manage_memberships/', views.manage_memberships, name='manage_memberships'),
     path('member/profile/<int:profile_id>/manage_awards/', views.manage_awards, name='manage_awards'),
-    path('member/profile/<int:profile_id>/manage_results/', views.manage_results, name='manage_results'),
     # Membership urls
     path('member/membership/list/', views.MembershipListView.as_view(), name='list_membership'),
     path('member/membership/create/', views.CreateMembershipView.as_view(), name='create_membership'),

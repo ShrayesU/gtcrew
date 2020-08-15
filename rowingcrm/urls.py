@@ -26,7 +26,6 @@ urlpatterns = [
     path('admin/', include('allauth.urls')),
     re_path(r'^admin/', include(wagtailadmin_urls)),
     re_path(r'^documents/', include(wagtaildocs_urls)),
-    path('event/', include('event.urls')),
     path('story/', include('story.urls')),
     path('asset/', include('asset.urls')),
     path('feedback/', include('feedback.urls')),

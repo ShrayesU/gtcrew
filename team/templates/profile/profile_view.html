@@ -60,10 +60,6 @@
                    href="{% url 'team:manage_awards' profile_id=profile.id%}">
                     Manage Awards
                 </a>
-                <a type="button" class="btn btn-outline-primary btn-block"
-                   href="{% url 'team:manage_results' profile_id=profile.id%}">
-                    Add Personal Results
-                </a>
                 {% else %}
                 <h6 class="font-weight-bold text-primary text-center">You do not have access to edit this Profile</h6>
                 <a type="button" class="btn btn-outline-primary btn-block disabled"
@@ -77,10 +73,6 @@
                 <a type="button" class="btn btn-outline-primary btn-block disabled"
                    href="{% url 'team:manage_awards' profile_id=profile.id%}">
                     Manage Awards
-                </a>
-                <a type="button" class="btn btn-outline-primary btn-block disabled"
-                   href="{% url 'team:manage_results' profile_id=profile.id%}">
-                    Add Personal Results
                 </a>
                 {% endif %}
             </div>
@@ -186,31 +178,6 @@
                 <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
                     <div class="card-body table-responsive">
                         {% include "award/includes/award_list.html" with award_list=profile.awardgiven_set.all %}
-                    </div>
-                </div>
-            </div>
-            <!-- Results -->
-            <div class="card shadow">
-                <div class="card-header" id="headingFour">
-                    <h5 class="mb-0">
-                        {% if profile.results_rowed.all.count > 0 %}
-                        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseFour"
-                                aria-expanded="false" aria-controls="collapseFour">
-                            Results
-                        </button>
-                        <span class="badge badge-primary badge-pill">{{ profile.results_rowed.all.count }}</span>
-                        {% else %}
-                        <button class="btn btn-link collapsed disabled" data-toggle="collapse"
-                                data-target="#collapseFour"
-                                aria-expanded="false" aria-controls="collapseFour">
-                            Results
-                        </button>
-                        {% endif %}
-                    </h5>
-                </div>
-                <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordion">
-                    <div class="card-body table-responsive">
-                        {% include "private/includes/result_list.html" with result_list=profile.results_rowed.all %}
                     </div>
                 </div>
             </div>

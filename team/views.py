@@ -15,10 +15,9 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, TemplateView
 
 from common.views import PagesListView
-from event.forms import ResultPersonalCreateForm
 from story.models import Story
 from .forms import (SignUpForm, InterestForm, ProfileUpdateForm, MembershipInlineForm, MembershipUpdateForm,
-                    AwardInlineForm, ResultInlineForm)
+                    AwardInlineForm)
 from .models import Profile, EmailAddress, Page, Post, Membership, AwardGiven, Award
 from .utils import APPROVED, UNCLAIMED, PENDING
 
@@ -306,40 +305,6 @@ def manage_awards(request, profile_id):
         formset = inline_form(instance=profile)
 
     return render(request, template_name, {'formset': formset, 'profile': profile, 'prefix': prefix})
-
-
-@login_required
-def manage_results(request, profile_id):
-    template_name = 'private/event_create.html'
-    profile = get_object_or_404(Profile, pk=profile_id)
-    form = ResultPersonalCreateForm
-    success_url = reverse_lazy('team:view_profile', kwargs={'pk': profile.pk})
-
-    allowed_to_edit = False
-    if request.user.is_staff:
-        allowed_to_edit = True
-    elif Profile.objects.filter(owner=request.user).exists():
-        user_owns_profile = request.user.profile == profile
-        profile_approved = profile.status == APPROVED
-        allowed_to_edit = user_owns_profile and profile_approved
-    if not allowed_to_edit:
-        messages.warning(request, 'You do not have permission to edit %s' % profile)
-        raise PermissionDenied
-
-    if request.method == "POST":
-        form = form(request.POST)
-        if form.is_valid():
-            r = form.save(commit=False)
-            r.name = 'Personal Record: %s' % profile.full_name
-            r.personal_record = True
-            r.save()
-            r.rowers.add(profile)
-            action.send(request.user.profile, verb='created', action_object=r)
-            return redirect(success_url)
-    else:
-        form = form()
-
-    return render(request, template_name, {'form': form, 'profile': profile, })
 
 
 @login_required
