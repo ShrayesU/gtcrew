@@ -1,5 +1,7 @@
 {% extends "wagtailadmin/userbar/base.html" %}
+<!--{% load static %}-->
 
-<!--{# block branding_logo #}-->
-<!--    <i class="fas fa-pencil-alt"></i>-->
-<!--{# endblock #}-->
+{% block branding_logo %}
+<!--<img class="img-fluid" src="{% static 'private/img/logo.png' %}">-->
+    <i class="fas fa-pencil-alt"></i>
+{% endblock %}
