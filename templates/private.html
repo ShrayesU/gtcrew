@@ -113,15 +113,6 @@
                 <span>Inventory</span></a>
         </li>
 
-        <hr class="sidebar-divider my-0">
-
-        <li class="nav-item">
-            <a class="nav-link" href="" data-toggle="modal" data-target="#feedbackModal">
-                <i class="fas fa-fw fa-comment-alt"></i>
-                <span>Feedback</span>
-            </a>
-        </li>
-
         <hr class="sidebar-divider">
 
         <!-- Sidebar Toggler (Sidebar) -->
@@ -489,33 +480,6 @@
                 <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
                 <a class="btn btn-primary" href="{% url 'account_logout' %}">Logout</a>
             </div>
-        </div>
-    </div>
-</div>
-
-<!-- Modal -->
-<div class="modal fade" id="feedbackModal" tabindex="-1" role="dialog" aria-labelledby="feedbackModalTitle"
-     aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="feedbackModalTitle">Feedback</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form action="{% url 'feedback:create' %}" method="post">{% csrf_token %}
-                <div class="modal-body">
-                    <input type="hidden" name="next" value="{{ request.path }}">
-                    <div class="form-group">
-                        <textarea name="feedback" class="form-control"
-                                  id="id_feedback" placeholder="Thanks Champ..."></textarea>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <input class="btn btn-outline-primary btn-block" type="submit" value="Submit Feedback">
-                </div>
-            </form>
         </div>
     </div>
 </div>

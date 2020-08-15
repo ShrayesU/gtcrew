@@ -31,7 +31,6 @@ urlpatterns = [
     re_path(r'^documents/', include(wagtaildocs_urls)),
     path('story/', include('story.urls')),
     path('asset/', include('asset.urls')),
-    path('feedback/', include('feedback.urls')),
     path('summernote/', include('django_summernote.urls')),
     # path('activity/', include('actstream.urls')),
     path('django_admin/', admin.site.urls),
