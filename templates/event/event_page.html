@@ -78,7 +78,7 @@ background: transparent !important;
                             <thead>
                             <tr>
                                 <th>Entry</th>
-                                <th>Time</th>
+<!--                                <th>Time</th>-->
                                 <th>Placement</th>
                                 <th>Detail</th>
                             </tr>
@@ -89,9 +89,9 @@ background: transparent !important;
                                 <td>
                                     {{ result.entry }}
                                 </td>
-                                <td>
-                                    {{ result.total_time_string }}
-                                </td>
+<!--                                <td>-->
+<!--                                    {{ result.total_time_string }}-->
+<!--                                </td>-->
                                 <td>
                                     {{ result.rank }}
                                 </td>
@@ -172,14 +172,11 @@ background: transparent !important;
                         </div>
                     </li>
                 </ul>
-                <div>
-                    <p class="text-center text-muted font-italic">
-                        Incomplete data? Suggest an edit after logging in.
-                    </p>
-                </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <p class="text-center text-muted font-italic">
+                    Incomplete data? Suggest an edit after logging in.
+                </p>
             </div>
         </div>
     </div>
