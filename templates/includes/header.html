@@ -19,19 +19,9 @@
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav mx-auto">
                 {% block navigation %}
-                <li class="nav-item px-lg-4 {% if page.get_site.root_page.title == page.title %}active{% endif %}">
-                    <a class="nav-link text-uppercase text-expanded" href="{{ page.get_site.root_page.url }}">
-                        {{ page.get_site.root_page.title }}
-                    </a>
-                </li>
                 {# main_menu is defined in base/templatetags/navigation_tags.py #}
                 {% get_site_root as site_root %}
                 {% top_menu parent=site_root calling_page=self %}
-<!--                <li class="nav-item px-lg-4">-->
-<!--                    <a class="nav-link text-uppercase text-expanded" href="{# url 'team:index_member' #}">-->
-<!--                        Portal<sup>beta</sup>-->
-<!--                    </a>-->
-<!--                </li>-->
                 <li class="nav-item px-lg-4">
                     {% if request.user.is_authenticated %}
                     <a class="nav-link text-uppercase text-expanded" href="{% url 'account_logout' %}">
