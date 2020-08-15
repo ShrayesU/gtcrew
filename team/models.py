@@ -1,22 +1,20 @@
 from cuser.middleware import CuserMiddleware
-from django.urls import reverse_lazy
-from django.utils.text import slugify
-from django_resized import ResizedImageField
+from django.contrib.auth import get_user_model
 from django.core.validators import RegexValidator
 from django.db import models
+from django.urls import reverse_lazy
 from django.utils.timezone import now
-from django.contrib.auth import get_user_model
+from django_resized import ResizedImageField
 from wagtail.admin.edit_handlers import FieldPanel, MultiFieldPanel, FieldRowPanel
 from wagtail.core.fields import RichTextField
 from wagtail.images.edit_handlers import ImageChooserPanel
+from wagtail.search import index
 from wagtail.snippets.edit_handlers import SnippetChooserPanel
 from wagtail.snippets.models import register_snippet
-from wagtail.search import index
 
 from .managers import StudentManager, CoachManager
-from .utils import HELD_BY_CHOICES, STUDENT, SEMESTER_CHOICES, FALL, TEMPLATE_CHOICES, DEFAULT, TEAM_FOUNDED, \
+from .utils import HELD_BY_CHOICES, STUDENT, SEMESTER_CHOICES, FALL, TEAM_FOUNDED, \
     PROFILE_STATUS_CHOICES, UNCLAIMED
-from .validators import validate_file_extension
 
 
 def get_default_year():
@@ -279,47 +277,3 @@ class Membership(models.Model):
             return self.year - (TEAM_FOUNDED - 1)
         else:
             return self.year - TEAM_FOUNDED
-
-
-class TextGroup(models.Model):
-    text = models.TextField(blank=True)
-    header1 = models.CharField('small header', max_length=64, blank=True)
-    header2 = models.CharField('large header', max_length=64, blank=True)
-
-    class Meta:
-        abstract = True
-
-
-class Page(models.Model):
-    page = models.CharField(max_length=64, unique=True)
-    public = models.BooleanField(default=True)
-    slug = models.SlugField(max_length=64, unique=True, null=True)
-    sequence = models.PositiveIntegerField(unique=True)
-    template = models.CharField(
-        max_length=5,
-        choices=TEMPLATE_CHOICES,
-        default=DEFAULT,
-    )
-
-    def __str__(self):
-        return '%s' % self.page
-
-    def save(self, *args, **kwargs):
-        if not self.slug:
-            self.slug = slugify(self.page)
-        super(Page, self).save(*args, **kwargs)
-
-
-class Post(TextGroup):
-    photo = models.ImageField(blank=True, null=True)
-    public = models.BooleanField(default=True)
-    additional_link = models.URLField(blank=True)
-    additional_link_text = models.CharField(max_length=30, blank=True)
-    document = models.FileField(blank=True, validators=[validate_file_extension])
-    document_name = models.CharField(max_length=30, blank=True)
-    page = models.ForeignKey(Page, on_delete=models.CASCADE, null=True)
-    date_created = models.DateTimeField(auto_now_add=True)
-    date_updated = models.DateTimeField(auto_now=True)
-
-    def __str__(self):
-        return '%s %s' % (self.header1, self.header2)

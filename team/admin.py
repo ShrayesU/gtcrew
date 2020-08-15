@@ -8,7 +8,7 @@ from django.urls import path
 from django_summernote.admin import SummernoteModelAdminMixin
 
 from .forms import CsvImportForm, ProfileForm
-from .models import Profile, EmailAddress, Membership, Squad, Title, Award, AwardGiven, Post, Page
+from .models import Profile, EmailAddress, Membership, Squad, Title, Award, AwardGiven
 
 # User = get_user_model()
 
@@ -192,28 +192,3 @@ class ProfileAdmin(SummernoteModelAdminMixin, admin.ModelAdmin):
         return render(
             request, "admin/csv_form.html", payload
         )
-
-
-class PostInline(SummernoteModelAdminMixin, admin.StackedInline):
-    model = Post
-    summernote_fields = '__all__'
-    fieldsets = [
-        (None, {'fields': ['header1', 'header2', 'photo', 'text', 'public', ]}),
-        ('Optional Link', {'fields': ['additional_link', 'additional_link_text'], 'classes': ['collapse']}),
-        ('Optional Attachment', {'fields': ['document', 'document_name'], 'classes': ['collapse']}),
-        ('Date information', {'fields': ['date_created', 'date_updated'], 'classes': ['collapse']}),
-    ]
-    classes = ['collapse']
-    readonly_fields = ('date_created', 'date_updated')
-    extra = 0
-
-
-@admin.register(Page)
-class PageAdmin(admin.ModelAdmin):
-    fieldsets = [
-        (None, {'fields': ['page', 'template', 'sequence', 'public', ]}),
-    ]
-    inlines = [PostInline, ]
-    list_display = ('page', 'public', 'sequence',)
-    list_editable = ('public', 'sequence',)
-    ordering = ['sequence', ]

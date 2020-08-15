@@ -25,7 +25,6 @@ django-resized==0.3.11
 django-storages==1.9.1
 django-summernote==0.8.11.6
 django-taggit==1.3.0
-django-tastypie==0.14.3
 django-tempus-dominus==5.1.2.13
 django-treebeard==4.3.1
 djangorestframework==3.11.1

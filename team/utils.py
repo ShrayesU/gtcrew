@@ -27,17 +27,6 @@ SEMESTER_CHOICES = (
     (SPRING, 'Spring'),
 )
 
-DEFAULT = 'BASE'
-HOME = 'HOME'
-ABOUT = 'ABOUT'
-TEAM = 'TEAM'
-TEMPLATE_CHOICES = (
-    (DEFAULT, 'Regular'),
-    (HOME, 'Home'),
-    (ABOUT, 'About'),
-    (TEAM, 'Team'),
-)
-
 TEAM_FOUNDED = 1985
 
 STATE_CHOICES = (

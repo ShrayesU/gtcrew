@@ -1,24 +1,9 @@
-from django.contrib.auth.decorators import login_required
-from django.urls import path, include
-from django.views.generic import TemplateView
-from tastypie.api import Api
+from django.urls import path
 
-from team.api import ProfileResource
 from . import views
-
-v1_api = Api(api_name='v1')
-v1_api.register(ProfileResource())
 
 app_name = 'team'
 urlpatterns = [
-    # Public urls
-    path('t/', views.home_view, name='index'),
-    path('page/<slug:slug>/', views.page_view, name='page'),
-    path('team/membership/', views.IndexView.as_view(), name='member_index'),
-    path('team/membership/<int:pk>/', views.MembershipDetail.as_view(), name='member_detail'),
-    path('form/interest/', views.interest, name='interest'),
-    path('member/register/', views.signup, name='register'),
-    path('team/api/', include(v1_api.urls)),
     # Member urls
     path('member/', views.PortalView.as_view(), name='index_member'),
     # Profile urls

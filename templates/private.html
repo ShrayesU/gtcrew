@@ -35,7 +35,7 @@
 
         <!-- Sidebar - Brand -->
         <a class="sidebar-brand d-flex my-3 align-items-center justify-content-center"
-           href="{% url 'team:index_member' %}">
+           href="#">
             <div class="sidebar-brand-icon">
                 <img class="img-fluid" src="{% static 'private/img/logo.png' %}">
             </div>
@@ -47,7 +47,7 @@
 
         <!-- Nav Item - Dashboard -->
         <li class="nav-item active">
-            <a class="nav-link" href="{% url 'team:index_member' %}">
+            <a class="nav-link" href="#">
                 <i class="fas fa-fw fa-tachometer-alt"></i>
                 <span>Member Portal</span></a>
         </li>
@@ -96,16 +96,6 @@
             <a class="nav-link" href="{% url 'team:list_award' %}">
                 <i class="fas fa-fw fa-medal"></i>
                 <span>Awards</span></a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="{% url 'event:member_event' %}">
-                <i class="fas fa-fw fa-calendar-alt"></i>
-                <span>Events</span></a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="{% url 'event:member_result_leader_board' %}">
-                <i class="fas fa-fw fa-trophy"></i>
-                <span>Leaderboard</span></a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="{% url 'asset:list' %}">
@@ -252,7 +242,7 @@
                             </a>
                             {% if user.is_staff %}
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="{% url 'team:index' %}">
+                            <a class="dropdown-item" href="#">
                                 <i class="fas fa-globe-americas fa-sm fa-fw mr-2 text-gray-400"></i>
                                 Public Website
                             </a>

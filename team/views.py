@@ -1,10 +1,8 @@
 import operator
 from functools import reduce
 
-from actstream import action
 from dal import autocomplete
 from django.contrib import messages
-from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
@@ -14,98 +12,12 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, TemplateView
 
+from actstream import action
 from common.views import PagesListView
 from story.models import Story
-from .forms import (SignUpForm, InterestForm, ProfileUpdateForm, MembershipInlineForm, MembershipUpdateForm,
-                    AwardInlineForm)
-from .models import Profile, EmailAddress, Page, Post, Membership, AwardGiven, Award
+from .forms import ProfileUpdateForm, MembershipInlineForm, MembershipUpdateForm, AwardInlineForm
+from .models import Profile, Membership, AwardGiven, Award
 from .utils import APPROVED, UNCLAIMED, PENDING
-
-
-def page_view(request, slug):
-    page = get_object_or_404(Page, slug=slug)
-    pages = Page.objects.filter(public=True).order_by('sequence')
-    posts = Post.objects.filter(page=page, public=True).order_by('date_created')
-    form = interest(request)
-    payload = {
-        'page': page,
-        'pages': pages,
-        'posts': posts,
-        'students': None,
-        'coaches': None,
-    }
-    if page.template == 'TEAM':
-        students = Membership.students.active()
-        coaches = Membership.coaches.active()
-        if students:
-            payload['students'] = students
-            payload['officers'] = students.filter(title__held_by='student').order_by('title__sequence')
-        if coaches:
-            payload['coaches'] = coaches.order_by('title__sequence')
-    return render(request, 'team/page.html', payload)
-
-
-def home_view(request):
-    slug = Page.objects.filter(public=True).order_by('sequence')[0].slug
-    return page_view(request, slug)
-
-
-class IndexView(ListView):
-    model = Membership
-    template_name = 'team/membership_index.html'
-    context_object_name = 'membership_list'
-
-    def get_queryset(self):
-        return Membership.students.active().order_by('squad')
-
-
-class MembershipDetail(DetailView):
-    model = Membership
-    template_name = 'team/membership_detail.html'
-
-
-def signup(request):
-    success_url = reverse_lazy('team:list_profile')
-    if request.method == 'POST':
-        form = SignUpForm(request.POST)
-        if form.is_valid():
-            form.save()
-            username = request.POST['username']
-            password = request.POST['password1']
-            user = authenticate(request, username=username, password=password)
-            if user is not None:
-                login(request, user)
-            return redirect(success_url)
-
-    else:
-        form = SignUpForm()
-    return render(request, 'team/register.html', {'form': form})
-
-
-def interest(request):
-    pages = Page.objects.filter(public=True).order_by('sequence')
-    if request.method == 'POST':
-        form = InterestForm(request.POST)
-        if form.is_valid():
-            first_name = form.cleaned_data.get('first_name')
-            last_name = form.cleaned_data.get('last_name')
-            email = form.cleaned_data.get('email')
-            gtid = form.cleaned_data.get('gtid')
-            p = Profile(
-                first_name=first_name,
-                last_name=last_name,
-                gtid=gtid,
-            )
-            p.save()
-            e, e_saved = EmailAddress.objects.get_or_create(
-                email=email,
-                profile=p,
-            )
-            return redirect('')
-    else:
-        form = InterestForm()
-    return render(request, 'team/interest.html', {'form': form, 'pages': pages})
-
 
 """
 Profile Views
@@ -397,52 +309,3 @@ class AwardListView(LoginRequiredMixin, ListView):
     model = Award
     template_name = 'award/awards.html'
     paginate_by = 5
-
-
-"""
-def signup(request):
-    if request.method == 'POST':
-        form = SignUpForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            user.refresh_from_db()  # load the profile instance created by the signal
-            user.profile.birthday = form.cleaned_data.get('birthday')
-            user.profile.major = form.cleaned_data.get('major')
-            user.profile.hometown = form.cleaned_data.get('hometown')
-            user.save()
-            raw_password = form.cleaned_data.get('password1')
-            user = authenticate(username=user.username, password=raw_password)
-            login(request, user)
-            return redirect('')
-    else:
-        form = SignUpForm()
-    return render(request, 'team/includes/signup.html', {'form': form})
-"""
-"""
-from django.core.mail import send_mail
-from .forms import ContactForm
-def get_contact(request):
-    # if this is a POST request we need to process the form data
-    if request.method == 'POST':
-        # create a form instance and populate it with data from the request:
-        form = ContactForm(request.POST)
-        # check whether it's valid:
-        if form.is_valid():
-            subject = form.cleaned_data['subject']
-            message = form.cleaned_data['message']
-            sender = form.cleaned_data['sender']
-            cc_myself = form.cleaned_data['cc_myself']
-
-            recipients = ['info@example.com']
-            if cc_myself:
-                recipients.append(sender)
-
-            send_mail(subject, message, sender, recipients)
-            return HttpResponseRedirect('/thanks/')
-
-    # if a GET (or any other method) we'll create a blank form
-    else:
-        form = ContactForm()
-
-    return render(request, 'contact.html', {'form': form})
-"""
