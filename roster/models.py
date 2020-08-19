@@ -137,6 +137,7 @@ class TermPage(Page):
 
 class RosterIndexPage(Page):
     subpage_types = ['TermPage']
+    max_count = 1
 
     def get_terms(self):
         return TermPage.objects.live().descendant_of(

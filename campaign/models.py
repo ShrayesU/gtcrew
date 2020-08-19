@@ -115,6 +115,7 @@ class DonateIndexPage(Page):
     ]
 
     subpage_types = ['campaign.CampaignPage']
+    max_count = 1
 
     def get_campaigns(self):
         return CampaignPage.objects.live().descendant_of(

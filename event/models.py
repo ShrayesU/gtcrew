@@ -201,6 +201,7 @@ class EventPage(Page):
 
 class EventIndexPage(Page):
     subpage_types = ['EventPage']
+    max_count = 1
 
     def get_events(self):
         return EventPage.objects.live().descendant_of(
