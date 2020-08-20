@@ -40,7 +40,7 @@ background: transparent !important;
                                         </a>
                                     </td>
                                     <td>
-                                    {{ award.description|truncatewords_html:25 }}
+                                    {{ award.description|safe|truncatewords_html:25 }}
                                     </td>
                                 </tr>
                             {% endfor %}
