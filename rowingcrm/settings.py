@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'gtcrew',  # location of the Wagtail Page models
     'roster',
     'person',
+    'award',
     'team.apps.TeamConfig',
     'event.apps.EventConfig',
     'story.apps.StoryConfig',
