@@ -80,7 +80,7 @@ class PersonPage(Page):
         ], "Details"),
         MultiFieldPanel(
             [InlinePanel("personal_records", label="Record")],
-            heading="Person Records", classname="collapsible"
+            heading="Personal Records", classname="collapsible"
         ),
     ]
 
