@@ -35,7 +35,7 @@ class Racer(Orderable):
         null=True,
         blank=True,
         on_delete=models.PROTECT,
-        related_name='+',
+        related_name='results_raced',  # TODO: use results_raced or switch back to +
         help_text='You can only search for a Published person page. '
                   '"Create New" only works if you have Publish permissions.'
     )
