@@ -5,8 +5,9 @@ from wagtail.contrib.modeladmin.options import (
     ModelAdmin, ModelAdminGroup, modeladmin_register)
 from wagtail.core import hooks
 
+from award.models import Recipient
 from gtcrew.views import PeopleReportView
-from team.models import Profile, Award, Title, Squad, AwardGiven, Membership
+from team.models import Profile, Title, Squad, Membership
 
 
 # class ProfileModelAdmin(ModelAdmin):
@@ -27,15 +28,10 @@ from team.models import Profile, Award, Title, Squad, AwardGiven, Membership
 #     search_fields = ('profile__first_name', 'profile__last_name', 'profile__gtid')
 
 
-class AwardModelAdmin(ModelAdmin):
-    model = Award
-    search_fields = ('award',)
-
-
-# class AwardGivenModelAdmin(ModelAdmin):
-#     model = AwardGiven
-#     search_fields = ('award__award',)
-#     list_filter = ('year',)
+class RecipientModelAdmin(ModelAdmin):
+    model = Recipient
+    list_display = ('year', 'page', 'person_page',)
+    list_filter = ('page', 'year')
 
 
 class TitleModelAdmin(ModelAdmin):
@@ -54,7 +50,7 @@ class TeamDetailAdminGroup(ModelAdminGroup):
     menu_label = 'Team Details'
     menu_icon = 'fa-suitcase'
     menu_order = 200
-    items = (AwardModelAdmin, TitleModelAdmin, SquadModelAdmin)
+    items = (SquadModelAdmin, TitleModelAdmin, RecipientModelAdmin)
 
 
 # modeladmin_register(ProfileModelAdmin)

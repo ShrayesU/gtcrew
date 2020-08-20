@@ -174,47 +174,6 @@ class Squad(models.Model):
 
 
 @register_snippet
-class Award(models.Model):
-    award = models.CharField(max_length=64, unique=True)
-    description = RichTextField()
-    profiles = models.ManyToManyField(
-        Profile,
-        through='AwardGiven',
-        through_fields=('award', 'profile'),
-        blank=True,
-    )
-
-    def __str__(self):
-        return '%s' % self.award
-
-    panels = [
-        FieldPanel('award'),
-        FieldPanel('description'),
-    ]
-
-
-@register_snippet
-class AwardGiven(models.Model):
-    award = models.ForeignKey(Award, on_delete=models.CASCADE)
-    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    year = models.PositiveIntegerField(default=get_default_year)
-
-    class Meta:
-        verbose_name = 'award given'
-        verbose_name_plural = 'awards given'
-        ordering = ['-year']
-
-    def __str__(self):
-        return '%s - %s' % (self.year, self.award)
-
-    panels = [
-        SnippetChooserPanel('award'),
-        SnippetChooserPanel('profile'),
-        FieldPanel('year'),
-    ]
-
-
-@register_snippet
 class Membership(models.Model):
     semester = models.CharField(
         max_length=6,

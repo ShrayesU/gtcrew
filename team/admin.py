@@ -8,7 +8,7 @@ from django.urls import path
 from django_summernote.admin import SummernoteModelAdminMixin
 
 from .forms import CsvImportForm, ProfileForm
-from .models import Profile, EmailAddress, Membership, Squad, Title, Award, AwardGiven
+from .models import Profile, EmailAddress, Membership, Squad, Title
 
 # User = get_user_model()
 
@@ -34,18 +34,6 @@ class MembershipAdmin(admin.ModelAdmin):
         else:
             message_bit = "%s memberships were" % rows_updated
         self.message_user(request, "%s successfully marked as public." % message_bit)
-
-
-class AwardGivenInline(admin.TabularInline):
-    model = AwardGiven
-    classes = ['collapse']
-    autocomplete_fields = ['profile']
-    extra = 0
-
-
-@admin.register(Award)
-class AwardAdmin(admin.ModelAdmin):
-    inlines = [AwardGivenInline, ]
 
 
 class MembershipInline(admin.TabularInline):
@@ -85,7 +73,7 @@ class ProfileAdmin(SummernoteModelAdminMixin, admin.ModelAdmin):
         ('Personal', {'fields': ['birthday', 'major', 'hometown'], 'classes': ['collapse']}),
         ('Date information', {'fields': ['date_created', 'date_updated'], 'classes': ['collapse']}),
     ]
-    inlines = [EmailAddressInline, AwardGivenInline, MembershipInline, ]
+    inlines = [EmailAddressInline, MembershipInline, ]
     list_display = ('first_name', 'last_name', 'gtid', 'latest_year_active', 'date_updated')
     list_filter = ('status', 'public', 'membership__squad', 'membership__year', 'membership__semester')
     readonly_fields = ('date_created', 'date_updated')

@@ -15,8 +15,8 @@ from django.views.generic import ListView, CreateView, DetailView, UpdateView, T
 from actstream import action
 from common.views import PagesListView
 from story.models import Story
-from .forms import ProfileUpdateForm, MembershipInlineForm, MembershipUpdateForm, AwardInlineForm
-from .models import Profile, Membership, AwardGiven, Award
+from .forms import ProfileUpdateForm, MembershipInlineForm, MembershipUpdateForm
+from .models import Profile, Membership
 from .utils import APPROVED, UNCLAIMED, PENDING
 
 """
@@ -190,36 +190,6 @@ def manage_memberships(request, profile_id):
 
 
 @login_required
-def manage_awards(request, profile_id):
-    template_name = 'profile/manage_related.html'
-    profile = get_object_or_404(Profile, pk=profile_id)
-    inline_form = AwardInlineForm
-    prefix = 'awardgiven_set'
-    success_url = reverse_lazy('team:view_profile', kwargs={'pk': profile.pk})
-
-    allowed_to_edit = False
-    if request.user.is_staff:
-        allowed_to_edit = True
-    elif Profile.objects.filter(owner=request.user).exists():
-        user_owns_profile = request.user.profile == profile
-        profile_approved = profile.status == APPROVED
-        allowed_to_edit = user_owns_profile and profile_approved
-    if not allowed_to_edit:
-        messages.warning(request, 'You do not have permission to edit %s' % profile)
-        raise PermissionDenied
-
-    if request.method == "POST":
-        formset = inline_form(request.POST, request.FILES, instance=profile)
-        if formset.is_valid():
-            formset.save()
-            return redirect(success_url)
-    else:
-        formset = inline_form(instance=profile)
-
-    return render(request, template_name, {'formset': formset, 'profile': profile, 'prefix': prefix})
-
-
-@login_required
 def claim_profile(request, pk):
     profile = get_object_or_404(Profile, pk=pk)
     success_url = reverse_lazy('team:view_profile', kwargs={'pk': profile.pk})
@@ -277,35 +247,3 @@ class MembershipUpdateView(LoginRequiredMixin, UpdateView):
 
     def get_success_url(self):
         return reverse_lazy('team:view_profile', kwargs={'pk': self.object.profile.pk})
-
-
-"""
-Award Views
-"""
-
-
-class AwardGivenDetailView(LoginRequiredMixin, DetailView):
-    model = AwardGiven
-    template_name = 'award/awardgiven_view.html'
-
-
-class AwardDetailView(LoginRequiredMixin, ListView):
-    model = AwardGiven
-    template_name = 'award/award_view.html'
-    paginate_by = 10
-
-    def get_context_data(self, **kwargs):
-        context = super(AwardDetailView, self).get_context_data(**kwargs)
-        if 'pk' in self.kwargs:
-            context['award'] = get_object_or_404(Award, id=self.kwargs['pk'])
-        return context
-
-    def get_queryset(self):
-        award = get_object_or_404(Award, id=self.kwargs['pk'])
-        return AwardGiven.objects.filter(award=award)
-
-
-class AwardListView(LoginRequiredMixin, ListView):
-    model = Award
-    template_name = 'award/awards.html'
-    paginate_by = 5
