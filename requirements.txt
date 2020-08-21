@@ -69,7 +69,6 @@ tablib==2.0.0
 unicodecsv==0.14.1
 Unidecode==1.1.1
 urllib3==1.25.10
-wagalytics==1.2
 wagtail==2.10
 wagtail-autocomplete==0.6
 wagtail-django-recaptcha==1.0

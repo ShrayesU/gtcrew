@@ -242,6 +242,8 @@ except ImportError:
 
 # Google Analytics
 GOOGLE_ANALYTICS_CODE = config('GOOGLE_ANALYTICS_CODE', '')
+GA_VIEW_ID = config('GA_VIEW_ID', '')
+GA_KEY_CONTENT = config('GA_KEY_CONTENT', '')
 
 # Login
 LOGIN_URL = WAGTAIL_FRONTEND_LOGIN_URL
