@@ -17,17 +17,15 @@ class ShowGoogleAnalyticsJS(template.Node):
             return "<!-- Goggle Analytics not included because you are in Debug mode! -->"
 
         return """
-      <script type="text/javascript">
-          var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-          document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js'
-            type='text/javascript'%3E%3C/script%3E"));
-      </script>
-      <script type="text/javascript">
-          try {
-          var pageTracker = _gat._getTracker('""" + str(code) + """');
-          pageTracker._trackPageview();
-      } catch(err) {}</script>
-      """
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-176028500-1"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+        
+          gtag('config', '""" + str(code) + """');
+        </script>
+        """
 
 
 def googleanalyticsjs(parser, token):
