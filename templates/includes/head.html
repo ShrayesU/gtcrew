@@ -1,4 +1,4 @@
-{% load static %}
+{% load static analytics %}
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -6,6 +6,11 @@
     <meta name="author" content="Alec">
 
     <title>{{ page.get_site.site_name }}: {{ self.title }}</title>
+
+    {% if not request.is_preview %}
+    {# googleanalyticsjs is defined in gtcrew/templatetags/analytics.py #}
+    {% googleanalyticsjs %}
+    {% endif %}
 
     <!-- Bootstrap core CSS -->
     <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
@@ -33,5 +38,3 @@
     font-family: 'Raleway';
 }
 </style>
-
-</head>

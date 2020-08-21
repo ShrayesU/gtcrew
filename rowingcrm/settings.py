@@ -61,6 +61,8 @@ INSTALLED_APPS = [
     'wagtailcaptcha',
     'wagtailautocomplete',
     'robots',
+    'wagalytics',
+    'wagtailfontawesome',
 
     'taggit',
     'modelcluster',
@@ -238,6 +240,10 @@ try:
 except ImportError:
     pass
 
+# Google Analytics
+GOOGLE_ANALYTICS_CODE = config('GOOGLE_ANALYTICS_CODE', '')
+
+# Login
 LOGIN_URL = WAGTAIL_FRONTEND_LOGIN_URL
 
 # where requests are redirected after login when the LoginView doesn't get a next GET parameter.
