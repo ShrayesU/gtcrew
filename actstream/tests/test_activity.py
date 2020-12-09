@@ -4,7 +4,7 @@ from django.contrib.auth.models import Group
 
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import activate, get_language
-from django.utils.six import text_type
+from six import text_type
 
 try:
     from django.urls import reverse
@@ -277,7 +277,7 @@ class ActivityTestCase(DataTestCase):
             activate('fr')
             verb = _('English')
 
-            self.assertEqual(verb, 'Anglais')
+            self.assertEqual(verb, 'anglais')
             action.send(self.user1, verb=verb, action_object=self.comment,
                         target=self.group, timestamp=self.testdate)
             self.assertTrue(Action.objects.filter(verb='English').exists())

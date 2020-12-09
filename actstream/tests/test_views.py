@@ -1,4 +1,4 @@
-from django.utils.six.moves.urllib.parse import urlencode
+from six.moves.urllib.parse import urlencode
 
 try:
     from django.core.urlresolvers import reverse
