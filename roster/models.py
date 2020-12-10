@@ -127,10 +127,14 @@ class TermPage(Page):
     def get_context(self, request, *args, **kwargs):
         context = super(TermPage, self).get_context(request)
 
-        members = PersonPage.objects.live().filter(
-            id__in=self.members.all().values('person_page_id')
-        ).order_by('last_name')
-        context['members'] = members
+        try:
+            members = PersonPage.objects.live().filter(
+                id__in=self.members.all().values('person_page_id')
+            ).order_by('last_name')
+            context['members'] = members
+        except AttributeError:
+            # limitation of django-modelcluster -- cannot show in preview
+            pass
 
         return context
 
