@@ -1,8 +1,19 @@
 {% extends "base_page.html" %}
-{% load wagtailcore_tags %}
+{% load wagtailcore_tags static %}
+
+{% block head %}
+{{ block.super }}
+<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css"/>
+<style>
+    table td, table tr, table th{
+background: transparent !important;
+}
+
+</style>
+
+{% endblock %}
 
 {% block content %}
-
 <section class="page-section cta">
     <div class="container">
         <div class="row">
@@ -39,7 +50,9 @@
                         {% for officer in self.officers.all %}
                         {% if officer.person_page.live %}
                         <li class="list-unstyled-item list-hours-item d-flex">
-                            <a href="{% pageurl officer.person_page %}">{{ officer.person_page.title }}</a>
+                            <a class="text-secondary" href="{% pageurl officer.person_page %}">
+                                {{ officer.person_page.title }}
+                            </a>
                             <span class="ml-auto"
                                   style="font-weight:bold; color:#EEB211;">{{ officer.position.title }}</span>
                         </li>
@@ -62,15 +75,36 @@
                             <span class="section-heading-upper">Rowers & Coxswain</span>
                             <span class="section-heading-lower">Members</span>
                         </h2>
-                        <table>
-                            <div class="row text-center">
+                        <div>
+                            <table class="display responsive" id="dataTable_Members" width="100%" cellspacing="0">
+                                <thead>
+                                <tr>
+                                    <th>First Name</th>
+                                    <th>Last Name</th>
+                                    <th>Major</th>
+                                </tr>
+                                </thead>
+                                <tbody>
                                 {% for member in members %}
-                                <div class="col-6 col-lg-4 my-2">
-                                    <a href="{% pageurl member %}">{{ member.title }}</a>
-                                </div>
+                                <tr>
+                                    <td>
+                                        <a class="text-secondary" href="{% pageurl member %}">
+                                            {{ member.specific.first_name }}
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a class="text-secondary" href="{% pageurl member %}">
+                                            {{ member.specific.last_name }}
+                                        </a>
+                                    </td>
+                                    <td>
+                                        {{ member.specific.major }}
+                                    </td>
+                                </tr>
                                 {% endfor %}
-                            </div>
-                        </table>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -78,4 +112,23 @@
     </div>
 </section>
 
+{% endblock %}
+
+{% block javascript %}
+<script href="{% static 'private/vendor/datatables/dataTables.bootstrap4.min.js' %}" rel="stylesheet"></script>
+<script src="{% static 'private/vendor/datatables/jquery.dataTables.min.js' %}"></script>
+<script>
+    // Call the dataTables jQuery plugin
+    $(document).ready(function() {
+      $('#dataTable_Members').DataTable({
+        responsive: true,
+        searching: false,
+        stripe: true,
+        "order": [],
+        "lengthChange": false
+      });
+    });
+
+
+</script>
 {% endblock %}

@@ -1,5 +1,16 @@
 {% extends "base_page.html" %}
-{% load wagtailimages_tags %}
+{% load wagtailimages_tags wagtailcore_tags static %}
+
+{% block head %}
+{{ block.super }}
+<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css"/>
+<style>
+    table td, table tr, table th{
+background: transparent !important;
+}
+
+</style>
+{% endblock %}
 
 {% block content %}
 <section class="page-section cta">
@@ -59,4 +70,70 @@
         </div>
     </div>
 </section>
+
+{% if self.results_raced.all %}
+<!-- Race Details -->
+<section class="page-section about-heading">
+    <div class="container">
+        <div class="about-heading-content my-5">
+            <div class="row">
+                <div class="col-xl-9 col-lg-10 mx-auto">
+                    <div class="bg-faded rounded p-5">
+                        <h2 class="section-heading mb-5 text-center">
+                            <span class="section-heading-upper">Events</span>
+                            <span class="section-heading-lower">Raced</span>
+                        </h2>
+                        <div>
+                            <table class="display responsive" id="dataTable_Results" width="100%" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th>Entry</th>
+                                        <th>Placement</th>
+                                        <th>Regatta</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                {% for result in self.results_raced.all %}
+                                    <tr>
+                                        <td>
+                                            {{ result.page.entry }}
+                                        </td>
+                                        <td>
+                                            {{ result.page.rank }}
+                                        </td>
+                                        <td>
+                                            <a class="text-secondary" href="{% pageurl result.page.page %}">
+                                            {{ result.page.page.title }}
+                                        </a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                        </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+{% endblock %}
+
+{% block javascript %}
+<script href="{% static 'private/vendor/datatables/dataTables.bootstrap4.min.js' %}" rel="stylesheet"></script>
+<script src="{% static 'private/vendor/datatables/jquery.dataTables.min.js' %}"></script>
+<script>
+    // Call the dataTables jQuery plugin
+    $(document).ready(function() {
+      $('#dataTable_Results').DataTable({
+        responsive: true,
+        searching: false,
+        stripe: true,
+        "order": [],
+        "lengthChange": false
+      });
+    });
+
+</script>
 {% endblock %}
