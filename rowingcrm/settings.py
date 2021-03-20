@@ -27,8 +27,19 @@ SECRET_KEY = config('SECRET_KEY', '')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=False, cast=bool)
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'gtcrew-staging.herokuapp.com',
-                 'gtcrew.herokuapp.com', 'app.gtcrew.com', 'gtcrew.com']
+# Domains and Hosts
+DOMAIN = os.environ.get('DOMAIN', '')
+
+DOMAIN_ALIASES = [
+    d.strip()
+    for d in os.environ.get('DOMAIN_ALIASES', '').split(',')
+    if d.strip()
+]
+
+ALLOWED_HOSTS = [DOMAIN] + DOMAIN_ALIASES
+
+SECURE_SSL_REDIRECT = os.environ.get('SECURE_SSL_REDIRECT', 'True') == 'True'
+SECURE_SSL_HOST = DOMAIN
 
 # Application definition
 
@@ -235,6 +246,10 @@ WAGTAILADMIN_RICH_TEXT_EDITORS = {
         }
     },
 }
+
+# Base URL to use when referring to full URLs within the Wagtail admin backend -
+# e.g. in notification emails. Don't include '/admin' or a trailing slash
+BASE_URL = DOMAIN
 
 # Import local_settings if local
 try:
