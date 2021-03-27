@@ -20,6 +20,12 @@ class Donor(models.Model):
         help_text='You can only search for a Published person page. '
                   '"Create New" only works if you have Publish permissions.'
     )
+    display_name = models.CharField(
+        default='',
+        blank=True,
+        help_text='Optional if Person Page is linked.',
+        max_length=255,
+    )
     amount = models.DecimalField(max_digits=9, decimal_places=2,
                                  help_text="Internal use only. Amount remains hidden from the public.")
     date_donated = models.DateField()
@@ -30,10 +36,11 @@ class Donor(models.Model):
         if self.person_page:
             return '%s %s' % (self.person_page.specific.first_name, self.person_page.specific.last_name)
         else:
-            return ''
+            return '%s' % self.display_name
 
     panels = [
         AutocompletePanel('person_page', 'person.PersonPage'),
+        FieldPanel('display_name'),
         FieldPanel('amount'),
         FieldPanel('date_donated'),
         FieldPanel('anonymous'),
