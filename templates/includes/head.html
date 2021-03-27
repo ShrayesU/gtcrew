@@ -1,11 +1,20 @@
-{% load static analytics %}
+{% load static analytics wagtailimages_tags %}
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
+    <meta name="description" content="{% if self.search_description %}{{ self.search_description }}{% else %}{{ self.title }}{% endif %}" />
     <meta name="author" content="Alec">
+    {% if settings.base.Favicon.favicon %}
+    {% image settings.base.Favicon.favicon fill-16x16 format-png as icon %}
+    <link rel="icon" type="image/png" href="{{ icon.url }}"/>
+    {% endif %}
 
-    <title>{{ page.get_site.site_name }}: {{ self.title }}</title>
+    <title>
+        {% with self.get_site.site_name as site_name %}
+            {% if site_name %}{{ site_name }}: {% endif %}
+        {% endwith %}
+        {% if self.seo_title %}{{ self.seo_title }}{% else %}{{ self.title }}{% endif %}
+    </title>
 
     {% if not request.is_preview %}
     {# googleanalyticsjs is defined in gtcrew/templatetags/analytics.py #}

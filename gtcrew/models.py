@@ -3,6 +3,7 @@ from django.forms import widgets
 from modelcluster.fields import ParentalKey
 from wagtail.admin.edit_handlers import StreamFieldPanel, FieldPanel, InlinePanel, MultiFieldPanel, FieldRowPanel
 from wagtail.contrib.forms.models import AbstractFormField, AbstractEmailForm
+from wagtail.contrib.settings.models import BaseSetting, register_setting
 from wagtail.core import blocks
 from wagtail.core.fields import StreamField, RichTextField
 from wagtail.core.models import Page
@@ -38,7 +39,7 @@ class FormPage(WagtailCaptchaEmailForm):
     )
     body = StreamField([
         ('post', PostBlock()),
-        ('section',  BaseStreamBlock())
+        ('section', BaseStreamBlock())
     ])
     thank_you_text = RichTextField(blank=True)
 
@@ -73,3 +74,18 @@ class FormPage(WagtailCaptchaEmailForm):
             field.widget.attrs['aria-label'] = '%s' % field.label  # title version
             field.widget.attrs['placeholder'] = '%s' % field.label
         return form
+
+
+@register_setting(icon='fa-picture-o')
+class Favicon(BaseSetting):
+    favicon = models.ForeignKey(
+        'wagtailimages.Image',
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name='+'
+    )
+
+    panels = [
+        ImageChooserPanel('favicon'),
+    ]
