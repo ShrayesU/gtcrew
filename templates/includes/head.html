@@ -4,8 +4,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="{% if self.search_description %}{{ self.search_description }}{% else %}{{ self.title }}{% endif %}" />
     <meta name="author" content="Alec">
-    {% if settings.base.Favicon.favicon %}
-    {% image settings.base.Favicon.favicon fill-16x16 format-png as icon %}
+    {% if settings.gtcrew.Favicon.favicon %}
+    {% image settings.gtcrew.Favicon.favicon fill-16x16 format-png as icon %}
     <link rel="icon" type="image/png" href="{{ icon.url }}"/>
     {% endif %}
 
