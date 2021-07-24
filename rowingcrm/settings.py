@@ -181,6 +181,9 @@ USE_L10N = True
 
 USE_TZ = True
 
+# Default auto field type
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
 # Django-RECAPTCHA
 RECAPTCHA_PUBLIC_KEY = config('RECAPTCHA_SITEKEY', '')
 RECAPTCHA_PRIVATE_KEY = config('RECAPTCHA_SECRETKEY', '')
