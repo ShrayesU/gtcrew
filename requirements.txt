@@ -74,7 +74,7 @@ schedule==1.1.0
 sendgrid==6.7.1
 six==1.15.0
 soupsieve==2.0.1
-sqlparse==0.4.1
+sqlparse==0.4.2
 starkbank-ecdsa==1.1.0
 tablib==3.0.0
 telepath==0.2
