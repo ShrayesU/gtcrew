@@ -1,6 +1,6 @@
 anyascii==0.1.7
 asgiref==3.4.1
-Babel==2.9.0
+Babel==2.9.1
 beautifulsoup4==4.9.3
 boto3==1.18.6
 botocore==1.19.32
