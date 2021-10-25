@@ -12,7 +12,7 @@ cryptography==3.3.2
 defusedxml==0.6.0
 diff-match-patch==20200713
 dj-database-url==0.5.0
-Django==3.2.5
+Django==3.2.8
 django-allauth==0.45.0
 django-autocomplete-light==3.8.2
 django-cleanup==5.2.0
@@ -25,13 +25,13 @@ django-mailer==2.1
 django-modelcluster==5.1
 django-recaptcha==2.0.6
 django-resized==0.3.11
-django-sendgrid-v5==0.9.1
+django-sendgrid-v5==1.1.1
 django-storages==1.11.1
 django-summernote==0.8.11.6
 django-taggit==1.3.0
 django-tempus-dominus==5.1.2.13
 django-treebeard==4.3.1
-djangorestframework==3.12.2
+djangorestframework==3.12.4
 docutils==0.16
 draftjs-exporter==2.1.7
 et-xmlfile==1.0.1
@@ -82,8 +82,8 @@ unicodecsv==0.14.1
 Unidecode==1.1.1
 urllib3==1.26.6
 wagalytics==1.3
-wagtail==2.13.4
-wagtail-autocomplete==0.6.3
+wagtail==2.14.2
+wagtail-autocomplete==0.7.0
 wagtail-django-recaptcha==1.0
 wagtail-robots==0.3.1
 wagtailfontawesome==1.2.1
