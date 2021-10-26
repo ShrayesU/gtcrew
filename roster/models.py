@@ -35,7 +35,7 @@ class Coach(Orderable):
         related_name='+',
     )
 
-    class Meta:
+    class Meta(Orderable.Meta):
         verbose_name_plural = 'Coaches'
 
     def __str__(self):
