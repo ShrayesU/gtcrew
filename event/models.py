@@ -120,7 +120,10 @@ class BaseResult(models.Model):
     def watts(self):
         """Returns the power in watts based on average pace per 500 meters."""
         pace = self.get_pace()
-        return 2.80 / (pace ** 3)
+        if pace:
+            return 2.80 / (pace ** 3)
+        else:
+            return 0
 
 
 class Result(BaseResult, ClusterableModel):
@@ -193,7 +196,8 @@ class EventPage(Page):
         context = super(EventPage, self).get_context(request)
 
         results = self.get_results()
-        context['results'] = results
+        results_sorted = sorted(results, key=lambda v: v.watts(), reverse=True)
+        context['results'] = results_sorted
 
         return context
 
