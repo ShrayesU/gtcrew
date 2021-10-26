@@ -5,7 +5,9 @@
             <div class="product-item-title d-flex">
                 <div class="bg-faded p-5 d-flex ml-auto rounded">
                     <h2 class="section-heading mb-0">
-                        <span class="section-heading-upper">{{ coach.squad.squad }}'s {{ coach.position.title }}</span>
+                        <span class="section-heading-upper">
+                            {% if coach.squad.squad %}{{ coach.squad.squad }}'s {% endif %}{{ coach.position.title }}
+                        </span>
                         <span class="section-heading-lower">
                             {{ coach.person_page.title }}
                         </span>

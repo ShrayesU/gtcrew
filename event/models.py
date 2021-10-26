@@ -1,7 +1,6 @@
-from cuser.middleware import CuserMiddleware
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
-from django.urls import reverse_lazy
+from django.utils import timezone
 from django.utils.translation import pgettext_lazy
 from modelcluster.fields import ParentalKey
 from modelcluster.models import ClusterableModel
@@ -215,9 +214,9 @@ class EventIndexPage(Page):
         for event in events:
             prepared = {'title': event.title,
                         'url': event.url,
-                        'start': event.start_datetime.strftime("%Y-%m-%dT%H:%M:%S"), }
+                        'start': timezone.localtime(event.start_datetime).strftime("%Y-%m-%dT%H:%M:%S"), }
             if event.end_datetime:
-                prepared.update({'end': event.end_datetime.strftime("%Y-%m-%dT%H:%M:%S"), })
+                prepared.update({'end': timezone.localtime(event.end_datetime).strftime("%Y-%m-%dT%H:%M:%S"), })
             api_event.append(prepared)
         context.update({'api_event': api_event})
 
