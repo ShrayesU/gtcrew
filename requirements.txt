@@ -55,7 +55,7 @@ pyasn1==0.4.8
 pyasn1-modules==0.2.8
 pycparser==2.21
 pyexcel-io==0.6.5
-pyexcel-ods==0.6.0
+pyexcel-ods==0.5.3
 PyJWT==2.3.0
 pyparsing==3.0.7
 python-akismet==0.4.2
