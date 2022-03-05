@@ -31,7 +31,7 @@ django-resized==0.3.11
 django-sendgrid-v5==1.2.0
 django-storages==1.12.3
 django-summernote==0.8.20.0
-django-taggit==1.5.1
+django-taggit==2.1.0
 django-tempus-dominus==5.1.2.16
 django-treebeard==4.5.1
 djangorestframework==3.13.1
