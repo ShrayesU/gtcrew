@@ -4,8 +4,8 @@ from wagtail.admin.edit_handlers import FieldPanel, MultiFieldPanel, FieldRowPan
 from wagtail.core.fields import RichTextField
 from wagtail.core.models import Page
 from wagtail.images.edit_handlers import ImageChooserPanel
+from wagtail.snippets.edit_handlers import SnippetChooserPanel
 from wagtail.snippets.models import register_snippet
-from wagtailautocomplete.edit_handlers import AutocompletePanel
 
 
 @register_snippet
@@ -29,7 +29,7 @@ class ShellPage(Page):
         blank=True,
     )
     date_acquired = models.DateField(blank=True, null=True)
-    date_decommissioned = models.DateTimeField(blank=True, null=True)
+    date_decommissioned = models.DateField(blank=True, null=True)
     # decommissioned = models.BooleanField(default=False)
     description = RichTextField(blank=True, null=True)
     image = models.ForeignKey(
@@ -42,7 +42,7 @@ class ShellPage(Page):
 
     content_panels = Page.content_panels + [
         FieldPanel('manufacturer'),
-        AutocompletePanel('size'),
+        SnippetChooserPanel('size'),
         MultiFieldPanel([
             FieldRowPanel([
                 FieldPanel('date_acquired', classname='col6'),
