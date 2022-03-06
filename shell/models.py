@@ -21,7 +21,6 @@ class ShellSize(models.Model):
 
 
 class ShellPage(Page):
-    name = models.CharField(pgettext_lazy('Shell Name', 'Name'), max_length=64)
     manufacturer = models.CharField(pgettext_lazy('Manufacturer', 'Manufacturer'), max_length=64)
     size = models.ForeignKey(
         'shell.ShellSize',
@@ -42,7 +41,6 @@ class ShellPage(Page):
     )
 
     content_panels = Page.content_panels + [
-        FieldPanel('name'),
         FieldPanel('manufacturer'),
         AutocompletePanel('size'),
         MultiFieldPanel([
