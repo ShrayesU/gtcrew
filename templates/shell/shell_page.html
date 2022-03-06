@@ -1,0 +1,72 @@
+{% extends "base_page.html" %}
+{% load wagtailimages_tags wagtailcore_tags static %}
+
+{% block head %}
+{{ block.super }}
+<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css"/>
+<style>
+    table td, table tr, table th{
+background: transparent !important;
+}
+
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="page-section cta">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-9 mx-auto">
+                <div class="cta-inner text-center rounded">
+                    <h2 class="section-heading">
+                        <span class="section-heading-upper">Racing Shell</span>
+                        <span class="section-heading-lower">{{ self.name}}</span>
+                    </h2>
+                    <ul class="list-group list-group-flush text-left">
+                        {% if self.image %}
+                        <li class="list-group-item bg-transparent">
+                            <div class="row">
+                                <div class="col-xs-4 col-md-3 text-primary font-weight-bold">Image</div>
+                                <div class="col-xs-8 col-md-9">
+                                    {% image self.image fill-200x200 class="mx-auto d-flex img-fluid img-thumbnail" %}
+                                </div>
+                            </div>
+                        </li>
+                        {% endif %}
+                        <li class="list-group-item bg-transparent">
+                            <div class="row">
+                                <div class="col-xs-4 col-md-3 text-primary font-weight-bold">Type</div>
+                                <div class="col-xs-8 col-md-9">{{ self.manufacturer }} {{ self.size }}</div>
+                            </div>
+                        </li>
+                        <li class="list-group-item bg-transparent">
+                            <div class="row">
+                                <div class="col-xs-4 col-md-3 text-primary font-weight-bold">Acquired</div>
+                                <div class="col-xs-8 col-md-9">{{ self.date_acquired }}</div>
+                            </div>
+                        </li>
+                        <li class="list-group-item bg-transparent">
+                            <div class="row">
+                                <div class="col-xs-4 col-md-3 text-primary font-weight-bold">Decommissioned</div>
+                                <div class="col-xs-8 col-md-9">
+                                    {% if self.date_decommissioned %}{{ self.date_decommissioned }}{% endif %}
+                                </div>
+                            </div>
+                        </li>
+                        <li class="list-group-item bg-transparent">
+                            <div class="row">
+                                <div class="col-xs-4 col-md-3 text-primary font-weight-bold">Description</div>
+                                <div class="col-xs-8 col-md-9">{{ self.description|safe }}</div>
+                            </div>
+                        </li>
+                    </ul>
+                    <div>
+                        <p class="text-center text-muted font-italic">
+                            Incomplete data? Suggest an edit after logging in.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

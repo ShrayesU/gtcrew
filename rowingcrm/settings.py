@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'roster',
     'person',
     'award',
+    'shell',
     'team.apps.TeamConfig',
     'event.apps.EventConfig',
     'story.apps.StoryConfig',
