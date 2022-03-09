@@ -89,3 +89,12 @@ class Favicon(BaseSetting):
     panels = [
         ImageChooserPanel('favicon'),
     ]
+
+
+@register_setting(icon='fa-id-card-o')
+class Registration(BaseSetting):
+    open_registration = models.BooleanField(default=True)
+
+    panels = [
+        FieldPanel('open_registration'),
+    ]
