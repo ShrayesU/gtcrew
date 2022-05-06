@@ -1,3 +1,5 @@
+import itertools
+
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from django.utils import timezone
@@ -207,12 +209,12 @@ class EventIndexPage(Page):
     max_count = 1
 
     def get_events(self):
-        return EventPage.objects.live().descendant_of(
-            self).order_by('-start_datetime')
+        return EventPage.objects.live().descendant_of(self).order_by('start_datetime')
 
     def get_context(self, request, *args, **kwargs):
         context = super(EventIndexPage, self).get_context(request)
 
+        today = timezone.localtime(timezone.now())
         events = self.get_events()
         api_event = []
         for event in events:
@@ -225,5 +227,11 @@ class EventIndexPage(Page):
         context.update({'api_event': api_event})
 
         context['events'] = events
+        context['events_future'] = itertools.islice(
+            filter(lambda x: timezone.localtime(x.start_datetime) >= today, events), 5
+        )
+        context['events_recent'] = itertools.islice(
+            filter(lambda x: timezone.localtime(x.start_datetime) < today, reversed(events)), 5
+        )
 
         return context
