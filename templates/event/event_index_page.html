@@ -11,7 +11,73 @@
 
 {% block content %}
 
-<section class="page-section cta">
+{% if events_future %}
+<section class="page-section about-heading">
+    <div class="container">
+        <div class="about-heading-content my-5">
+            <div class="row">
+                <div class="col-xl-9 col-lg-10 mx-auto">
+                    <div class="bg-faded rounded p-5">
+                        <h2 class="section-heading mb-5 text-center">
+                            <span class="section-heading-upper">Events</span>
+                            <span class="section-heading-lower">Upcoming</span>
+                        </h2>
+                        <ul class="list-group list-group-flush text-left">
+                            {% for event in events_future %}
+                            <li class="list-group-item bg-transparent">
+                                <div class="row">
+                                    <div class="col-xs-4 col-md-4 text-primary font-weight-bold">
+                                        {{ event.start_datetime }}
+                                    </div>
+                                    <div class="col-xs-8 col-md-8">
+                                        <a href="{% pageurl event %}">{{ event.title }}</a>
+                                    </div>
+                                </div>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+{% if events_recent %}
+<section class="page-section about-heading">
+    <div class="container">
+        <div class="about-heading-content my-5">
+            <div class="row">
+                <div class="col-xl-9 col-lg-10 mx-auto">
+                    <div class="bg-faded rounded p-5">
+                        <h2 class="section-heading mb-5 text-center">
+                            <span class="section-heading-upper">Events</span>
+                            <span class="section-heading-lower">Recent</span>
+                        </h2>
+                        <ul class="list-group list-group-flush text-left">
+                            {% for event in events_recent %}
+                            <li class="list-group-item bg-transparent">
+                                <div class="row">
+                                    <div class="col-xs-4 col-md-4 text-primary font-weight-bold">
+                                        {{ event.start_datetime }}
+                                    </div>
+                                    <div class="col-xs-8 col-md-8">
+                                        <a href="{% pageurl event %}">{{ event.title }}</a>
+                                    </div>
+                                </div>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<section class="d-none d-md-block page-section cta">
     <div class="container">
         <div class="row">
             <div class="col-xl-9 mx-auto">
@@ -23,15 +89,6 @@
                     <div class="card-body">
                         <div id="calendar"></div>
                     </div>
-<!--                    <ul class="list-unstyled list-hours mb-5 text-left mx-auto">-->
-<!--                        <div class="row text-center">-->
-<!--                            {# for event in events #}-->
-<!--                            <div class="col-6 col-lg-4 my-2">-->
-<!--                                <a href="{# pageurl event #}">{{ event.title }}</a>-->
-<!--                            </div>-->
-<!--                            {# endfor %}-->
-<!--                        </div>-->
-<!--                    </ul>-->
                 </div>
             </div>
         </div>
