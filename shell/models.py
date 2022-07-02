@@ -1,10 +1,8 @@
 from django.db import models
 from django.utils.translation import pgettext_lazy
-from wagtail.admin.edit_handlers import FieldPanel, MultiFieldPanel, FieldRowPanel
-from wagtail.core.fields import RichTextField
-from wagtail.core.models import Page
-from wagtail.images.edit_handlers import ImageChooserPanel
-from wagtail.snippets.edit_handlers import SnippetChooserPanel
+from wagtail.admin.panels import FieldPanel, MultiFieldPanel, FieldRowPanel
+from wagtail.fields import RichTextField
+from wagtail.models import Page
 from wagtail.snippets.models import register_snippet
 
 
@@ -42,7 +40,7 @@ class ShellPage(Page):
 
     content_panels = Page.content_panels + [
         FieldPanel('manufacturer'),
-        SnippetChooserPanel('size'),
+        FieldPanel('size'),
         MultiFieldPanel([
             FieldRowPanel([
                 FieldPanel('date_acquired', classname='col6'),
@@ -50,7 +48,7 @@ class ShellPage(Page):
             ])
         ], heading='Dates'),
         FieldPanel('description'),
-        ImageChooserPanel('image'),
+        FieldPanel('image'),
     ]
 
     parent_page_types = ['ShellIndexPage']

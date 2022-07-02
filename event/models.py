@@ -6,11 +6,10 @@ from django.utils import timezone
 from django.utils.translation import pgettext_lazy
 from modelcluster.fields import ParentalKey
 from modelcluster.models import ClusterableModel
-from wagtail.admin.edit_handlers import FieldPanel, MultiFieldPanel, FieldRowPanel, InlinePanel as BaseInlinePanel, \
+from wagtail.admin.panels import FieldPanel, MultiFieldPanel, FieldRowPanel, InlinePanel as BaseInlinePanel, \
     HelpPanel
-from wagtail.core.fields import RichTextField
-from wagtail.core.models import Page, Orderable
-from wagtail.snippets.edit_handlers import SnippetChooserPanel
+from wagtail.fields import RichTextField
+from wagtail.models import Page, Orderable
 from wagtail.snippets.models import register_snippet
 from wagtailautocomplete.edit_handlers import AutocompletePanel
 
@@ -57,7 +56,7 @@ class Racer(Orderable):
 
     panels = [
         AutocompletePanel('person_page', 'person.PersonPage'),
-        SnippetChooserPanel('position'),
+        FieldPanel('position'),
     ]
 
 
@@ -81,7 +80,7 @@ class BaseResult(models.Model):
         FieldPanel('date'),
         MultiFieldPanel([
             FieldRowPanel([
-                SnippetChooserPanel('squad', classname="col6"),
+                FieldPanel('squad', classname="col6"),
                 FieldPanel('lightweight', classname="col6"),
             ])
         ], heading="Squad"),

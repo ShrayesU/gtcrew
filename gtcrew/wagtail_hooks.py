@@ -3,7 +3,7 @@ from django.urls import reverse
 from wagtail.admin.menu import AdminOnlyMenuItem
 from wagtail.contrib.modeladmin.options import (
     ModelAdmin, ModelAdminGroup, modeladmin_register)
-from wagtail.core import hooks
+from wagtail import hooks
 
 from award.models import Recipient
 from gtcrew.views import PeopleReportView

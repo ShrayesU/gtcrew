@@ -1,9 +1,8 @@
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db import models
 from modelcluster.fields import ParentalKey
-from wagtail.admin.edit_handlers import InlinePanel, PageChooserPanel, MultiFieldPanel, FieldRowPanel, FieldPanel
-from wagtail.core.models import Page, Orderable
-from wagtail.snippets.edit_handlers import SnippetChooserPanel
+from wagtail.admin.panels import InlinePanel, PageChooserPanel, MultiFieldPanel, FieldRowPanel, FieldPanel
+from wagtail.models import Page, Orderable
 from wagtailautocomplete.edit_handlers import AutocompletePanel
 
 from person.models import PersonPage
@@ -43,8 +42,8 @@ class Coach(Orderable):
 
     panels = [
         PageChooserPanel('person_page', 'person.PersonPage'),
-        SnippetChooserPanel('position'),
-        SnippetChooserPanel('squad'),
+        FieldPanel('position'),
+        FieldPanel('squad'),
     ]
 
 
@@ -74,7 +73,7 @@ class Officers(Orderable):
 
     panels = [
         AutocompletePanel('person_page', 'person.PersonPage'),
-        SnippetChooserPanel('position'),
+        FieldPanel('position'),
     ]
 
 

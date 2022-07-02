@@ -69,7 +69,7 @@ INSTALLED_APPS = [
     'wagtail.images',
     'wagtail.search',
     'wagtail.admin',
-    'wagtail.core',
+    'wagtail',
 
     'wagtailcaptcha',
     'wagtailautocomplete',
@@ -256,7 +256,7 @@ WAGTAILADMIN_RICH_TEXT_EDITORS = {
 
 # Base URL to use when referring to full URLs within the Wagtail admin backend -
 # e.g. in notification emails. Don't include '/admin' or a trailing slash
-BASE_URL = DOMAIN
+WAGTAILADMIN_BASE_URL = DOMAIN
 
 # Import local_settings if local
 try:

@@ -2,8 +2,8 @@
 
 from django.db import migrations, models
 import django.db.models.deletion
-import wagtail.core.blocks
-import wagtail.core.fields
+import wagtail.blocks
+import wagtail.fields
 import wagtail.documents.blocks
 import wagtail.embeds.blocks
 import wagtail.images.blocks
@@ -23,8 +23,8 @@ class Migration(migrations.Migration):
                 ('page_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='wagtailcore.Page')),
                 ('goal', models.PositiveIntegerField()),
                 ('end_date', models.DateField()),
-                ('description', wagtail.core.fields.RichTextField()),
-                ('donor', wagtail.core.fields.StreamField([('person', wagtail.core.blocks.PageChooserBlock()), ('amount', wagtail.core.blocks.DecimalBlock()), ('date_donated', wagtail.core.blocks.DateBlock())])),
+                ('description', wagtail.fields.RichTextField()),
+                ('donor', wagtail.fields.StreamField([('person', wagtail.blocks.PageChooserBlock()), ('amount', wagtail.blocks.DecimalBlock()), ('date_donated', wagtail.blocks.DateBlock())])),
             ],
             options={
                 'abstract': False,
@@ -35,7 +35,7 @@ class Migration(migrations.Migration):
             name='DonateIndexPage',
             fields=[
                 ('page_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='wagtailcore.Page')),
-                ('body', wagtail.core.fields.StreamField([('post', wagtail.core.blocks.StructBlock([('heading_small', wagtail.core.blocks.CharBlock()), ('heading_large', wagtail.core.blocks.CharBlock()), ('paragraph', wagtail.core.blocks.RichTextBlock()), ('photo', wagtail.images.blocks.ImageChooserBlock()), ('page', wagtail.core.blocks.PageChooserBlock(required=False)), ('document', wagtail.documents.blocks.DocumentChooserBlock(required=False))])), ('section', wagtail.core.blocks.StreamBlock([('heading_group_block', wagtail.core.blocks.StreamBlock([('heading', wagtail.core.blocks.StructBlock([('heading_text', wagtail.core.blocks.CharBlock(classname='title', required=True)), ('size', wagtail.core.blocks.ChoiceBlock(blank=True, choices=[('', 'Select a header size'), ('h2', 'H2'), ('h3', 'H3')]))]))])), ('paragraph_block', wagtail.core.blocks.RichTextBlock(icon='fa-paragraph', template='blocks/paragraph_block.html')), ('image_block', wagtail.core.blocks.StructBlock([('image', wagtail.images.blocks.ImageChooserBlock(required=True)), ('caption', wagtail.core.blocks.CharBlock(required=False)), ('attribution', wagtail.core.blocks.CharBlock(required=False))])), ('embed_block', wagtail.embeds.blocks.EmbedBlock(help_text='Insert an embed URL e.g https://www.youtube.com/embed/SGJFWirQ3ks', icon='fa-s15', template='blocks/embed_block.html'))]))])),
+                ('body', wagtail.fields.StreamField([('post', wagtail.blocks.StructBlock([('heading_small', wagtail.blocks.CharBlock()), ('heading_large', wagtail.blocks.CharBlock()), ('paragraph', wagtail.blocks.RichTextBlock()), ('photo', wagtail.images.blocks.ImageChooserBlock()), ('page', wagtail.blocks.PageChooserBlock(required=False)), ('document', wagtail.documents.blocks.DocumentChooserBlock(required=False))])), ('section', wagtail.blocks.StreamBlock([('heading_group_block', wagtail.blocks.StreamBlock([('heading', wagtail.blocks.StructBlock([('heading_text', wagtail.blocks.CharBlock(classname='title', required=True)), ('size', wagtail.blocks.ChoiceBlock(blank=True, choices=[('', 'Select a header size'), ('h2', 'H2'), ('h3', 'H3')]))]))])), ('paragraph_block', wagtail.blocks.RichTextBlock(icon='fa-paragraph', template='blocks/paragraph_block.html')), ('image_block', wagtail.blocks.StructBlock([('image', wagtail.images.blocks.ImageChooserBlock(required=True)), ('caption', wagtail.blocks.CharBlock(required=False)), ('attribution', wagtail.blocks.CharBlock(required=False))])), ('embed_block', wagtail.embeds.blocks.EmbedBlock(help_text='Insert an embed URL e.g https://www.youtube.com/embed/SGJFWirQ3ks', icon='fa-s15', template='blocks/embed_block.html'))]))])),
                 ('featured_section', models.ForeignKey(blank=True, help_text='Featured section for the donation page. Will display the beginning of the campaign description, as well as an infographic.', null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='+', to='wagtailcore.Page')),
             ],
             options={

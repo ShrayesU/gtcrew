@@ -2,7 +2,7 @@
 
 from django.db import migrations, models
 import django.db.models.deletion
-import wagtail.core.fields
+import wagtail.fields
 
 
 class Migration(migrations.Migration):
@@ -40,7 +40,7 @@ class Migration(migrations.Migration):
                 ('manufacturer', models.CharField(max_length=64, verbose_name='Manufacturer')),
                 ('date_acquired', models.DateField(blank=True, null=True)),
                 ('date_decommissioned', models.DateTimeField(blank=True, null=True)),
-                ('description', wagtail.core.fields.RichTextField(blank=True, null=True)),
+                ('description', wagtail.fields.RichTextField(blank=True, null=True)),
                 ('image', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='+', to='wagtailimages.image')),
                 ('size', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, to='shell.shellsize')),
             ],
