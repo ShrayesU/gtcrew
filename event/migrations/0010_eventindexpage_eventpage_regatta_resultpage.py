@@ -3,7 +3,7 @@
 import django.core.validators
 from django.db import migrations, models
 import django.db.models.deletion
-import wagtail.core.fields
+import wagtail.fields
 
 
 class Migration(migrations.Migration):
@@ -59,7 +59,7 @@ class Migration(migrations.Migration):
                 ('start_datetime', models.DateTimeField()),
                 ('end_datetime', models.DateTimeField(blank=True, null=True)),
                 ('event_type', models.CharField(choices=[('Race', 'Race'), ('Administrative', 'Administrative'), ('Social', 'Social')], default='Race', max_length=64, verbose_name='Type')),
-                ('description', wagtail.core.fields.RichTextField(blank=True, null=True)),
+                ('description', wagtail.fields.RichTextField(blank=True, null=True)),
                 ('regatta', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, related_name='+', to='event.Regatta')),
             ],
             options={

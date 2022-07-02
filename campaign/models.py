@@ -1,9 +1,9 @@
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db import models
 from modelcluster.fields import ParentalKey
-from wagtail.admin.edit_handlers import StreamFieldPanel, PageChooserPanel, FieldPanel, MultiFieldPanel, InlinePanel
-from wagtail.core.fields import StreamField, RichTextField
-from wagtail.core.models import Page
+from wagtail.admin.panels import PageChooserPanel, FieldPanel, MultiFieldPanel, InlinePanel
+from wagtail.fields import StreamField, RichTextField
+from wagtail.models import Page
 from wagtailautocomplete.edit_handlers import AutocompletePanel
 
 from gtcrew.blocks import PostBlock, BaseStreamBlock
@@ -64,7 +64,7 @@ class CampaignPage(Page):
         FieldPanel('goal'),
         FieldPanel('end_date'),
         FieldPanel('description'),
-        PageChooserPanel('interest_form'),
+        FieldPanel('interest_form'),
         MultiFieldPanel(
             [InlinePanel("donors", label="Person")],
             heading="Donors", classname="collapsible"
@@ -105,7 +105,7 @@ class DonateIndexPage(Page):
     body = StreamField([
         ('post', PostBlock()),
         ('section', BaseStreamBlock()),
-    ])
+    ], use_json_field=True)
     featured_section = models.ForeignKey(
         'wagtailcore.Page',
         null=True,
@@ -117,7 +117,7 @@ class DonateIndexPage(Page):
     )
 
     content_panels = Page.content_panels + [
-        StreamFieldPanel('body'),
+        FieldPanel('body'),
         PageChooserPanel('featured_section', 'campaign.CampaignPage')
     ]
 

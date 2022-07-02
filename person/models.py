@@ -3,10 +3,9 @@ from django.core.validators import RegexValidator
 from django.db import models
 from django.utils.text import slugify
 from modelcluster.fields import ParentalKey
-from wagtail.admin.edit_handlers import MultiFieldPanel, FieldRowPanel, FieldPanel, InlinePanel
-from wagtail.core.fields import RichTextField
-from wagtail.core.models import Page
-from wagtail.images.edit_handlers import ImageChooserPanel
+from wagtail.admin.panels import MultiFieldPanel, FieldRowPanel, FieldPanel, InlinePanel
+from wagtail.fields import RichTextField
+from wagtail.models import Page
 
 from event.models import BaseResult
 
@@ -68,7 +67,7 @@ class PersonPage(Page):
                 FieldPanel('last_name', classname="col6"),
             ])
         ], "Name"),
-        ImageChooserPanel('image'),
+        FieldPanel('image'),
         FieldPanel('bio', classname="collapsible"),
         MultiFieldPanel([
             FieldRowPanel([

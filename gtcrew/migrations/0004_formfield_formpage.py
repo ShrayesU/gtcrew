@@ -3,8 +3,8 @@
 from django.db import migrations, models
 import django.db.models.deletion
 import modelcluster.fields
-import wagtail.core.blocks
-import wagtail.core.fields
+import wagtail.blocks
+import wagtail.fields
 import wagtail.documents.blocks
 import wagtail.images.blocks
 
@@ -25,8 +25,8 @@ class Migration(migrations.Migration):
                 ('to_address', models.CharField(blank=True, help_text='Optional - form submissions will be emailed to these addresses. Separate multiple addresses by comma.', max_length=255, verbose_name='to address')),
                 ('from_address', models.CharField(blank=True, max_length=255, verbose_name='from address')),
                 ('subject', models.CharField(blank=True, max_length=255, verbose_name='subject')),
-                ('body', wagtail.core.fields.StreamField([('heading_small', wagtail.core.blocks.CharBlock()), ('heading_large', wagtail.core.blocks.CharBlock()), ('paragraph', wagtail.core.blocks.RichTextBlock()), ('photo', wagtail.images.blocks.ImageChooserBlock()), ('page', wagtail.core.blocks.PageChooserBlock(required=False)), ('document', wagtail.documents.blocks.DocumentChooserBlock(required=False))])),
-                ('thank_you_text', wagtail.core.fields.RichTextField(blank=True)),
+                ('body', wagtail.fields.StreamField([('heading_small', wagtail.blocks.CharBlock()), ('heading_large', wagtail.blocks.CharBlock()), ('paragraph', wagtail.blocks.RichTextBlock()), ('photo', wagtail.images.blocks.ImageChooserBlock()), ('page', wagtail.blocks.PageChooserBlock(required=False)), ('document', wagtail.documents.blocks.DocumentChooserBlock(required=False))])),
+                ('thank_you_text', wagtail.fields.RichTextField(blank=True)),
                 ('image', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='+', to='wagtailimages.Image')),
             ],
             options={

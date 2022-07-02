@@ -3,7 +3,7 @@
 import django.core.validators
 from django.db import migrations, models
 import django.db.models.deletion
-import wagtail.core.fields
+import wagtail.fields
 
 
 class Migration(migrations.Migration):
@@ -36,7 +36,7 @@ class Migration(migrations.Migration):
                 ('birthday', models.DateField(blank=True, null=True)),
                 ('major', models.CharField(blank=True, max_length=64)),
                 ('hometown', models.CharField(blank=True, max_length=64)),
-                ('bio', wagtail.core.fields.RichTextField(blank=True)),
+                ('bio', wagtail.fields.RichTextField(blank=True)),
                 ('image', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='+', to='wagtailimages.Image')),
             ],
             options={

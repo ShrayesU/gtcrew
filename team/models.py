@@ -5,11 +5,9 @@ from django.db import models
 from django.urls import reverse_lazy
 from django.utils.timezone import now
 from django_resized import ResizedImageField
-from wagtail.admin.edit_handlers import FieldPanel, MultiFieldPanel, FieldRowPanel
-from wagtail.core.fields import RichTextField
-from wagtail.images.edit_handlers import ImageChooserPanel
+from wagtail.admin.panels import FieldPanel, MultiFieldPanel, FieldRowPanel
+from wagtail.fields import RichTextField
 from wagtail.search import index
-from wagtail.snippets.edit_handlers import SnippetChooserPanel
 from wagtail.snippets.models import register_snippet
 
 from .managers import StudentManager, CoachManager
@@ -64,7 +62,7 @@ class Profile(index.Indexed, models.Model):
                 FieldPanel('last_name', classname="col6"),
             ])
         ], "Name"),
-        ImageChooserPanel('image'),
+        FieldPanel('image'),
         MultiFieldPanel([
             FieldPanel('owner'),
             FieldPanel('status'),
@@ -210,9 +208,9 @@ class Membership(models.Model):
                 FieldPanel('year', classname="col6"),
             ])
         ], "Semester"),
-        SnippetChooserPanel('profile'),
-        SnippetChooserPanel('squad'),
-        SnippetChooserPanel('title'),
+        FieldPanel('profile'),
+        FieldPanel('squad'),
+        FieldPanel('title'),
         FieldPanel('public'),
     ]
     search_fields = [

@@ -1,13 +1,12 @@
 from django.db import models
 from django.forms import widgets
 from modelcluster.fields import ParentalKey
-from wagtail.admin.edit_handlers import StreamFieldPanel, FieldPanel, InlinePanel, MultiFieldPanel, FieldRowPanel
+from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel, FieldRowPanel
 from wagtail.contrib.forms.models import AbstractFormField, AbstractEmailForm
 from wagtail.contrib.settings.models import BaseSetting, register_setting
-from wagtail.core import blocks
-from wagtail.core.fields import StreamField, RichTextField
-from wagtail.core.models import Page
-from wagtail.images.edit_handlers import ImageChooserPanel
+from wagtail import blocks
+from wagtail.fields import StreamField, RichTextField
+from wagtail.models import Page
 from wagtailcaptcha.models import WagtailCaptchaEmailForm
 
 from gtcrew.blocks import PostBlock, BaseStreamBlock
@@ -18,10 +17,10 @@ class GenericPage(Page):
         ('post', PostBlock()),
         ('section', BaseStreamBlock()),
         ('html', blocks.RawHTMLBlock()),
-    ])
+    ], use_json_field=True)
 
     content_panels = Page.content_panels + [
-        StreamFieldPanel('body')
+        FieldPanel('body')
     ]
 
 
@@ -40,12 +39,12 @@ class FormPage(WagtailCaptchaEmailForm):
     body = StreamField([
         ('post', PostBlock()),
         ('section', BaseStreamBlock())
-    ])
+    ], use_json_field=True)
     thank_you_text = RichTextField(blank=True)
 
     content_panels = AbstractEmailForm.content_panels + [
-        ImageChooserPanel('image'),
-        StreamFieldPanel('body'),
+        FieldPanel('image'),
+        FieldPanel('body'),
         InlinePanel('form_fields', label="Form fields", classname="form-control"),
         FieldPanel('thank_you_text', classname="full"),
         MultiFieldPanel([
@@ -87,7 +86,7 @@ class Favicon(BaseSetting):
     )
 
     panels = [
-        ImageChooserPanel('favicon'),
+        FieldPanel('favicon'),
     ]
 
 

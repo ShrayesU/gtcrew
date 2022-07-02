@@ -1,4 +1,4 @@
-from wagtail.core.blocks import (
+from wagtail.blocks import (
     CharBlock, ChoiceBlock, RichTextBlock, StreamBlock, StructBlock, PageChooserBlock, )
 from wagtail.documents.blocks import DocumentChooserBlock
 from wagtail.embeds.blocks import EmbedBlock
