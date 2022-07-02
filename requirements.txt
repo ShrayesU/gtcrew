@@ -60,7 +60,7 @@ pyasn1-modules==0.2.8
 pycparser==2.21
 pyexcel-io==0.6.5
 pyexcel-ods==0.5.3
-PyJWT==2.3.0
+PyJWT==2.4.0
 pyparsing==3.0.7
 python-akismet==0.4.2
 python-dateutil==2.8.2
