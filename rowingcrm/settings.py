@@ -202,22 +202,20 @@ STATICFILES_DIRS = [
 AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID', '')
 AWS_SECRET_ACCESS_KEY = config('AWS_SECRET_ACCESS_KEY', '')
 AWS_STORAGE_BUCKET_NAME = config('AWS_STORAGE_BUCKET_NAME', '')
-AWS_DOMAIN = config('AWS_DOMAIN', '%s.s3.amazonaws.com')
-AWS_S3_CUSTOM_DOMAIN = AWS_DOMAIN % AWS_STORAGE_BUCKET_NAME
+AWS_S3_CUSTOM_DOMAIN = config('AWS_S3_CUSTOM_DOMAIN', '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME)
 AWS_S3_ENDPOINT_URL = config('AWS_S3_ENDPOINT_URL', '')
-AWS_S3_REGION_NAME = config('AWS_S3_REGION_NAME', '')
 
 AWS_S3_OBJECT_PARAMETERS = {
     'CacheControl': 'max-age=86400',
 }
 
 AWS_LOCATION = 'static'
-STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+STATICFILES_STORAGE = 'rowingcrm.storage_backends.StaticStorage'
 STATIC_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
 
 DEFAULT_FILE_STORAGE = 'rowingcrm.storage_backends.MediaStorage'
 
-AWS_DEFAULT_ACL = 'public-read'
+AWS_DEFAULT_ACL = 'private'
 
 # SummerNote
 X_FRAME_OPTIONS = 'SAMEORIGIN'
