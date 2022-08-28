@@ -10,4 +10,4 @@ class MediaStorage(S3Boto3Storage):
 class StaticStorage(S3Boto3Storage):
     location = 'static'
     file_overwrite = True
-    custom_domain = False
+    querystring_auth = False
