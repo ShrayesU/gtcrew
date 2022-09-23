@@ -16,7 +16,8 @@ import django_heroku
 from decouple import config
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
+BASE_DIR = os.path.dirname(PROJECT_DIR)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
@@ -193,29 +194,36 @@ RECAPTCHA_PRIVATE_KEY = config('RECAPTCHA_SECRETKEY', '')
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
-# STATIC_URL = '/static/'
-# STATIC_ROOT = 'static_root/'
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
+    os.path.join(PROJECT_DIR, 'static'),
 ]
 
-AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID', '')
-AWS_SECRET_ACCESS_KEY = config('AWS_SECRET_ACCESS_KEY', '')
-AWS_STORAGE_BUCKET_NAME = config('AWS_STORAGE_BUCKET_NAME', '')
-AWS_S3_CUSTOM_DOMAIN = config('AWS_S3_CUSTOM_DOMAIN', '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME)
-AWS_S3_ENDPOINT_URL = config('AWS_S3_ENDPOINT_URL', '')
+if config('USE_S3', False):
+    AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID', '')
+    AWS_SECRET_ACCESS_KEY = config('AWS_SECRET_ACCESS_KEY', '')
+    AWS_STORAGE_BUCKET_NAME = config('AWS_STORAGE_BUCKET_NAME', '')
+    AWS_S3_CUSTOM_DOMAIN = config('AWS_S3_CUSTOM_DOMAIN', '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME)
+    AWS_S3_ENDPOINT_URL = config('AWS_S3_ENDPOINT_URL', None)
 
-AWS_S3_OBJECT_PARAMETERS = {
-    'CacheControl': 'max-age=86400',
-}
+    AWS_S3_OBJECT_PARAMETERS = {
+        'CacheControl': 'max-age=86400',
+    }
 
-AWS_LOCATION = 'static'
-STATICFILES_STORAGE = 'rowingcrm.storage_backends.StaticStorage'
-STATIC_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
+    AWS_LOCATION = 'static'
+    STATICFILES_STORAGE = 'rowingcrm.storage_backends.StaticStorage'
+    STATIC_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
 
-DEFAULT_FILE_STORAGE = 'rowingcrm.storage_backends.MediaStorage'
+    DEFAULT_FILE_STORAGE = 'rowingcrm.storage_backends.MediaStorage'
 
-AWS_DEFAULT_ACL = 'private'
+    AWS_DEFAULT_ACL = 'private'
+else:
+    STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
+
+    STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+    STATIC_URL = '/static/'
+
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+    MEDIA_URL = '/media/'
 
 # SummerNote
 X_FRAME_OPTIONS = 'SAMEORIGIN'
@@ -228,21 +236,18 @@ SUMMERNOTE_CONFIG = {
 # Activity Stream
 SITE_ID = 1
 
-# SendGrid
-EMAIL_BACKEND = "sendgrid_backend.SendgridBackend"
-SENDGRID_API_KEY = config('SENDGRID_API_KEY', '')
-# EMAIL_HOST_USER = config('SENDGRID_USERNAME', '')
-# EMAIL_HOST = 'smtp.sendgrid.net'
-# EMAIL_PORT = 587
-# EMAIL_USE_TLS = True
-# EMAIL_HOST_PASSWORD = config('SENDGRID_PASSWORD', '')
+# Email Backend
+DEFAULT_FROM_EMAIL = os.getenv('FROM_EMAIL', 'webmaster@gtcrew.com')
+SENDGRID_API_KEY = os.getenv('SENDGRID_API_KEY', '')
+if SENDGRID_API_KEY:
+    EMAIL_BACKEND = "sendgrid_backend.SendgridBackend"
+else:
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # Wagtail
 WAGTAIL_SITE_NAME = 'Georgia Tech Rowing'
 WAGTAILEMBEDS_RESPONSIVE_HTML = True
-DEFAULT_FROM_EMAIL = 'webmaster@gtcrew.com'
 WAGTAILADMIN_GLOBAL_PAGE_EDIT_LOCK = True
-WAGTAIL_AUTO_UPDATE_PREVIEW = False
 WAGTAIL_FRONTEND_LOGIN_URL = '/account/login'
 WAGTAILADMIN_RICH_TEXT_EDITORS = {
     'default': {

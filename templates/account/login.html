@@ -25,7 +25,7 @@
     {% block above_login %}{% endblock %}
 
     <form action="{% url 'account_login' %}" method="post" autocomplete="off" novalidate>
-        {% block login_form %}
+    {% block login_form %}
         {% csrf_token %}
 
         {% url 'wagtailadmin_home' as home_url %}
@@ -42,8 +42,10 @@
                 </div>
             </li>
             {% endfor %}
-
-            {% endblock %}
+        <p class="help"><a href="{% url 'account_reset_password' %}"
+                           aria-label="{% trans 'Reset your password' %}">{% trans "Forgotten it?" %}</a></p>
+        {% endblock %}
+            <br>
             <li class="submit">
                 {% block submit_buttons %}
                 <button type="submit" class="button button-longrunning" data-clicked-text="{% trans 'Signing in…' %}">
@@ -57,9 +59,6 @@
                 {% endblock %}
             </li>
         </ul>
-
-        <p class="help"><a href="{% url 'account_reset_password' %}"
-                           aria-label="{% trans 'Reset your password' %}">{% trans "Forgotten it?" %}</a></p>
         {% endblock %}
     </form>
 

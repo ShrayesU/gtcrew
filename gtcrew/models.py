@@ -3,7 +3,7 @@ from django.forms import widgets
 from modelcluster.fields import ParentalKey
 from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel, FieldRowPanel
 from wagtail.contrib.forms.models import AbstractFormField, AbstractEmailForm
-from wagtail.contrib.settings.models import BaseSetting, register_setting
+from wagtail.contrib.settings.models import BaseSiteSetting, register_setting
 from wagtail import blocks
 from wagtail.fields import StreamField, RichTextField
 from wagtail.models import Page
@@ -76,7 +76,7 @@ class FormPage(WagtailCaptchaEmailForm):
 
 
 @register_setting(icon='fa-picture-o')
-class Favicon(BaseSetting):
+class Favicon(BaseSiteSetting):
     favicon = models.ForeignKey(
         'wagtailimages.Image',
         null=True,
@@ -91,7 +91,7 @@ class Favicon(BaseSetting):
 
 
 @register_setting(icon='fa-id-card-o')
-class Registration(BaseSetting):
+class Registration(BaseSiteSetting):
     open_registration = models.BooleanField(default=True)
 
     panels = [
