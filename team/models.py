@@ -128,7 +128,7 @@ class EmailAddress(models.Model):
 
 
 @register_snippet
-class Title(models.Model):
+class Title(index.Indexed, models.Model):
     title = models.CharField(max_length=64)
     sequence = models.PositiveSmallIntegerField(default=0)
     held_by = models.CharField(
@@ -152,6 +152,10 @@ class Title(models.Model):
         FieldPanel('sequence'),
     ]
 
+    search_fields = [
+        index.SearchField('title', partial_match=True),
+        index.FilterField('held_by'),
+    ]
 
 @register_snippet
 class Squad(models.Model):

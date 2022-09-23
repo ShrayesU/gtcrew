@@ -10,6 +10,7 @@ from wagtail.admin.panels import FieldPanel, MultiFieldPanel, FieldRowPanel, Inl
     HelpPanel
 from wagtail.fields import RichTextField
 from wagtail.models import Page, Orderable
+from wagtail.search import index
 from wagtail.snippets.models import register_snippet
 from wagtailautocomplete.edit_handlers import AutocompletePanel
 
@@ -144,7 +145,7 @@ class Result(BaseResult, ClusterableModel):
 
 
 @register_snippet
-class Regatta(models.Model):
+class Regatta(index.Indexed, models.Model):
     title = models.CharField(max_length=255)
 
     def __str__(self):
@@ -153,6 +154,10 @@ class Regatta(models.Model):
     @classmethod
     def autocomplete_create(cls: type, value: str):
         return cls.objects.create(title=value)
+
+    search_fields = [
+        index.SearchField('title', partial_match=True),
+    ]
 
 
 class EventPage(Page):
