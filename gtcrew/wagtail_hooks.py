@@ -1,13 +1,13 @@
 from django.conf.urls import url
 from django.urls import reverse
+from wagtail import hooks
 from wagtail.admin.menu import AdminOnlyMenuItem
 from wagtail.contrib.modeladmin.options import (
     ModelAdmin, ModelAdminGroup, modeladmin_register)
-from wagtail import hooks
 
 from award.models import Recipient
 from gtcrew.views import PeopleReportView
-from team.models import Profile, Title, Squad, Membership
+from team.models import Title, Squad
 
 
 # class ProfileModelAdmin(ModelAdmin):
@@ -69,3 +69,8 @@ def register_people_report_url():
     return [
         url(r'^reports/people/$', PeopleReportView.as_view(), name='people_report'),
     ]
+
+
+@hooks.register('construct_main_menu')
+def hide_analytics_menu_item(request, menu_items):
+    menu_items[:] = [item for item in menu_items if item.name != 'analytics']
