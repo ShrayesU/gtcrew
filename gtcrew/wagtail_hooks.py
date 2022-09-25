@@ -73,4 +73,5 @@ def register_people_report_url():
 
 @hooks.register('construct_main_menu')
 def hide_analytics_menu_item(request, menu_items):
+    # TODO: Remove this after fixing the analytics dashboard in wagalytics
     menu_items[:] = [item for item in menu_items if item.name != 'analytics']
