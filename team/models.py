@@ -1,5 +1,6 @@
 from cuser.middleware import CuserMiddleware
 from django.contrib.auth import get_user_model
+from django.contrib.contenttypes.fields import GenericRelation
 from django.core.validators import RegexValidator
 from django.db import models
 from django.urls import reverse_lazy
@@ -7,6 +8,7 @@ from django.utils.timezone import now
 from django_resized import ResizedImageField
 from wagtail.admin.panels import FieldPanel, MultiFieldPanel, FieldRowPanel
 from wagtail.fields import RichTextField
+from wagtail.models import DraftStateMixin, RevisionMixin
 from wagtail.search import index
 from wagtail.snippets.models import register_snippet
 
@@ -20,7 +22,7 @@ def get_default_year():
 
 
 @register_snippet
-class Profile(index.Indexed, models.Model):
+class Profile(DraftStateMixin, RevisionMixin, index.Indexed, models.Model):
     first_name = models.CharField(max_length=64, blank=False)
     last_name = models.CharField(max_length=64, blank=False)
     gtid = models.CharField("GT ID", max_length=9, blank=True,
@@ -51,6 +53,7 @@ class Profile(index.Indexed, models.Model):
         null=True,
         blank=True,
     )
+    _revisions = GenericRelation("wagtailcore.Revision", related_query_name='profile')
 
     class Meta:
         ordering = ['last_name']
@@ -112,6 +115,10 @@ class Profile(index.Indexed, models.Model):
     def absolute_url(self):
         return reverse_lazy('team:view_profile', kwargs={'pk': self.pk})
 
+    @property
+    def revisions(self):
+        return self._revisions
+
 
 class EmailAddress(models.Model):
     email = models.EmailField(unique=True)
@@ -156,6 +163,7 @@ class Title(index.Indexed, models.Model):
         index.SearchField('title', partial_match=True),
         index.FilterField('held_by'),
     ]
+
 
 @register_snippet
 class Squad(models.Model):

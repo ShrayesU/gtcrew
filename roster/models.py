@@ -127,8 +127,9 @@ class TermPage(Page):
         context = super(TermPage, self).get_context(request)
 
         try:
+            ids = self.members.all().values_list('person_page_id', flat=True)
             members = PersonPage.objects.live().filter(
-                id__in=self.members.all().values('person_page_id')
+                id__in=list(ids)
             ).order_by('last_name')
             context['members'] = members
         except AttributeError:

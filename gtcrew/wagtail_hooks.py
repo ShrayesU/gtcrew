@@ -7,13 +7,13 @@ from wagtail.contrib.modeladmin.options import (
 
 from award.models import Recipient
 from gtcrew.views import PeopleReportView
-from team.models import Title, Squad
+from team.models import Title, Squad, Profile
 
 
 # class ProfileModelAdmin(ModelAdmin):
 #     model = Profile
 #     menu_icon = 'user'
-#     menu_order = 200  # will put in 3rd place (000 being 1st, 100 2nd)
+#     menu_order = 300  # will put in 4th place (000 being 1st, 100 2nd)
 #     list_display = ('first_name', 'last_name', 'status')
 #     list_filter = ('status',)
 #     search_fields = ('first_name', 'last_name', 'gtid')
