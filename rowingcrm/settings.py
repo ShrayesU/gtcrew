@@ -301,4 +301,4 @@ ACCOUNT_USERNAME_BLACKLIST = ["admin", "god", "gtcrew"]
 
 # Activate Django-Heroku.
 if not DEBUG:
-    django_heroku.settings(locals())
+    django_heroku.settings(locals(), staticfiles=False)
