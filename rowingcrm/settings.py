@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 
 import os
 
+import dj_database_url
 import django_heroku
 from decouple import config
 
@@ -39,7 +40,7 @@ DOMAIN_ALIASES = [
 
 ALLOWED_HOSTS = [DOMAIN] + DOMAIN_ALIASES
 
-SECURE_SSL_REDIRECT = os.environ.get('SECURE_SSL_REDIRECT', 'True') == 'True'
+SECURE_SSL_REDIRECT = config('SECURE_SSL_REDIRECT', default=True, cast=bool)
 SECURE_SSL_HOST = DOMAIN
 
 # Application definition
@@ -140,8 +141,9 @@ WSGI_APPLICATION = 'rowingcrm.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
-
-DATABASES = {}
+DATABASE_URL = os.environ.get('DATABASE_URL', '')
+if DATABASE_URL != '':
+    DATABASES = {'default': dj_database_url.parse(DATABASE_URL)}
 
 # Password validation
 # https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators
