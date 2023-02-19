@@ -1,7 +1,6 @@
 anyascii==0.3.1
 asgiref==3.5.2
 Babel==2.9.1
-backports.zoneinfo==0.2.1
 beautifulsoup4==4.9.3
 bleach==4.1.0
 boto3==1.20.41
