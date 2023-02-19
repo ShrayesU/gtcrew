@@ -8,7 +8,7 @@ from django.utils.timezone import now
 from django_resized import ResizedImageField
 from wagtail.admin.panels import FieldPanel, MultiFieldPanel, FieldRowPanel
 from wagtail.fields import RichTextField
-from wagtail.models import DraftStateMixin, RevisionMixin
+from wagtail.models import WorkflowMixin, DraftStateMixin, LockableMixin, RevisionMixin
 from wagtail.search import index
 from wagtail.snippets.models import register_snippet
 
@@ -22,7 +22,7 @@ def get_default_year():
 
 
 @register_snippet
-class Profile(DraftStateMixin, RevisionMixin, index.Indexed, models.Model):
+class Profile(WorkflowMixin, DraftStateMixin, RevisionMixin, LockableMixin, index.Indexed, models.Model):
     first_name = models.CharField(max_length=64, blank=False)
     last_name = models.CharField(max_length=64, blank=False)
     gtid = models.CharField("GT ID", max_length=9, blank=True,
@@ -135,7 +135,7 @@ class EmailAddress(models.Model):
 
 
 @register_snippet
-class Title(index.Indexed, models.Model):
+class Title(WorkflowMixin, DraftStateMixin, RevisionMixin, index.Indexed, models.Model):
     title = models.CharField(max_length=64)
     sequence = models.PositiveSmallIntegerField(default=0)
     held_by = models.CharField(
@@ -149,6 +149,7 @@ class Title(index.Indexed, models.Model):
         through_fields=('title', 'profile'),
         blank=True,
     )
+    _revisions = GenericRelation("wagtailcore.Revision", related_query_name='title')
 
     def __str__(self):
         return '%s: %s' % (self.held_by, self.title)
@@ -163,6 +164,10 @@ class Title(index.Indexed, models.Model):
         index.SearchField('title', partial_match=True),
         index.FilterField('held_by'),
     ]
+
+    @property
+    def revisions(self):
+        return self._revisions
 
 
 @register_snippet
