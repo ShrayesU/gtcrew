@@ -1,7 +1,6 @@
 {% extends "wagtailadmin/userbar/base.html" %}
-<!--{% load static %}-->
+{% load wagtailadmin_tags %}
 
 {% block branding_logo %}
-<!--<img class="img-fluid" src="{% static 'private/img/logo.png' %}">-->
-    <i class="fas fa-pencil-alt"></i>
+    {% icon name="edit" classname="w-userbar-icon" %}
 {% endblock %}
