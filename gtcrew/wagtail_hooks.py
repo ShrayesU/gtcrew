@@ -1,5 +1,4 @@
-from django.conf.urls import url
-from django.urls import reverse
+from django.urls import reverse, re_path
 from wagtail import hooks
 from wagtail.admin.menu import AdminOnlyMenuItem
 from wagtail.contrib.modeladmin.options import (
@@ -67,7 +66,7 @@ def register_people_report_menu_item():
 @hooks.register('register_admin_urls')
 def register_people_report_url():
     return [
-        url(r'^reports/people/$', PeopleReportView.as_view(), name='people_report'),
+        re_path(r'^reports/people/$', PeopleReportView.as_view(), name='people_report'),
     ]
 
 

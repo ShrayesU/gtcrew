@@ -76,7 +76,7 @@ INSTALLED_APPS = [
     'wagtailcaptcha',
     'wagtailautocomplete',
     'robots',
-    'wagalytics',
+    # 'wagalytics',
     'wagtailfontawesome',
 
     'taggit',
@@ -98,7 +98,7 @@ INSTALLED_APPS = [
     'cuser',
     'django_summernote',
     'tempus_dominus',
-    'actstream.apps.ActstreamConfig',
+    'actstream',
 
     'allauth',
     'allauth.account',
