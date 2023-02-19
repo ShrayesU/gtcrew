@@ -64,7 +64,7 @@ pycparser==2.21
 pyexcel-io==0.6.5
 pyexcel-ods==0.5.3
 PyJWT==2.4.0
-pyOpenSSL==20.0.1
+pyOpenSSL==23.0.0
 pyparsing==3.0.7
 PySocks==1.7.1
 python-akismet==0.4.2
