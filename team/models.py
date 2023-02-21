@@ -6,6 +6,7 @@ from django.db import models
 from django.urls import reverse_lazy
 from django.utils.timezone import now
 from django_resized import ResizedImageField
+from modelcluster.fields import ParentalManyToManyField
 from wagtail.admin.panels import FieldPanel, MultiFieldPanel, FieldRowPanel
 from wagtail.fields import RichTextField
 from wagtail.models import WorkflowMixin, DraftStateMixin, LockableMixin, RevisionMixin
@@ -143,7 +144,7 @@ class Title(WorkflowMixin, DraftStateMixin, RevisionMixin, index.Indexed, models
         choices=HELD_BY_CHOICES,
         default=STUDENT,
     )
-    profiles = models.ManyToManyField(
+    profiles = ParentalManyToManyField(
         Profile,
         through='Membership',
         through_fields=('title', 'profile'),
