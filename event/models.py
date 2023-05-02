@@ -193,7 +193,7 @@ class EventPage(Page):
     ]
 
     parent_page_types = ['EventIndexPage']
-    subpage_types = []
+    subpage_types = ['gtcrew.GenericPage']
 
     def get_results(self):
         return self.results.all()
@@ -209,7 +209,7 @@ class EventPage(Page):
 
 
 class EventIndexPage(Page):
-    subpage_types = ['EventPage']
+    subpage_types = ['EventPage', 'gtcrew.GenericPage']
     max_count = 1
 
     def get_events(self):

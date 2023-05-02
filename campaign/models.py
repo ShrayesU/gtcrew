@@ -121,7 +121,7 @@ class DonateIndexPage(Page):
         PageChooserPanel('featured_section', 'campaign.CampaignPage')
     ]
 
-    subpage_types = ['campaign.CampaignPage']
+    subpage_types = ['campaign.CampaignPage', 'gtcrew.GenericPage']
     max_count = 1
 
     def get_campaigns(self):

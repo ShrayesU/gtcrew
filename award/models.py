@@ -43,7 +43,7 @@ class AwardPage(Page):
     ]
 
     parent_page_types = ['AwardIndexPage']
-    subpage_types = []
+    subpage_types = ['gtcrew.GenericPage']
 
     def get_recipients(self):
         return self.recipients.all().order_by('-year')
@@ -58,7 +58,7 @@ class AwardPage(Page):
 
 
 class AwardIndexPage(Page):
-    subpage_types = ['AwardPage']
+    subpage_types = ['AwardPage', 'gtcrew.GenericPage']
     max_count = 1
 
     def get_awards(self):

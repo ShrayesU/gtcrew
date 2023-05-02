@@ -84,7 +84,7 @@ class PersonPage(Page):
     ]
 
     parent_page_types = ['PersonIndexPage']
-    subpage_types = []
+    subpage_types = ['gtcrew.GenericPage']
 
 
 # # set a default blank slug for when the editing form renders
@@ -94,7 +94,7 @@ class PersonPage(Page):
 
 class PersonIndexPage(Page):
     max_count = 1
-    subpage_types = ['PersonPage']
+    subpage_types = ['PersonPage', 'gtcrew.GenericPage']
 
     def get_people(self):
         return PersonPage.objects.live().descendant_of(

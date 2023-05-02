@@ -60,7 +60,7 @@ class ShellPage(Page):
 
 
 class ShellIndexPage(Page):
-    subpage_types = ['ShellPage']
+    subpage_types = ['ShellPage', 'gtcrew.GenericPage']
     max_count = 1
 
     def get_shells(self):

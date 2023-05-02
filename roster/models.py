@@ -121,7 +121,7 @@ class TermPage(Page):
     ]
 
     parent_page_types = ['roster.RosterIndexPage']
-    subpage_types = []
+    subpage_types = ['gtcrew.GenericPage']
 
     def get_context(self, request, *args, **kwargs):
         context = super(TermPage, self).get_context(request)
@@ -140,7 +140,7 @@ class TermPage(Page):
 
 
 class RosterIndexPage(Page):
-    subpage_types = ['TermPage']
+    subpage_types = ['TermPage', 'gtcrew.GenericPage']
     max_count = 1
 
     def get_terms(self):

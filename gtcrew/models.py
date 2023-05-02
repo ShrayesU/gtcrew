@@ -56,7 +56,7 @@ class FormPage(WagtailCaptchaEmailForm):
         ], "Email"),
     ]
 
-    subpage_types = []
+    subpage_types = ['gtcrew.GenericPage']
 
     def get_form(self, *args, **kwargs):
         form = super().get_form(*args, **kwargs)
