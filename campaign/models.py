@@ -72,7 +72,7 @@ class CampaignPage(Page):
     ]
 
     parent_page_types = ['campaign.DonateIndexPage']
-    subpage_types = ['gtcrew.FormPage']
+    subpage_types = ['gtcrew.FormPage', 'gtcrew.GenericPage']
 
     @property
     def donation_total(self):
