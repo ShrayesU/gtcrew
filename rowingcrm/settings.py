@@ -77,7 +77,6 @@ INSTALLED_APPS = [
     'wagtailautocomplete',
     'robots',
     # 'wagalytics',
-    'wagtailfontawesome',
 
     'taggit',
     'modelcluster',

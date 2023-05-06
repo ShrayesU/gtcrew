@@ -85,9 +85,9 @@ class Profile(WorkflowMixin, DraftStateMixin, RevisionMixin, LockableMixin, inde
         FieldPanel('bio'),
     ]
     search_fields = [
-        index.SearchField('first_name', partial_match=True),
-        index.SearchField('last_name', partial_match=True),
-        index.SearchField('gtid', partial_match=True),
+        index.SearchField('first_name'),
+        index.SearchField('last_name'),
+        index.SearchField('gtid'),
         index.FilterField('status'),
     ]
 
@@ -162,7 +162,7 @@ class Title(WorkflowMixin, DraftStateMixin, RevisionMixin, index.Indexed, models
     ]
 
     search_fields = [
-        index.SearchField('title', partial_match=True),
+        index.SearchField('title'),
         index.FilterField('held_by'),
     ]
 
@@ -232,9 +232,9 @@ class Membership(models.Model):
         FieldPanel('public'),
     ]
     search_fields = [
-        index.SearchField('profile__first_name', partial_match=True),
-        index.SearchField('profile__last_name', partial_match=True),
-        index.SearchField('profile__gtid', partial_match=True),
+        index.SearchField('profile__first_name'),
+        index.SearchField('profile__last_name'),
+        index.SearchField('profile__gtid'),
         index.FilterField('title'),
     ]
 

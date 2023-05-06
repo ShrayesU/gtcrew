@@ -156,7 +156,7 @@ class Regatta(index.Indexed, models.Model):
         return cls.objects.create(title=value)
 
     search_fields = [
-        index.SearchField('title', partial_match=True),
+        index.SearchField('title'),
     ]
 
 
