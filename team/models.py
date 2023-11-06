@@ -86,8 +86,11 @@ class Profile(WorkflowMixin, DraftStateMixin, RevisionMixin, LockableMixin, inde
     ]
     search_fields = [
         index.SearchField('first_name'),
+        index.AutocompleteField('first_name'),
         index.SearchField('last_name'),
+        index.AutocompleteField('last_name'),
         index.SearchField('gtid'),
+        index.AutocompleteField('gtid'),
         index.FilterField('status'),
     ]
 
@@ -135,7 +138,6 @@ class EmailAddress(models.Model):
         return '%s' % self.email
 
 
-@register_snippet
 class Title(WorkflowMixin, DraftStateMixin, RevisionMixin, index.Indexed, models.Model):
     title = models.CharField(max_length=64)
     sequence = models.PositiveSmallIntegerField(default=0)
@@ -153,7 +155,7 @@ class Title(WorkflowMixin, DraftStateMixin, RevisionMixin, index.Indexed, models
     _revisions = GenericRelation("wagtailcore.Revision", related_query_name='title')
 
     def __str__(self):
-        return '%s: %s' % (self.held_by, self.title)
+        return '%s: %s' % (self.title, self.held_by)
 
     panels = [
         FieldPanel('title'),
@@ -163,6 +165,7 @@ class Title(WorkflowMixin, DraftStateMixin, RevisionMixin, index.Indexed, models
 
     search_fields = [
         index.SearchField('title'),
+        index.AutocompleteField('title'),
         index.FilterField('held_by'),
     ]
 
@@ -171,7 +174,6 @@ class Title(WorkflowMixin, DraftStateMixin, RevisionMixin, index.Indexed, models
         return self._revisions
 
 
-@register_snippet
 class Squad(models.Model):
     squad = models.CharField(max_length=64)
     profiles = models.ManyToManyField(
@@ -233,7 +235,9 @@ class Membership(models.Model):
     ]
     search_fields = [
         index.SearchField('profile__first_name'),
+        index.AutocompleteField('profile__first_name'),
         index.SearchField('profile__last_name'),
+        index.AutocompleteField('profile__last_name'),
         index.SearchField('profile__gtid'),
         index.FilterField('title'),
     ]

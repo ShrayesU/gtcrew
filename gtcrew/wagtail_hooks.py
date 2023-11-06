@@ -1,8 +1,9 @@
 from django.urls import reverse, re_path
 from wagtail import hooks
 from wagtail.admin.menu import AdminOnlyMenuItem
-from wagtail.contrib.modeladmin.options import (
-    ModelAdmin, ModelAdminGroup, modeladmin_register)
+from wagtail.snippets.models import register_snippet
+from wagtail.snippets.views.snippets import SnippetViewSet
+from wagtail.snippets.views.snippets import SnippetViewSetGroup
 
 from award.models import Recipient
 from gtcrew.views import PeopleReportView
@@ -27,40 +28,40 @@ from team.models import Title, Squad, Profile
 #     search_fields = ('profile__first_name', 'profile__last_name', 'profile__gtid')
 
 
-class RecipientModelAdmin(ModelAdmin):
+class RecipientViewSet(SnippetViewSet):
     model = Recipient
     list_display = ('year', 'page', 'person_page',)
     list_filter = ('page', 'year')
 
 
-class TitleModelAdmin(ModelAdmin):
+class TitleViewSet(SnippetViewSet):
     model = Title
     list_display = ('title', 'held_by',)
     search_fields = ('title',)
     list_filter = ('held_by',)
 
 
-class SquadModelAdmin(ModelAdmin):
+class SquadViewSet(SnippetViewSet):
     model = Squad
     search_fields = ('squad',)
 
 
-class TeamDetailAdminGroup(ModelAdminGroup):
+class TeamDetailViewSet(SnippetViewSetGroup):
     menu_label = 'Team Details'
-    menu_icon = 'fa-suitcase'
+    menu_icon = 'group'
     menu_order = 200
-    items = (SquadModelAdmin, TitleModelAdmin, RecipientModelAdmin)
+    items = (SquadViewSet, TitleViewSet, RecipientViewSet)
 
 
-# modeladmin_register(ProfileModelAdmin)
-# modeladmin_register(MembershipModelAdmin)
-modeladmin_register(TeamDetailAdminGroup)
+# register_snippet(ProfileModelAdmin)
+# register_snippet(MembershipModelAdmin)
+register_snippet(TeamDetailViewSet)
 
 
 @hooks.register('register_reports_menu_item')
 def register_people_report_menu_item():
     return AdminOnlyMenuItem("Term Pages with people list", reverse('people_report'),
-                             classnames='icon icon-' + PeopleReportView.header_icon, order=700)
+                             classname='icon icon-' + PeopleReportView.header_icon, order=700)
 
 
 @hooks.register('register_admin_urls')
