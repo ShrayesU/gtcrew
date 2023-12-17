@@ -49,6 +49,10 @@ class Donor(models.Model):
 
 class CampaignPage(Page):
     goal = models.PositiveIntegerField()
+    donor_goal = models.PositiveIntegerField(
+        default=0,
+        help_text="Leave as zero if you do not want a goal regarding the number of donors."
+    )
     end_date = models.DateField()
     description = RichTextField()
     interest_form = models.ForeignKey(
@@ -62,6 +66,7 @@ class CampaignPage(Page):
 
     content_panels = Page.content_panels + [
         FieldPanel('goal'),
+        FieldPanel('donor_goal'),
         FieldPanel('end_date'),
         FieldPanel('description'),
         FieldPanel('interest_form'),
@@ -85,6 +90,18 @@ class CampaignPage(Page):
     def goal_remaining(self):
         goal = int(self.goal)
         return max(0, goal - self.donation_total)
+
+    @property
+    def donor_total(self):
+        if self.donors.exists():
+            return self.donors.count()
+        else:
+            return 0
+
+    @property
+    def donor_goal_remaining(self):
+        goal = int(self.donor_goal)
+        return max(0, goal - self.donor_total)
 
     def get_donors(self):
         if self.donors.exists():

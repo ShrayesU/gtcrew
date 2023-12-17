@@ -19,14 +19,16 @@
                             </div>
                         </div>
                         <div class="row align-items-center">
+                            {% if self.goal %}
                             <div class="col-6">
-                                <p class="text-center">
-                                    <em class="text-muted font-weight-bold">
-                                        ${{ self.goal|intcomma }} Goal
-                                    </em>
-                                </p>
                                 {% include "campaign/includes/infographic.html" with this=self %}
                             </div>
+                            {% endif %}
+                            {% if self.donor_goal %}
+                            <div class="col-6">
+                                {% include "campaign/includes/infographic_donor.html" with this=self %}
+                            </div>
+                            {% endif %}
                             {% if self.interest_form %}
                             <div class="col-6 d-flex justify-content-center">
                                 <a class="btn btn-primary text-dark" href="{{ self.interest_form.url }}"

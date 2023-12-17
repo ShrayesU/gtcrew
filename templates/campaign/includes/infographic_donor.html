@@ -2,11 +2,11 @@
 
 <p class="text-center">
     <em class="text-muted font-weight-bold">
-        ${{ this.goal|intcomma }} Goal
+        {{ this.donor_goal|intcomma }}-Donor Goal
     </em>
 </p>
 <div class="chart-pie">
-    <canvas id="{{ this.slug }}_dollar"></canvas>
+    <canvas id="{{ this.slug }}_donor"></canvas>
 </div>
 
 
@@ -16,13 +16,13 @@ Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,Bli
 Chart.defaults.global.defaultFontColor = '#858796';
 
 // Dollar Pie Chart
-var ctx = document.getElementById("{{ this.slug }}_dollar");
+var ctx = document.getElementById("{{ this.slug }}_donor");
 var myPieChart = new Chart(ctx, {
   type: 'doughnut',
   data: {
-    labels: ["Donated", "Remaining"],
+    labels: ["Donors", "Remaining"],
     datasets: [{
-      data: [{{ this.donation_total }}, {{ this.goal_remaining }}],
+      data: [{{ this.donor_total }}, {{ this.donor_goal_remaining }}],
       backgroundColor: ['#212529', '#ffc107'],
       hoverBackgroundColor: ['#212529', '#ffc107'],
       hoverBorderColor: "rgba(234, 236, 244, 1)",
