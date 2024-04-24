@@ -6,6 +6,7 @@ from wagtail.snippets.views.snippets import SnippetViewSet
 from wagtail.snippets.views.snippets import SnippetViewSetGroup
 
 from award.models import Recipient
+from event.models import Result
 from gtcrew.views import PeopleReportView
 from team.models import Title, Squad, Profile
 
@@ -46,11 +47,20 @@ class SquadViewSet(SnippetViewSet):
     search_fields = ('squad',)
 
 
+class ResultViewSet(SnippetViewSet):
+    model = Result
+    list_per_page = 10
+    list_display = ('page', 'entry', 'distance', 'total_time_string', 'pace_string', 'watts', 'pace', 'racer_count')
+    search_fields = ('entry', 'page__title')
+    list_filter = ('date', 'squad', 'page__regatta', 'distance', 'lightweight')
+    inspect_view_enabled = True
+
+
 class TeamDetailViewSet(SnippetViewSetGroup):
     menu_label = 'Team Details'
     menu_icon = 'group'
     menu_order = 200
-    items = (SquadViewSet, TitleViewSet, RecipientViewSet)
+    items = (SquadViewSet, TitleViewSet, RecipientViewSet, ResultViewSet)
 
 
 # register_snippet(ProfileModelAdmin)

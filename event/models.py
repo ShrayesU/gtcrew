@@ -96,6 +96,7 @@ class BaseResult(models.Model):
 
     class Meta:
         abstract = True
+        ordering = ['-date', 'pace']
 
     def clean(self):
         super().clean()
@@ -121,9 +122,9 @@ class BaseResult(models.Model):
 
     def watts(self):
         """Returns the power in watts based on average pace per 500 meters."""
-        pace = self.get_pace()
+        pace = self.get_pace() / 500
         if pace:
-            return 2.80 / (pace ** 3)
+            return round(2.80 / (pace ** 3), 3)
         else:
             return 0
 
@@ -133,6 +134,12 @@ class Result(BaseResult, ClusterableModel):
     entry = models.CharField(max_length=64, help_text='E.g. "Lightweight Varsity 8+"')
     rank = models.PositiveIntegerField(default=1, validators=[MinValueValidator(1), ])
     # TODO: add boat choosers
+
+    def __str__(self):
+        return self.entry
+
+    def racer_count(self):
+        return self.racers.count()
 
     panels = [
         FieldPanel('entry'),
