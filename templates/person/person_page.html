@@ -5,126 +5,109 @@
 {{ block.super }}
 <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css"/>
 <style>
-    table td, table tr, table th{
-background: transparent !important;
-}
-
+    table td, table tr, table th {
+        background: transparent !important;
+    }
 </style>
 {% endblock %}
 
 {% block content %}
-<section class="page-section cta">
-    <div class="container">
-        <div class="row">
-            <div class="col-xl-9 mx-auto">
-                <div class="cta-inner text-center rounded">
-                    <h2 class="section-heading">
-                        <span class="section-heading-upper">{{ self.first_name}}</span>
-                        <span class="section-heading-lower">{{ self.last_name}}</span>
-                    </h2>
-                    <ul class="list-group list-group-flush text-left">
-                        {% if self.image %}
-                        <li class="list-group-item bg-transparent">
-                            <div class="row">
-                                <div class="col-xs-4 col-md-3 text-primary font-weight-bold">Profile</div>
-                                <div class="col-xs-8 col-md-9">
-                                    {% image self.image fill-200x200 class="mx-auto d-flex img-fluid img-thumbnail" %}
-                                </div>
-                            </div>
-                        </li>
-                        {% endif %}
-                        <li class="list-group-item bg-transparent">
-                            <div class="row">
-                                <div class="col-xs-4 col-md-3 text-primary font-weight-bold">Hometown</div>
-                                <div class="col-xs-8 col-md-9">{{ self.hometown }}</div>
-                            </div>
-                        </li>
-                        <li class="list-group-item bg-transparent">
-                            <div class="row">
-                                <div class="col-xs-4 col-md-3 text-primary font-weight-bold">Major</div>
-                                <div class="col-xs-8 col-md-9">{{ self.major }}</div>
-                            </div>
-                        </li>
-                        <li class="list-group-item bg-transparent">
-                            <div class="row">
-                                <div class="col-xs-4 col-md-3 text-primary font-weight-bold">Birthday</div>
-                                <div class="col-xs-8 col-md-9">
-                                    {% if self.birthday %}{{ self.birthday }}{% endif %}
-                                </div>
-                            </div>
-                        </li>
-                        <li class="list-group-item bg-transparent">
-                            <div class="row">
-                                <div class="col-xs-4 col-md-3 text-primary font-weight-bold">Biography</div>
-                                <div class="col-xs-8 col-md-9">{{ self.bio|safe }}</div>
-                            </div>
-                        </li>
-                    </ul>
-                    <div>
-                        <p class="text-center text-muted font-italic">
-                            Incomplete data? Suggest an edit after logging in.
-                        </p>
-                    </div>
-                </div>
+<div class="site-frame">
+    <section class="page-hero">
+        <div class="page-hero__panel hero-panel">
+            {% if self.image %}
+            <div class="page-hero__media">
+                {% image self.image fill-1600x900 class="img-fluid" %}
+            </div>
+            {% endif %}
+            <div class="page-hero__content">
+                <span class="page-hero__eyebrow">Athlete Profile</span>
+                <h1 class="page-hero__title">{{ self.first_name }} {{ self.last_name }}</h1>
+                <p class="page-hero__text">The people pages highlight the students, athletes, and alumni who shape Georgia Tech Rowing on and off the water.</p>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
-{% if self.results_raced.all %}
-<!-- Race Details -->
-<section class="page-section about-heading">
-    <div class="container">
-        <div class="about-heading-content my-5">
-            <div class="row">
-                <div class="col-xl-9 col-lg-10 mx-auto">
-                    <div class="bg-faded rounded p-5">
-                        <h2 class="section-heading mb-5 text-center">
-                            <span class="section-heading-upper">Events</span>
-                            <span class="section-heading-lower">Raced</span>
-                        </h2>
-                        <div>
-                            <table class="display responsive" id="dataTable_Results" width="100%" cellspacing="0">
-                                <thead>
-                                    <tr>
-                                        <th>Entry</th>
-                                        <th>Placement</th>
-                                        <th>Regatta</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                {% for result in self.results_raced.all %}
-                                    <tr>
-                                        <td>
-                                            {{ result.page.entry }}
-                                        </td>
-                                        <td>
-                                            {{ result.page.rank }}
-                                        </td>
-                                        <td>
-                                            <a class="text-secondary" href="{% pageurl result.page.page %}">
-                                            {{ result.page.page.title }}
-                                        </a>
-                                        </td>
-                                    </tr>
-                                {% endfor %}
-                                </tbody>
-                        </table>
-                        </div>
+    <section class="page-section">
+        <div class="content-grid content-grid--narrow">
+            <div class="surface-card">
+                <div class="detail-grid detail-grid--two">
+                    {% if self.image %}
+                    <div class="detail-media">
+                        {% image self.image fill-700x700 class="img-fluid" %}
                     </div>
+                    {% endif %}
+                    <div class="detail-grid">
+                        {% if self.hometown %}
+                        <div class="detail-card">
+                            <span class="detail-card__label">Hometown</span>
+                            <div class="detail-card__value">{{ self.hometown }}</div>
+                        </div>
+                        {% endif %}
+                        {% if self.major %}
+                        <div class="detail-card">
+                            <span class="detail-card__label">Major</span>
+                            <div class="detail-card__value">{{ self.major }}</div>
+                        </div>
+                        {% endif %}
+                        {% if self.birthday %}
+                        <div class="detail-card">
+                            <span class="detail-card__label">Birthday</span>
+                            <div class="detail-card__value">{{ self.birthday }}</div>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+                {% if self.bio %}
+                <div class="detail-card mt-4">
+                    <span class="detail-card__label">Biography</span>
+                    <div class="detail-card__value prose">{{ self.bio|safe }}</div>
+                </div>
+                {% endif %}
+                <p class="inline-note mt-4 mb-0 text-center">Incomplete data? Suggest an edit after logging in.</p>
+            </div>
+        </div>
+    </section>
+
+    {% if self.results_raced.all %}
+    <section class="page-section">
+        <div class="content-grid content-grid--narrow">
+            <div class="bg-faded rounded p-5">
+                <h2 class="section-heading mb-5 text-center">
+                    <span class="section-heading-upper">Events</span>
+                    <span class="section-heading-lower">Raced</span>
+                </h2>
+                <div>
+                    <table class="display responsive" id="dataTable_Results" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>Entry</th>
+                                <th>Placement</th>
+                                <th>Regatta</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for result in self.results_raced.all %}
+                            <tr>
+                                <td>{{ result.page.entry }}</td>
+                                <td>{{ result.page.rank }}</td>
+                                <td><a href="{% pageurl result.page.page %}">{{ result.page.page.title }}</a></td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
-    </div>
-</section>
-{% endif %}
+    </section>
+    {% endif %}
+</div>
 {% endblock %}
 
 {% block javascript %}
 <script href="{% static 'private/vendor/datatables/dataTables.bootstrap4.min.js' %}" rel="stylesheet"></script>
 <script src="{% static 'private/vendor/datatables/jquery.dataTables.min.js' %}"></script>
 <script>
-    // Call the dataTables jQuery plugin
     $(document).ready(function() {
       $('#dataTable_Results').DataTable({
         responsive: true,
@@ -134,6 +117,5 @@ background: transparent !important;
         "lengthChange": false
       });
     });
-
 </script>
 {% endblock %}
