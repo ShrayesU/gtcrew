@@ -5,67 +5,61 @@
 {{ block.super }}
 <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" />
 <style>
-    table td, table tr, table th{
-background: transparent !important;
-}
+    table td, table tr, table th {
+        background: transparent !important;
+    }
 </style>
-
 {% endblock %}
 
 {% block content %}
+<div class="site-frame">
+    <section class="page-hero">
+        <div class="page-hero__panel hero-panel">
+            <div class="page-hero__content">
+                <span class="page-hero__eyebrow">Fleet</span>
+                <h1 class="page-hero__title">The shells behind training and race day.</h1>
+                <p class="page-hero__text">Georgia Tech Rowing’s fleet tells the story of how the team trains, travels, and builds toward each season on the water.</p>
+            </div>
+        </div>
+    </section>
 
-<section class="page-section cta">
-    <div class="container">
-        <div class="row">
-            <div class="col-xl-9 mx-auto">
-                <div class="cta-inner text-center rounded">
-                    <h2 class="section-heading mb-5">
-                        <span class="section-heading-upper">Racing</span>
-                        <span class="section-heading-lower">Shells</span>
-                    </h2>
-                    <div>
-                        <table class="display responsive" id="dataTable" width="100%" cellspacing="0">
-                            <thead>
+    <section class="page-section">
+        <div class="content-grid content-grid--narrow">
+            <div class="cta-inner text-center rounded">
+                <h2 class="section-heading mb-5">
+                    <span class="section-heading-upper">Racing</span>
+                    <span class="section-heading-lower">Shells</span>
+                </h2>
+                <div>
+                    <table class="display responsive" id="dataTable" width="100%" cellspacing="0">
+                        <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Year</th>
+                            <th>Type</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for shell in shells %}
                             <tr>
-                                <th>Name</th>
-                                <th>Year</th>
-                                <th>Type</th>
+                                <td><a href="{% pageurl shell %}">{{ shell }}</a></td>
+                                <td>{% if shell.specific.date_acquired %}{{ shell.specific.date_acquired | date:'Y' }}{% endif %}</td>
+                                <td>{{ shell.specific.manufacturer }} {{ shell.specific.size }}</td>
                             </tr>
-                            </thead>
-                            <tbody>
-                            {% for shell in shells %}
-                                <tr>
-                                    <td>
-                                        <a href="{% pageurl shell %}">
-                                            {{ shell }}
-                                        </a>
-                                    </td>
-                                    <td>
-                                        {% if shell.specific.date_acquired %}
-                                        {{ shell.specific.date_acquired | date:'Y' }}
-                                        {% endif %}
-                                    </td>
-                                    <td>
-                                        {{ shell.specific.manufacturer }} {{ shell.specific.size }}
-                                    </td>
-                                </tr>
-                            {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
+                        {% endfor %}
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
-    </div>
-</section>
-
+    </section>
+</div>
 {% endblock %}
 
 {% block javascript %}
 <script href="{% static 'private/vendor/datatables/dataTables.bootstrap4.min.js' %}" rel="stylesheet"></script>
 <script src="{% static 'private/vendor/datatables/jquery.dataTables.min.js' %}"></script>
 <script>
-    // Call the dataTables jQuery plugin
     $(document).ready(function() {
       $('#dataTable').DataTable({
         responsive: true,
