@@ -14,59 +14,45 @@
 
 {% wagtailuserbar %}
 
-{% block header %}
-    {# Header contains the main_navigation block #}
-    {% include "includes/header.html" with parent=site_root calling_page=self %}
-{% endblock %}
+<div class="site-shell">
+    {% block header %}
+        {% include "includes/header.html" with parent=site_root calling_page=self %}
+    {% endblock %}
 
-{% block messages %}
-    {% include "includes/messages.html" %}
-{% endblock messages %}
+    {% block messages %}
+        {% include "includes/messages.html" %}
+    {% endblock messages %}
 
-{% block breadcrumbs %}
-    {# breadcrumbs is defined in base/templatetags/navigation_tags.py #}
-    {% breadcrumbs %}
-{% endblock breadcrumbs %}
+    {% block breadcrumbs %}
+        {% breadcrumbs %}
+    {% endblock breadcrumbs %}
 
-{% block title %}{% endblock %}
+    <main class="site-main">
+        {% block title %}{% endblock %}
+        {% block content %}{% endblock %}
+    </main>
 
-{% block content %}{% endblock %}
-
-<footer class="footer text-faded text-center py-5">
-    <div class="container">
-        <ul class="list-inline mb-0">
-            <li class="list-inline-item">
-                <a class="btn btn-outline-light btn-social text-center rounded-circle"
-                   href="http://www.facebook.com/pages/Atlanta-GA/Georgia-Tech-Crew/44851172785"
-                   aria-label="GT Crew on Facebook">
-                    <i class="fab fa-facebook-f"></i>
-                </a>
-            </li>
-            <li class="list-inline-item">
-                <a class="btn btn-outline-light btn-social text-center rounded-circle"
-                   href="https://www.instagram.com/gtrowing/"
-                   aria-label="GT Crew on Instagram">
-                    <i class="fab fa-instagram"></i>
-                </a>
-            </li>
-            <li class="list-inline-item">
-                <a class="btn btn-outline-light btn-social text-center rounded-circle" href="http://twitter.com/gtcrew"
-                    aria-label="GT Crew on Twitter">
-                    <i class="fab fa-twitter"></i>
-                </a>
-            </li>
-            <li class="list-inline-item">
-                <a class="btn btn-outline-light btn-social text-center rounded-circle"
-                   href="https://www.linkedin.com/in/gt-crew-alumni-b4b0a095/"
-                   aria-label="GT Crew Alumni on LinkedIn">
-                    <i class="fab fa-linkedin"></i>
-                </a>
-            </li>
-        </ul>
-        <br>
-        <p class="m-0 small">Copyright &copy; gtcrew {% now "Y" %}</p>
-    </div>
-</footer>
+    <footer class="site-footer">
+        <div class="site-frame">
+            <div class="site-footer__panel">
+                <div>
+                    <p class="eyebrow mb-2">Student-Athlete Community</p>
+                    <h2 class="site-footer__title">Built for racing. Backed by each other.</h2>
+                    <p class="site-footer__text">Georgia Tech Rowing brings together training, competition, alumni support, and club culture in one place.</p>
+                </div>
+                <div>
+                    <div class="site-footer__social">
+                        <a href="http://www.facebook.com/pages/Atlanta-GA/Georgia-Tech-Crew/44851172785" aria-label="GT Crew on Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://www.instagram.com/gtrowing/" aria-label="GT Crew on Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="http://twitter.com/gtcrew" aria-label="GT Crew on Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="https://www.linkedin.com/in/gt-crew-alumni-b4b0a095/" aria-label="GT Crew Alumni on LinkedIn"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                    <p class="site-footer__meta mt-3">Copyright &copy; gtcrew {% now "Y" %}</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+</div>
 
 {% block javascript %}{% endblock %}
 
