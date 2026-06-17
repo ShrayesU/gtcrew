@@ -5,89 +5,75 @@
 {{ block.super }}
 <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css"/>
 <style>
-    table td, table tr, table th{
-background: transparent !important;
-}
-
+    table td, table tr, table th {
+        background: transparent !important;
+    }
 </style>
 {% endblock %}
 
 {% block content %}
-<!-- Award Details -->
-<section class="page-section about-heading">
-    <div class="container">
-        <div class="about-heading-content my-5">
-            <div class="row">
-                <div class="col-xl-9 col-lg-10 mx-auto">
-                    <div class="bg-faded rounded p-5">
-                        <h2 class="section-heading mb-5 text-center">
-                            <span class="section-heading-upper">Award</span>
-                            <span class="section-heading-lower">{{ self.title }}</span>
-                        </h2>
-                        <ul class="list-group list-group-flush text-left">
-                            <li class="list-group-item bg-transparent">
-                                <div class="row">
-                                    <div class="col-xs-4 col-md-3 text-primary font-weight-bold">Description</div>
-                                    <div class="col-xs-8 col-md-9">{{ self.description|safe }}</div>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
+<div class="site-frame">
+    <section class="page-hero">
+        <div class="page-hero__panel hero-panel">
+            <div class="page-hero__content">
+                <span class="page-hero__eyebrow">Award</span>
+                <h1 class="page-hero__title">{{ self.title }}</h1>
+                <div class="page-hero__text">{{ self.description|safe|truncatewords_html:40 }}</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="page-section">
+        <div class="content-grid content-grid--narrow">
+            <div class="bg-faded rounded p-5">
+                <h2 class="section-heading mb-4 text-center">
+                    <span class="section-heading-upper">About This Award</span>
+                    <span class="section-heading-lower">Recognition & Legacy</span>
+                </h2>
+                <div class="detail-card">
+                    <div class="detail-card__value prose">{{ self.description|safe }}</div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
-{% if recipients %}
-<!-- Recipient table -->
-<section class="page-section cta">
-    <div class="container">
-        <div class="row">
-            <div class="col-xl-9 mx-auto">
-                <div class="cta-inner text-center rounded">
-                    <h2 class="section-heading mb-5">
-                        <span class="section-heading-upper">{{ self.title }}</span>
-                        <span class="section-heading-lower">Recipients</span>
-                    </h2>
-                    <div>
-                        <table class="display responsive" id="dataTable" width="100%" cellspacing="0">
-                            <thead>
-                            <tr>
-                                <th>Year</th>
-                                <th>Recipient</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {% for recipient in recipients %}
-                            <tr>
-                                <td>
-                                    {{ recipient.year }}
-                                </td>
-                                <td>
-                                    <a href="{% pageurl recipient.person_page %}">
-                                        {{ recipient.person_page }}
-                                    </a>
-                                </td>
-                            </tr>
-                            {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
+    {% if recipients %}
+    <section class="page-section">
+        <div class="content-grid content-grid--narrow">
+            <div class="cta-inner text-center rounded">
+                <h2 class="section-heading mb-5">
+                    <span class="section-heading-upper">{{ self.title }}</span>
+                    <span class="section-heading-lower">Recipients</span>
+                </h2>
+                <div>
+                    <table class="display responsive" id="dataTable" width="100%" cellspacing="0">
+                        <thead>
+                        <tr>
+                            <th>Year</th>
+                            <th>Recipient</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for recipient in recipients %}
+                        <tr>
+                            <td>{{ recipient.year }}</td>
+                            <td><a href="{% pageurl recipient.person_page %}">{{ recipient.person_page }}</a></td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
-    </div>
-</section>
-{% endif %}
-
+    </section>
+    {% endif %}
+</div>
 {% endblock %}
 
 {% block javascript %}
 <script href="{% static 'private/vendor/datatables/dataTables.bootstrap4.min.js' %}" rel="stylesheet"></script>
 <script src="{% static 'private/vendor/datatables/jquery.dataTables.min.js' %}"></script>
 <script>
-    // Call the dataTables jQuery plugin
     $(document).ready(function() {
       $('#dataTable').DataTable({
         responsive: true,
@@ -97,6 +83,5 @@ background: transparent !important;
         "lengthChange": false
       });
     });
-
 </script>
 {% endblock %}
