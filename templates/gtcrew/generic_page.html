@@ -2,5 +2,7 @@
 {% load wagtailcore_tags %}
 
 {% block content %}
-{% include_block self.body %}
+<div class="site-frame">
+    {% include_block self.body %}
+</div>
 {% endblock %}
