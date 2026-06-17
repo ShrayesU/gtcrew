@@ -10,91 +10,77 @@
 {% endblock %}
 
 {% block content %}
+<div class="site-frame">
+    <section class="page-hero">
+        <div class="page-hero__panel hero-panel">
+            <div class="page-hero__content">
+                <span class="page-hero__eyebrow">Calendar</span>
+                <h1 class="page-hero__title">See what’s next for Georgia Tech Rowing.</h1>
+                <p class="page-hero__text">Track regattas, team moments, and recent results through a cleaner event calendar built around the season.</p>
+            </div>
+        </div>
+    </section>
 
-{% if events_future %}
-<section class="page-section about-heading">
-    <div class="container">
-        <div class="about-heading-content my-5">
-            <div class="row">
-                <div class="col-xl-9 col-lg-10 mx-auto">
-                    <div class="bg-faded rounded p-5">
-                        <h2 class="section-heading mb-5 text-center">
-                            <span class="section-heading-upper">Events</span>
-                            <span class="section-heading-lower">Upcoming</span>
-                        </h2>
-                        <ul class="list-group list-group-flush text-left">
-                            {% for event in events_future %}
-                            <li class="list-group-item bg-transparent">
-                                <div class="row">
-                                    <div class="col-xs-4 col-md-4 text-primary font-weight-bold">
-                                        {{ event.start_datetime }}
-                                    </div>
-                                    <div class="col-xs-8 col-md-8">
-                                        <a href="{% pageurl event %}">{{ event.title }}</a>
-                                    </div>
-                                </div>
-                            </li>
-                            {% endfor %}
-                        </ul>
-                    </div>
+    {% if events_future %}
+    <section class="page-section">
+        <div class="content-grid content-grid--narrow">
+            <div class="bg-faded rounded p-5">
+                <h2 class="section-heading mb-5 text-center">
+                    <span class="section-heading-upper">Events</span>
+                    <span class="section-heading-lower">Upcoming</span>
+                </h2>
+                <ul class="list-group list-group-flush text-left">
+                    {% for event in events_future %}
+                    <li class="list-group-item bg-transparent">
+                        <div class="row">
+                            <div class="col-xs-12 col-md-4 text-primary font-weight-bold">{{ event.start_datetime }}</div>
+                            <div class="col-xs-12 col-md-8"><a href="{% pageurl event %}">{{ event.title }}</a></div>
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </section>
+    {% endif %}
+
+    {% if events_recent %}
+    <section class="page-section">
+        <div class="content-grid content-grid--narrow">
+            <div class="bg-faded rounded p-5">
+                <h2 class="section-heading mb-5 text-center">
+                    <span class="section-heading-upper">Events</span>
+                    <span class="section-heading-lower">Recent</span>
+                </h2>
+                <ul class="list-group list-group-flush text-left">
+                    {% for event in events_recent %}
+                    <li class="list-group-item bg-transparent">
+                        <div class="row">
+                            <div class="col-xs-12 col-md-4 text-primary font-weight-bold">{{ event.start_datetime }}</div>
+                            <div class="col-xs-12 col-md-8"><a href="{% pageurl event %}">{{ event.title }}</a></div>
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </section>
+    {% endif %}
+
+    <section class="d-none d-md-block page-section">
+        <div class="content-grid content-grid--narrow">
+            <div class="cta-inner text-center rounded">
+                <h2 class="section-heading mb-2">
+                    <span class="section-heading-upper">All</span>
+                    <span class="section-heading-lower">Events</span>
+                </h2>
+                <div class="card-body">
+                    <div id="calendar"></div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
-{% endif %}
-
-{% if events_recent %}
-<section class="page-section about-heading">
-    <div class="container">
-        <div class="about-heading-content my-5">
-            <div class="row">
-                <div class="col-xl-9 col-lg-10 mx-auto">
-                    <div class="bg-faded rounded p-5">
-                        <h2 class="section-heading mb-5 text-center">
-                            <span class="section-heading-upper">Events</span>
-                            <span class="section-heading-lower">Recent</span>
-                        </h2>
-                        <ul class="list-group list-group-flush text-left">
-                            {% for event in events_recent %}
-                            <li class="list-group-item bg-transparent">
-                                <div class="row">
-                                    <div class="col-xs-4 col-md-4 text-primary font-weight-bold">
-                                        {{ event.start_datetime }}
-                                    </div>
-                                    <div class="col-xs-8 col-md-8">
-                                        <a href="{% pageurl event %}">{{ event.title }}</a>
-                                    </div>
-                                </div>
-                            </li>
-                            {% endfor %}
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-{% endif %}
-
-<section class="d-none d-md-block page-section cta">
-    <div class="container">
-        <div class="row">
-            <div class="col-xl-9 mx-auto">
-                <div class="cta-inner text-center rounded">
-                    <h2 class="section-heading mb-2">
-                        <span class="section-heading-upper">All</span>
-                        <span class="section-heading-lower">Events</span>
-                    </h2>
-                    <div class="card-body">
-                        <div id="calendar"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
+    </section>
+</div>
 {% endblock %}
 
 {% block javascript %}
@@ -117,13 +103,12 @@
       header: {
         left: '',
         center: 'title',
-        right: 'dayGridMonth,timeGridWeek,listYear'  //,timeGridDay'
+        right: 'dayGridMonth,timeGridWeek,listYear'
       },
       footer: {
         center: 'prev,prevYear,today,nextYear,next',
       },
-
-      events: {{ api_event|safe }}  // data from view
+      events: {{ api_event|safe }}
     });
 
     calendar.render();
