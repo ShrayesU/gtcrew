@@ -4,38 +4,37 @@
 {% block content %}
 {{ block.super }}
 
-<section class="page-section about-heading">
-    <div class="container">
-        <div class="about-heading-content my-2">
-            <div class="row">
-                <div class="col-xl-9 col-lg-10 mx-auto">
-                    <div class="bg-faded rounded p-5">
-                        <form action="{% pageurl page %}" method="POST" role="form">
-                            {% csrf_token %}
-                            {% if form.subject.errors %}
-                            <ol role="alertdialog">
-                                {% for error in form.subject.errors %}
-                                <li role="alert"><strong>{{ error|escape }}</strong></li>
-                                {% endfor %}
-                            </ol>
-                            {% endif %}
+<div class="site-frame">
+    <section class="page-section">
+        <div class="content-grid content-grid--narrow">
+            <div class="bg-faded rounded p-5">
+                <h2 class="section-heading mb-4 text-center">
+                    <span class="section-heading-upper">Get In Touch</span>
+                    <span class="section-heading-lower">{{ page.title }}</span>
+                </h2>
+                <form action="{% pageurl page %}" method="POST" role="form">
+                    {% csrf_token %}
+                    {% if form.subject.errors %}
+                    <ol role="alertdialog">
+                        {% for error in form.subject.errors %}
+                        <li role="alert"><strong>{{ error|escape }}</strong></li>
+                        {% endfor %}
+                    </ol>
+                    {% endif %}
 
-                            {% for field in form %}
-                            <div class="form-group mb-3">
-                                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-                                {{ field }}
-                                {% if field.help_text %}
-                                <small id="{{ field.id_for_label }}_help" class="form-text text-muted">{{ field.help_text }}</small>
-                                {% endif %}
-                            </div>
-                            {% endfor %}
-                            <input class="btn btn-warning btn-block" value="Submit" type="submit">
-                        </form>
+                    {% for field in form %}
+                    <div class="form-group mb-3">
+                        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                        {{ field }}
+                        {% if field.help_text %}
+                        <small id="{{ field.id_for_label }}_help" class="form-text text-muted">{{ field.help_text }}</small>
+                        {% endif %}
                     </div>
-                </div>
+                    {% endfor %}
+                    <input class="btn btn-primary btn-block" value="Submit" type="submit">
+                </form>
             </div>
         </div>
-    </div>
-</section>
-
+    </section>
+</div>
 {% endblock content %}
