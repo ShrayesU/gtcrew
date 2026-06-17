@@ -5,192 +5,134 @@
 {{ block.super }}
 <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css"/>
 <style>
-    table td, table tr, table th{
-background: transparent !important;
-}
-
+    table td, table tr, table th {
+        background: transparent !important;
+    }
 </style>
 {% endblock %}
 
 {% block content %}
-<!-- Event Details -->
-<section class="page-section about-heading">
-    <div class="container">
-        <div class="about-heading-content my-5">
-            <div class="row">
-                <div class="col-xl-9 col-lg-10 mx-auto">
-                    <div class="bg-faded rounded p-5">
-                        <h2 class="section-heading mb-5 text-center">
-                            <span class="section-heading-upper">Event</span>
-                            <span class="section-heading-lower">{{ self.title }}</span>
-                        </h2>
-                        <ul class="list-group list-group-flush text-left">
-                            <li class="list-group-item bg-transparent">
-                                <div class="row">
-                                    <div class="col-xs-4 col-md-3 text-primary font-weight-bold">Date</div>
-                                    <div class="col-xs-8 col-md-9">
-                                        {{ self.start_datetime }}
-                                        {% if self.end_datetime %} to {{ self.end_datetime }}{% endif %}
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="list-group-item bg-transparent">
-                                <div class="row">
-                                    <div class="col-xs-4 col-md-3 text-primary font-weight-bold">Location</div>
-                                    <div class="col-xs-8 col-md-9">{{ self.location }}</div>
-                                </div>
-                            </li>
-                            <li class="list-group-item bg-transparent">
-                                <div class="row">
-                                    <div class="col-xs-4 col-md-3 text-primary font-weight-bold">Type</div>
-                                    <div class="col-xs-8 col-md-9">
-                                        {{ self.event_type }}
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="list-group-item bg-transparent">
-                                <div class="row">
-                                    <div class="col-xs-4 col-md-3 text-primary font-weight-bold">Description</div>
-                                    <div class="col-xs-8 col-md-9">{{ self.description|safe }}</div>
-                                </div>
-                            </li>
-                        </ul>
+<div class="site-frame">
+    <section class="page-hero">
+        <div class="page-hero__panel hero-panel">
+            <div class="page-hero__content">
+                <span class="page-hero__eyebrow">Event</span>
+                <h1 class="page-hero__title">{{ self.title }}</h1>
+                <p class="page-hero__text">{{ self.start_datetime }}{% if self.end_datetime %} to {{ self.end_datetime }}{% endif %}{% if self.location %} · {{ self.location }}{% endif %}</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="page-section">
+        <div class="content-grid content-grid--narrow">
+            <div class="bg-faded rounded p-5">
+                <div class="detail-grid detail-grid--two">
+                    <div class="detail-card">
+                        <span class="detail-card__label">Date</span>
+                        <div class="detail-card__value">{{ self.start_datetime }}{% if self.end_datetime %} to {{ self.end_datetime }}{% endif %}</div>
                     </div>
+                    <div class="detail-card">
+                        <span class="detail-card__label">Location</span>
+                        <div class="detail-card__value">{{ self.location }}</div>
+                    </div>
+                    <div class="detail-card">
+                        <span class="detail-card__label">Type</span>
+                        <div class="detail-card__value">{{ self.event_type }}</div>
+                    </div>
+                </div>
+                <div class="detail-card mt-4">
+                    <span class="detail-card__label">Description</span>
+                    <div class="detail-card__value prose">{{ self.description|safe }}</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {% if results %}
+    <section class="page-section">
+        <div class="content-grid content-grid--narrow">
+            <div class="cta-inner text-center rounded">
+                <h2 class="section-heading mb-5">
+                    <span class="section-heading-upper">{{ self.title }}</span>
+                    <span class="section-heading-lower">Results</span>
+                </h2>
+                <div>
+                    <table class="display responsive" id="dataTable" width="100%" cellspacing="0">
+                        <thead>
+                        <tr>
+                            <th>Entry</th>
+                            <th>Placement</th>
+                            <th>Detail</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for result in results %}
+                        <tr>
+                            <td>{{ result.entry }}</td>
+                            <td>{{ result.rank }}</td>
+                            <td>
+                                <button type="button" class="btn btn-primary font-weight-bold" data-toggle="modal" data-target="#result{{ forloop.counter }}">
+                                    View
+                                </button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {% for result in results %}
+    <div class="modal fade" id="result{{ forloop.counter }}" tabindex="-1" aria-labelledby="result{{ forloop.counter }}Label" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="result{{ forloop.counter }}Label">{{ result.entry }}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="detail-grid">
+                        <div class="detail-card">
+                            <span class="detail-card__label">Distance</span>
+                            <div class="detail-card__value">{{ result.distance }}</div>
+                        </div>
+                        <div class="detail-card">
+                            <span class="detail-card__label">Time</span>
+                            <div class="detail-card__value">{{ result.total_time_string }}</div>
+                        </div>
+                        <div class="detail-card">
+                            <span class="detail-card__label">Pace</span>
+                            <div class="detail-card__value">{{ result.pace_string }}</div>
+                        </div>
+                        <div class="detail-card">
+                            <span class="detail-card__label">Racers</span>
+                            <div class="detail-card__value">
+                                {% for racer in result.racers.all %}
+                                <div>{{ racer }}{% if racer.position %} · {{ racer.position.title }}{% endif %}</div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <p class="inline-note text-center mb-0">Incomplete data? Suggest an edit after logging in.</p>
                 </div>
             </div>
         </div>
     </div>
-</section>
-
-{% if results %}
-<!-- Results table -->
-<section class="page-section cta">
-    <div class="container">
-        <div class="row">
-            <div class="col-xl-9 mx-auto">
-                <div class="cta-inner text-center rounded">
-                    <h2 class="section-heading mb-5">
-                        <span class="section-heading-upper">{{ self.title }}</span>
-                        <span class="section-heading-lower">Results</span>
-                    </h2>
-                    <div>
-                        <table class="display responsive" id="dataTable" width="100%" cellspacing="0">
-                            <thead>
-                            <tr>
-                                <th>Entry</th>
-<!--                                <th>Time</th>-->
-                                <th>Placement</th>
-                                <th>Detail</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {% for result in results %}
-                            <tr>
-                                <td>
-                                    {{ result.entry }}
-                                </td>
-<!--                                <td>-->
-<!--                                    {{ result.total_time_string }}-->
-<!--                                </td>-->
-                                <td>
-                                    {{ result.rank }}
-                                </td>
-                                <td>
-                                    <button type="button" class="btn btn-primary font-weight-bold" data-toggle="modal"
-                                            data-target="#result{{ forloop.counter }}">
-                                        ?
-                                    </button>
-                                </td>
-                            </tr>
-                            {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Result Detail Modals -->
-{% for result in results %}
-<div class="modal fade" id="result{{ forloop.counter }}" tabindex="-1"
-     aria-labelledby="result{{ forloop.counter }}Label" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="result{{ forloop.counter }}Label">Details</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <ul class="list-group list-group-flush text-left">
-                    <li class="list-group-item bg-transparent">
-                        <div class="row">
-                            <div class="col-xs-4 col-md-3 text-primary font-weight-bold">Event</div>
-                            <div class="col-xs-8 col-md-9">{{ result.entry }}</div>
-                        </div>
-                    </li>
-                    <li class="list-group-item bg-transparent">
-                        <div class="row">
-                            <div class="col-xs-4 col-md-3 text-primary font-weight-bold">Distance</div>
-                            <div class="col-xs-8 col-md-9">{{ result.distance }}</div>
-                        </div>
-                    </li>
-                    <li class="list-group-item bg-transparent">
-                        <div class="row">
-                            <div class="col-xs-4 col-md-3 text-primary font-weight-bold">Time</div>
-                            <div class="col-xs-8 col-md-9">
-                                {{ result.total_time_string }}
-                            </div>
-                        </div>
-                    </li>
-                    <li class="list-group-item bg-transparent">
-                        <div class="row">
-                            <div class="col-xs-4 col-md-3 text-primary font-weight-bold">Pace</div>
-                            <div class="col-xs-8 col-md-9">{{ result.pace_string }}</div>
-                        </div>
-                    </li>
-                    <li class="list-group-item bg-transparent">
-                        <div class="row">
-                            <div class="col-xs-4 col-md-3 text-primary font-weight-bold">Racers</div>
-                            <div class="col-xs-8 col-md-9">
-                                <table>
-                                    {% for racer in result.racers.all %}
-                                    <tr>
-                                        <td class="text-right pr-3">{{ racer }}</td>
-                                        <td class="text-muted">
-                                            {% if racer.position %}
-                                            {{ racer.position.title }}
-                                            {% endif %}
-                                        </td>
-                                    </tr>
-                                    {% endfor %}
-                                </table>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-            <div class="modal-footer">
-                <p class="text-center text-muted font-italic">
-                    Incomplete data? Suggest an edit after logging in.
-                </p>
-            </div>
-        </div>
-    </div>
+    {% endfor %}
+    {% endif %}
 </div>
-{% endfor %}
-{% endif %}
-
 {% endblock %}
 
 {% block javascript %}
 <script href="{% static 'private/vendor/datatables/dataTables.bootstrap4.min.js' %}" rel="stylesheet"></script>
 <script src="{% static 'private/vendor/datatables/jquery.dataTables.min.js' %}"></script>
 <script>
-    // Call the dataTables jQuery plugin
     $(document).ready(function() {
       $('#dataTable').DataTable({
         responsive: true,
@@ -200,6 +142,5 @@ background: transparent !important;
         "lengthChange": false
       });
     });
-
 </script>
 {% endblock %}
