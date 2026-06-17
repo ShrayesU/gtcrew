@@ -2,73 +2,70 @@
 {% load wagtailcore_tags humanize %}
 
 {% block content %}
-<section class="page-section about-heading">
-    <div class="container">
-        <div class="about-heading-content my-5">
-            <div class="row">
-                <div class="col-xl-9 col-lg-10 mx-auto">
-                    <div class="bg-faded rounded p-5">
-                        <h2 class="section-heading mb-5 text-center">
-                            <span class="section-heading-upper">Campaign</span>
-                            <span class="section-heading-lower">{{ self.title }}</span>
-                        </h2>
+<div class="site-frame">
+    <section class="page-hero">
+        <div class="page-hero__panel hero-panel">
+            <div class="page-hero__content">
+                <span class="page-hero__eyebrow">Support The Team</span>
+                <h1 class="page-hero__title">{{ self.title }}</h1>
+                <div class="page-hero__text">{{ self.description|richtext }}</div>
+            </div>
+        </div>
+    </section>
 
-                        <div class="row pb-2">
-                            <div class="col">
-                                <p class="mb-0">{{ self.description|richtext }}</p>
-                            </div>
-                        </div>
-                        <div class="row align-items-center">
-                            {% if self.goal %}
-                            <div class="col-6">
-                                {% include "campaign/includes/infographic.html" with this=self %}
-                            </div>
-                            {% endif %}
-                            {% if self.donor_goal %}
-                            <div class="col-6">
-                                {% include "campaign/includes/infographic_donor.html" with this=self %}
-                            </div>
-                            {% endif %}
-                            {% if self.interest_form %}
-                            <div class="col-6 d-flex justify-content-center">
-                                <a class="btn btn-primary text-dark" href="{{ self.interest_form.url }}"
-                                   style="white-space:normal">
-                                    {{ self.interest_form }}
-                                </a>
-                            </div>
-                            {% endif %}
-                        </div>
+    <section class="page-section">
+        <div class="content-grid content-grid--narrow">
+            <div class="bg-faded rounded p-5">
+                <h2 class="section-heading mb-5 text-center">
+                    <span class="section-heading-upper">Campaign</span>
+                    <span class="section-heading-lower">{{ self.title }}</span>
+                </h2>
+
+                <div class="row pb-2">
+                    <div class="col">
+                        <p class="mb-0">{{ self.description|richtext }}</p>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-{% if donors %}
-<section class="page-section cta">
-    <div class="container">
-        <div class="row">
-            <div class="col-xl-9 mx-auto">
-                <div class="cta-inner text-center rounded">
-                    <h2 class="section-heading mb-2">
-                        <span class="section-heading-lower">Thank you to our Donors</span>
-                    </h2>
-                    <table>
-                        <div class="row text-center">
-                            {% for donor in donors %}
-                            <div class="col-6 col-lg-4 my-2">
-                                {% if donor.anonymous %}*George P. Burdell{% else %}
-                                {{ donor }}
-                                {% endif %}
-                            </div>
-                            {% endfor %}
-                        </div>
-                    </table>
+                <div class="row align-items-center">
+                    {% if self.goal %}
+                    <div class="col-12 col-lg-6 mb-4 mb-lg-0">
+                        {% include "campaign/includes/infographic.html" with this=self %}
+                    </div>
+                    {% endif %}
+                    {% if self.donor_goal %}
+                    <div class="col-12 col-lg-6 mb-4 mb-lg-0">
+                        {% include "campaign/includes/infographic_donor.html" with this=self %}
+                    </div>
+                    {% endif %}
+                    {% if self.interest_form %}
+                    <div class="col-12 d-flex justify-content-center mt-3">
+                        <a class="btn btn-primary" href="{{ self.interest_form.url }}" style="white-space: normal;">
+                            {{ self.interest_form }}
+                        </a>
+                    </div>
+                    {% endif %}
                 </div>
             </div>
         </div>
-    </div>
-</section>
-{% endif %}
+    </section>
+
+    {% if donors %}
+    <section class="page-section">
+        <div class="content-grid content-grid--narrow">
+            <div class="cta-inner text-center rounded">
+                <h2 class="section-heading mb-2">
+                    <span class="section-heading-lower">Thank you to our Donors</span>
+                </h2>
+                <div class="row text-center">
+                    {% for donor in donors %}
+                    <div class="col-6 col-lg-4 my-2">
+                        {% if donor.anonymous %}*George P. Burdell{% else %}{{ donor }}{% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </section>
+    {% endif %}
+</div>
 {% endblock %}
