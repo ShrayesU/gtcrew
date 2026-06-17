@@ -1,8 +1,64 @@
 {% extends "base_page.html" %}
-{% load wagtailcore_tags %}
+{% load wagtailcore_tags wagtailimages_tags %}
 
 {% block content %}
 <div class="site-frame">
-    {% include_block self.body %}
+    {% for block in self.body %}
+        {% if forloop.first and block.block_type == 'post' %}
+        <section class="page-hero">
+            <div class="page-hero__panel hero-panel">
+                {% if block.value.photo %}
+                <div class="page-hero__media">
+                    {% image block.value.photo fill-1600x960 class="img-fluid" %}
+                </div>
+                {% endif %}
+                <div class="page-hero__content">
+                    {% if block.value.heading_small %}
+                    <span class="page-hero__eyebrow">{{ block.value.heading_small }}</span>
+                    {% endif %}
+                    <h1 class="page-hero__title">{{ block.value.heading_large|default:self.title }}</h1>
+                    <div class="page-hero__text">{{ block.value.paragraph|richtext }}</div>
+                    {% if block.value.document or block.value.page %}
+                    <div class="page-hero__actions">
+                        {% if block.value.page %}
+                        <a class="btn btn-primary" href="{{ block.value.page.url }}">{{ block.value.page }}</a>
+                        {% endif %}
+                        {% if block.value.document %}
+                        <a class="btn btn-outline-light" href="{{ block.value.document.url }}">{{ block.value.document }}</a>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </section>
+        {% else %}
+            {% if forloop.first %}
+            <section class="page-hero">
+                <div class="page-hero__panel hero-panel">
+                    <div class="page-hero__content">
+                        <span class="page-hero__eyebrow">Georgia Tech Rowing</span>
+                        <h1 class="page-hero__title">{{ self.title }}</h1>
+                        {% if self.search_description %}
+                        <p class="page-hero__text">{{ self.search_description }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </section>
+            {% endif %}
+            {% include_block block %}
+        {% endif %}
+    {% empty %}
+    <section class="page-hero">
+        <div class="page-hero__panel hero-panel">
+            <div class="page-hero__content">
+                <span class="page-hero__eyebrow">Georgia Tech Rowing</span>
+                <h1 class="page-hero__title">{{ self.title }}</h1>
+                {% if self.search_description %}
+                <p class="page-hero__text">{{ self.search_description }}</p>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+    {% endfor %}
 </div>
 {% endblock %}
