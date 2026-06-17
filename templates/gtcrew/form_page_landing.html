@@ -2,19 +2,23 @@
 {% load wagtailcore_tags %}
 
 {% block content %}
-
-<section class="page-section about-heading">
-    <div class="container">
-        <div class="about-heading-content">
-            <div class="row">
-                <div class="col-xl-9 col-lg-10 mx-auto">
-                    <div class="bg-faded rounded p-5">
-                        {{ page.thank_you_text|richtext }}
-                    </div>
-                </div>
+<div class="site-frame">
+    <section class="page-hero">
+        <div class="page-hero__panel hero-panel">
+            <div class="page-hero__content">
+                <span class="page-hero__eyebrow">Submission Received</span>
+                <h1 class="page-hero__title">Thank you.</h1>
+                <p class="page-hero__text">We’ve got your message and someone from Georgia Tech Rowing will follow up soon.</p>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
+    <section class="page-section">
+        <div class="content-grid content-grid--narrow">
+            <div class="bg-faded rounded p-5 prose">
+                {{ page.thank_you_text|richtext }}
+            </div>
+        </div>
+    </section>
+</div>
 {% endblock content %}
