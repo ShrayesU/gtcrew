@@ -1,57 +1,33 @@
 {% load static analytics wagtailimages_tags %}
 
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="{% if self.search_description %}{{ self.search_description }}{% else %}{{ self.title }}{% endif %}" />
-    <meta name="author" content="Alec">
-    {% if settings.gtcrew.Favicon.favicon %}
-    {% image settings.gtcrew.Favicon.favicon fill-16x16 format-png as icon %}
-    <link rel="icon" type="image/png" href="{{ icon.url }}"/>
-    {% endif %}
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="{% if self.search_description %}{{ self.search_description }}{% else %}{{ self.title }}{% endif %}">
+<meta name="author" content="Georgia Tech Rowing">
+{% if settings.gtcrew.Favicon.favicon %}
+{% image settings.gtcrew.Favicon.favicon fill-16x16 format-png as icon %}
+<link rel="icon" type="image/png" href="{{ icon.url }}">
+{% endif %}
 
-    <title>
-        {% with self.get_site.site_name as site_name %}
-            {% if site_name %}{{ site_name }}: {% endif %}
-        {% endwith %}
-        {% if self.seo_title %}{{ self.seo_title }}{% else %}{{ self.title }}{% endif %}
-    </title>
+<title>
+    {% with self.get_site.site_name as site_name %}
+        {% if site_name %}{{ site_name }}: {% endif %}
+    {% endwith %}
+    {% if self.seo_title %}{{ self.seo_title }}{% else %}{{ self.title }}{% endif %}
+</title>
 
-    {% if not request.is_preview %}
-    {# googleanalyticsjs is defined in gtcrew/templatetags/analytics.py #}
-    {% googleanalyticsjs %}
-    {% endif %}
+{% if not request.is_preview %}
+{% googleanalyticsjs %}
+{% endif %}
 
-    <!-- Bootstrap core CSS -->
-    <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
-    <link href='https://use.fontawesome.com/releases/v5.8.2/css/all.css' rel='stylesheet'
-          type='text/css'>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-    <!-- Custom fonts for this template -->
-    <link href="https://fonts.googleapis.com/css?family=Raleway:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i"
-          rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i" rel="stylesheet">
+<link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+<link href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" rel="stylesheet" type="text/css">
+<link href="{% static 'css/public-site.css' %}" rel="stylesheet">
 
-    <!-- Custom styles for this template -->
-    <link href="{% static 'css/business-casual.min.css' %}" rel="stylesheet">
-    <style>{# this is for embeds #}
-        .responsive-object {
-            position: relative;
-        }
-
-        .responsive-object iframe,
-        .responsive-object object,
-        .responsive-object embed {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-        }
-    </style>
-
-    <!-- Bootstrap core JavaScript -->
-    <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
-    <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
-
-    <!-- ChartJS -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
+<script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
