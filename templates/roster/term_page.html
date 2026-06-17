@@ -5,31 +5,36 @@
 {{ block.super }}
 <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css"/>
 <style>
-    table td, table tr, table th{
-background: transparent !important;
-}
-
+    table td, table tr, table th {
+        background: transparent !important;
+    }
 </style>
-
 {% endblock %}
 
 {% block content %}
-<section class="page-section cta">
-    <div class="container">
-        <div class="row">
-            <div class="col-xl-9 mx-auto">
-                <div class="cta-inner text-center rounded">
-                    <h2 class="section-heading">
-                        <span class="section-heading-upper">{{ self.start_date }}</span>
-                        <span class="section-heading-lower">{{ self.title }}</span>
-                    </h2>
-                    <br>
-                    <i class="fas fa-angle-double-down"></i>
-                </div>
+<div class="site-frame">
+    <section class="page-hero">
+        <div class="page-hero__panel hero-panel">
+            <div class="page-hero__content">
+                <span class="page-hero__eyebrow">Season Roster</span>
+                <h1 class="page-hero__title">{{ self.title }}</h1>
+                <p class="page-hero__text">Built around training cycles, leadership, and competition, each season page captures who steered the team and who raced in it.</p>
             </div>
         </div>
-    </div>
-</section>
+    </section>
+
+    <section class="page-section">
+        <div class="content-grid content-grid--narrow">
+            <div class="cta-inner text-center rounded">
+                <h2 class="section-heading">
+                    <span class="section-heading-upper">Term Start</span>
+                    <span class="section-heading-lower">{{ self.start_date }}</span>
+                </h2>
+                <p class="inline-note mb-0">Scroll to coaches, officers, and the full member list below.</p>
+            </div>
+        </div>
+    </section>
+</div>
 
 {% for coach in self.coaches.all %}
 {% if coach.person_page.live %}
@@ -37,88 +42,65 @@ background: transparent !important;
 {% endif %}
 {% endfor %}
 
-<section class="page-section cta">
-    <div class="container">
-        <div class="row">
-            <div class="col-xl-9 mx-auto">
-                <div class="cta-inner text-center rounded">
-                    <h2 class="section-heading mb-5">
-                        <span class="section-heading-upper">Student</span>
-                        <span class="section-heading-lower">Officers</span>
-                    </h2>
-                    <ul class="list-unstyled list-hours mb-5 text-left mx-auto">
-                        {% for officer in self.officers.all %}
-                        {% if officer.person_page.live %}
-                        <li class="list-unstyled-item list-hours-item d-flex">
-                            <a class="text-secondary" href="{% pageurl officer.person_page %}">
-                                {{ officer.person_page.title }}
-                            </a>
-                            <span class="ml-auto"
-                                  style="font-weight:bold; color:#EEB211;">{{ officer.position.title }}</span>
-                        </li>
-                        {% endif %}
-                        {% endfor %}
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<section class="page-section about-heading">
-    <div class="container">
-        <div class="about-heading-content my-5">
-            <div class="row">
-                <div class="col-xl-9 col-lg-10 mx-auto">
-                    <div class="bg-faded rounded p-5">
-                        <h2 class="section-heading mb-5 text-center">
-                            <span class="section-heading-upper">Rowers & Coxswain</span>
-                            <span class="section-heading-lower">Members</span>
-                        </h2>
-                        <div>
-                            <table class="display responsive" id="dataTable_Members" width="100%" cellspacing="0">
-                                <thead>
-                                <tr>
-                                    <th>First Name</th>
-                                    <th>Last Name</th>
-                                    <th>Major</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                {% for member in members %}
-                                <tr>
-                                    <td>
-                                        <a class="text-secondary" href="{% pageurl member %}">
-                                            {{ member.specific.first_name }}
-                                        </a>
-                                    </td>
-                                    <td>
-                                        <a class="text-secondary" href="{% pageurl member %}">
-                                            {{ member.specific.last_name }}
-                                        </a>
-                                    </td>
-                                    <td>
-                                        {{ member.specific.major }}
-                                    </td>
-                                </tr>
-                                {% endfor %}
-                                </tbody>
-                            </table>
-                        </div>
+<div class="site-frame">
+    <section class="page-section">
+        <div class="content-grid content-grid--narrow">
+            <div class="cta-inner text-center rounded">
+                <h2 class="section-heading mb-5">
+                    <span class="section-heading-upper">Student</span>
+                    <span class="section-heading-lower">Officers</span>
+                </h2>
+                <div class="detail-grid">
+                    {% for officer in self.officers.all %}
+                    {% if officer.person_page.live %}
+                    <div class="detail-card d-flex justify-content-between align-items-center flex-wrap">
+                        <a href="{% pageurl officer.person_page %}">{{ officer.person_page.title }}</a>
+                        <span class="detail-card__label mb-0">{{ officer.position.title }}</span>
                     </div>
+                    {% endif %}
+                    {% endfor %}
                 </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
+    <section class="page-section">
+        <div class="content-grid content-grid--narrow">
+            <div class="bg-faded rounded p-5">
+                <h2 class="section-heading mb-5 text-center">
+                    <span class="section-heading-upper">Rowers & Coxswain</span>
+                    <span class="section-heading-lower">Members</span>
+                </h2>
+                <div>
+                    <table class="display responsive" id="dataTable_Members" width="100%" cellspacing="0">
+                        <thead>
+                        <tr>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Major</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for member in members %}
+                        <tr>
+                            <td><a href="{% pageurl member %}">{{ member.specific.first_name }}</a></td>
+                            <td><a href="{% pageurl member %}">{{ member.specific.last_name }}</a></td>
+                            <td>{{ member.specific.major }}</td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
 {% endblock %}
 
 {% block javascript %}
 <script href="{% static 'private/vendor/datatables/dataTables.bootstrap4.min.js' %}" rel="stylesheet"></script>
 <script src="{% static 'private/vendor/datatables/jquery.dataTables.min.js' %}"></script>
 <script>
-    // Call the dataTables jQuery plugin
     $(document).ready(function() {
       $('#dataTable_Members').DataTable({
         responsive: true,
@@ -128,7 +110,5 @@ background: transparent !important;
         "lengthChange": false
       });
     });
-
-
 </script>
 {% endblock %}
