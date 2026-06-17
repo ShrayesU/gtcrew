@@ -4,9 +4,7 @@
 {% endcomment %}
 
 {% if self.size == 'h2' %}
-        <span class="section-heading-lower">{{ self.heading_text }}</span>
-
-    {% elif self.size == 'h3' %}
-        <span class="section-heading-upper">{{ self.heading_text }}</span>
-
+<span class="section-heading-lower">{{ self.heading_text }}</span>
+{% elif self.size == 'h3' %}
+<span class="section-heading-upper">{{ self.heading_text }}</span>
 {% endif %}
