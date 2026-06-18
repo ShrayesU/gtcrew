@@ -7,7 +7,6 @@ from wagtail.contrib.settings.models import BaseSiteSetting, register_setting
 from wagtail import blocks
 from wagtail.fields import StreamField, RichTextField
 from wagtail.models import Page
-from wagtailcaptcha.models import WagtailCaptchaEmailForm
 
 from gtcrew.blocks import PostBlock, BaseStreamBlock
 
@@ -28,7 +27,7 @@ class FormField(AbstractFormField):
     page = ParentalKey('FormPage', related_name='form_fields', on_delete=models.CASCADE)
 
 
-class FormPage(WagtailCaptchaEmailForm):
+class FormPage(AbstractEmailForm):
     image = models.ForeignKey(
         'wagtailimages.Image',
         null=True,
@@ -69,8 +68,8 @@ class FormPage(WagtailCaptchaEmailForm):
                 css_classes = field.widget.attrs.get('class', '').split()
                 css_classes.append('form-control')
                 field.widget.attrs.update({'class': ' '.join(css_classes)})
-            field.widget.attrs['aria-describedby'] = 'id_%s' % name  # slug version
-            field.widget.attrs['aria-label'] = '%s' % field.label  # title version
+            field.widget.attrs['aria-describedby'] = 'id_%s' % name
+            field.widget.attrs['aria-label'] = '%s' % field.label
             field.widget.attrs['placeholder'] = '%s' % field.label
         return form
 
