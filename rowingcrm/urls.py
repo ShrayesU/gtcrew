@@ -2,16 +2,6 @@
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/2.0/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from allauth.account.views import LoginView, LogoutView
 from django.conf import settings
@@ -33,9 +23,7 @@ urlpatterns = [
     path('story/', include('story.urls')),
     path('asset/', include('asset.urls')),
     path('summernote/', include('django_summernote.urls')),
-    path('activity/', include('actstream.urls')),
     path('django_admin/', admin.site.urls),
-    path('robots.txt', include('robots.urls')),
     re_path(r'', include(wagtail_urls)),
 ]
 
@@ -43,13 +31,9 @@ if settings.DEBUG:
     from django.conf.urls.static import static
     from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
-    # Serve static and media files from development server
     urlpatterns += staticfiles_urlpatterns()
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 urlpatterns = urlpatterns + [
-    # For anything not caught by a more specific rule above, hand over to
-    # Wagtail's page serving mechanism. This should be the last pattern in
-    # the list:
     path('', include(wagtail_urls)),
 ]
