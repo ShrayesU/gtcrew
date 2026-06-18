@@ -12,7 +12,15 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, TemplateView
 
-from actstream import action
+try:
+    from actstream import action
+except ImportError:
+    class _NoopAction:
+        @staticmethod
+        def send(*args, **kwargs):
+            return None
+    action = _NoopAction()
+
 from common.views import PagesListView
 from story.models import Story
 from .forms import ProfileUpdateForm, MembershipInlineForm, MembershipUpdateForm
@@ -38,11 +46,6 @@ class PortalView(LoginRequiredMixin, TemplateView):
         context['membership_label'] = [str('{}{}'.format(x['semester'], x['year'])) for x in membership_list]
         context['profile_model'] = Profile
         return context
-
-
-"""
-Profile Views
-"""
 
 
 class ProfileListView(LoginRequiredMixin, PagesListView):
@@ -195,10 +198,8 @@ def claim_profile(request, pk):
     success_url = reverse_lazy('team:view_profile', kwargs={'pk': profile.pk})
 
     if Profile.objects.filter(owner=request.user).exists():
-        # user already has a profile
         messages.warning(request, 'Attempt failed. You already have a profile claimed on your account.')
     elif profile.owner:
-        # profile already has an owner
         messages.warning(request, 'Attempt failed. This profile already has an owner.')
     else:
         profile.owner = request.user
@@ -207,11 +208,6 @@ def claim_profile(request, pk):
         messages.success(request, 'You have successfully submitted a claim for this profile.')
 
     return redirect(success_url)
-
-
-"""
-Membership Views
-"""
 
 
 class MembershipListView(LoginRequiredMixin, ListView):
